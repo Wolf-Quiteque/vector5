@@ -95,7 +95,7 @@ const MainLayout = ({ children }) => {
               </nav>
               <div className="burger-icon burger-icon-white"><span className="burger-icon-top"></span><span className="burger-icon-mid"></span><span className="burger-icon-bottom"></span></div>
             </div>
-            <div className="header-shop mobile-hide">
+            <div className="header-shop">
               <div className="d-inline-block box-dropdown-cart"><span className="font-lg icon-list icon-account"><span>Account</span></span>
                 <div className="dropdown-account">
                   <ul>
@@ -108,7 +108,7 @@ const MainLayout = ({ children }) => {
 
                   </ul>
                 </div>
-              </div><a className="mobile-hide font-lg icon-list icon-wishlist" href="#shop-wishlist.html"><span>Wishlist</span><span className="number-item font-xs">5</span></a>
+              </div>
              <div className="d-inline-block box-dropdown-cart"><span className="font-lg icon-list icon-cart"><span>Carrinho</span><span className="number-item font-xs">2</span></span>
    {/* THE CART <div className="dropdown-cart">
     <div className="item-cart mb-20">
@@ -186,13 +186,13 @@ const MainLayout = ({ children }) => {
     <li><a href="#page-login.html">Sair</a></li>
   </ul>
 </div>
-{/* 
+
             <div className="mobile-banner">
               <div className="bg-5 block-iphone"><span className="color-brand-3 font-sm-lh32">Starting from AOA 899</span>
                 <h3 className="font-xl mb-10">iPhone 12 Pro 128Gb</h3>
                 <p className="font-base color-brand-3 mb-10">Special Sale</p><a className="btn btn-arrow" href="#shop-grid.html">learn more</a>
               </div>
-            </div> */}
+            </div>
             <div className="site-copyright color-gray-400 mt-30">Copyright 2022 © Vetor 5.<br />Criado por<a href="#" target="_blank">�&nbsp; V5</a></div>
           </div>
         </div>
