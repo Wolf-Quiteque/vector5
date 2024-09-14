@@ -31,9 +31,9 @@ const LoginPage = () => {
                   <label htmlFor="senha" className="form-label">Senha</label>
                   <input type="password" className="form-control" id="senha" required />
                 </div>
-                <button type="submit" className="btn btn-primary w-100" style={{ backgroundColor: '#381552', borderColor: '#381552' }}>
+                <a href="/" className="btn btn-primary w-100" style={{ backgroundColor: '#381552', borderColor: '#381552' }}>
                   Entrar
-                </button>
+                </a>
               </form>
               <p className="text-center mt-3">
                 Não tem conta? <a href="/registrar" style={{ color: '#381552' }}>Cadastre-se</a>

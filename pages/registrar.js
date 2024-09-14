@@ -84,9 +84,9 @@ const RegisterPage = () => {
                       <button type="button" className="btn btn-secondary" onClick={prevStep}>
                         Voltar
                       </button>
-                      <button type="submit" className="btn btn-primary" style={{ backgroundColor: '#381552', borderColor: '#381552' }}>
+                      <a href="/" className="btn btn-primary" style={{ backgroundColor: '#381552', borderColor: '#381552' }}>
                         Cadastrar
-                      </button>
+                      </a>
                     </div>
                   </>
                 )}
