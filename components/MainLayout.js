@@ -34,10 +34,15 @@ const MainLayout = ({ children }) => {
               <i className="fas fa-search"></i>
             </a>
           </li>
+          <li className="nav-item">
+            <a className="nav-link" href="#" >
+              <i className="fas fa-bars"></i>
+            </a>
+          </li>
         </ul>
       </div>
     </div>
-    <div className="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div className="modal fade" id="searchModal" tabIndex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
       <div className="modal-dialog modal-lg">
         <div className="modal-content modal-dark">
           <div className="modal-header">
