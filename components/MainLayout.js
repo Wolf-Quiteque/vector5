@@ -1,11 +1,12 @@
 import React from 'react';
-
+import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 const MainLayout = ({ children }) => {
-
+  const router = useRouter();
 
   return (
       <>
-   <div className="topbar">
+      {router.pathname !="/login" && router.pathname !="/registrar" &&(<>  <div className="topbar">
   <div className="container-topbar">
     <div className="menu-topbar-left d-none d-xl-block">
       <ul className="nav-small">
@@ -197,9 +198,11 @@ const MainLayout = ({ children }) => {
           </div>
         </div>
       </div>
-    </div>
+    </div></>)  }
+  
         {children}
 
+      {router.pathname !=="/login" && router.pathname !=="/registrar" &&(<>
         <div className="app-footer desktop-hide">
       <div className="container">
         <ul className="nav justify-content-around">
@@ -265,7 +268,9 @@ const MainLayout = ({ children }) => {
           </div>
         </div>
       </div>
-    </div>
+    </div> </>)  }
+
+
       </>
   );
 };
