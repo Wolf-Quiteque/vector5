@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Link from 'next/link'
 
 const LoginPage = () => {
   return (
@@ -36,7 +37,7 @@ const LoginPage = () => {
                 </a>
               </form>
               <p className="text-center mt-3">
-                Não tem conta? <a href="/registrar" style={{ color: '#381552' }}>Cadastre-se</a>
+                Não tem conta? <Link href="/registrar"><a  style={{ color: '#381552' }}> Cadastre-se</a></Link>  
               </p>
             </div>
           </div>

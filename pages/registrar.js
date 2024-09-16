@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Head from 'next/head';
+import Link from 'next/link'
 
 const RegisterPage = () => {
   const [step, setStep] = useState(1);
@@ -92,7 +93,7 @@ const RegisterPage = () => {
                 )}
               </form>
               <p className="text-center mt-3">
-                Já tem uma conta? <a href="/login" style={{ color: '#381552' }}>Entrar</a>
+                Já tem uma conta?<Link href="/login"><a  style={{ color: '#381552' }}> Entrar</a></Link> 
               </p>
             </div>
           </div>

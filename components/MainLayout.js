@@ -1,12 +1,34 @@
 import React from 'react';
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import {
+  getDecryptedCookie,
+  setEncryptedCookie,
+  deleteCookie,
+} from "../lib/session";
 const MainLayout = ({ children }) => {
   const router = useRouter();
 
+
+const CheckSessionFornecedor = async () => {
+  const response = await getDecryptedCookie("authsesh") || false;
+  if(router.pathname == "/fornecedor" && !response){
+    router.push("/fornecedor/login")
+  }
+
+  if(router.pathname == "/fornecedor/login" && response || router.pathname  == "/fornecedor/registrar" && response  ){
+    router.push("/fornecedor")
+
+  }
+}
+
+  useEffect (()=>{
+    CheckSessionFornecedor()
+  },[router.asPath])
+
   return (
       <>
-      {router.pathname !="/login" && router.pathname !="/registrar" &&(<>  <div className="topbar">
+      {router.pathname !="/fornecedor" && router.pathname !="/login" && router.pathname !="/registrar" && router.pathname !="/fornecedor/login" && router.pathname !="/fornecedor/registrar" &&(<>  <div className="topbar">
   <div className="container-topbar">
     <div className="menu-topbar-left d-none d-xl-block">
       <ul className="nav-small">
@@ -202,7 +224,7 @@ const MainLayout = ({ children }) => {
   
         {children}
 
-      {router.pathname !=="/login" && router.pathname !=="/registrar" &&(<>
+      {router.pathname !="/fornecedor" && router.pathname !=="/login" && router.pathname !=="/registrar" && router.pathname !="/fornecedor/login" && router.pathname !="/fornecedor/registrar" &&(<>
         <div className="app-footer desktop-hide">
       <div className="container">
         <ul className="nav justify-content-around">

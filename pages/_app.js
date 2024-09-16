@@ -3,7 +3,7 @@ import MainLayout from '../components/MainLayout'
 import Head from 'next/head';
 import 'animate.css';
 import Script from 'next/script';
-
+import 'react-toastify/dist/ReactToastify.css';
 function MyApp({ Component, pageProps }) {
     return (
         <>
