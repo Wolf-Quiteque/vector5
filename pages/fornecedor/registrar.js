@@ -45,6 +45,7 @@ const router = useRouter()
         // Handle success, e.g., redirect to login or dashboard
       } else {
         console.error('Failed to register supplier:', data);
+        console.log(data)
         alert(data.message)
       }
     } catch (error) {
