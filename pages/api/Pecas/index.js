@@ -5,6 +5,7 @@ import clientPromise from '../../../lib/mongodb';
 export default async function handler(req, res) {
   console.log(req.body)
     const client = await clientPromise;
+    console.log(client)
     const db = client.db('vector5'); // Replace with your actual database name
 
     if (req.method === 'GET') {

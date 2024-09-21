@@ -2,7 +2,5 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/fornecedor": "pages/fornecedor.js",
-  "/fornecedor/login": "pages/fornecedor/login.js",
-  "/api/fornecedores": "pages/api/fornecedores.js"
+  "/fornecedor": "pages/fornecedor.js"
 }
