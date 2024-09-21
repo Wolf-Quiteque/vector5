@@ -19,17 +19,13 @@ export default async function handler(req, res) {
 
       res.status(200).json(peca);
     } else if (req.method === 'PUT') {
-      const { nome, descricao, preco } = req.body;
-      const updatedPeca = {
-        ...(nome && { nome }),
-        ...(descricao && { descricao }),
-        ...(preco && { preco }),
-        atualizado_em: new Date(),
-      };
+     
+      var peca = req.body
+      delete peca._id
 
       const result = await db.collection('pecas').updateOne(
         { _id: new ObjectId(id) },
-        { $set: updatedPeca }
+        { $set: peca }
       );
 
       if (result.matchedCount === 0) {
