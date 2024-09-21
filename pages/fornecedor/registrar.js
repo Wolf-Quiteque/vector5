@@ -10,6 +10,8 @@ import {
 const RegisterFornecedorPage = () => {
   const [step, setStep] = useState(1);
   const [fornecedorData, setfornecedorData] = useState({});
+  const [loading, setloading] = useState(false);
+
 
 const router = useRouter()
   const nextStep = () => {
@@ -24,6 +26,7 @@ const router = useRouter()
   var fornecedor = {}
 
   const registerFornecedor = async () => {
+    setloading(true)
 
     try {
       const response = await fetch('/api/fornecedores', {
@@ -156,13 +159,17 @@ const router = useRouter()
                        className="form-control" id="senha" required />
                     </div>
                     <div className="d-flex justify-content-between">
-                      <button type="button" className="btn btn-secondary" onClick={prevStep}>
+                      {!loading &&(<button type="button" className="btn btn-secondary" onClick={prevStep}>
                         Voltar
-                      </button> <a onClick={()=>{
+                      </button> )}
+                      
+                      {loading ?(<><a   className="btn btn-primary disabled" >
+                        aguarde...
+                      </a></>):(<> <a onClick={()=>{
                         registerFornecedor()
                       }}  className="btn btn-primary" style={{ backgroundColor: '#381552', borderColor: '#381552' }}>
                         Cadastrar
-                      </a>
+                      </a></>)}
                     
                     </div>
                   </>

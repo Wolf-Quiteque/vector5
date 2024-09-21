@@ -8,8 +8,7 @@ function MyApp({ Component, pageProps }) {
         <>
  <Head>
         <title>Vector5</title>
-        <link href="/css/style.css" rel="stylesheet" />
-
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
 
@@ -18,38 +17,11 @@ function MyApp({ Component, pageProps }) {
             <MainLayout>
               <Component {...pageProps} />
             </MainLayout>{" "}
-            <Script src="/js/modernizr-3.6.0.min.js" />
 
-{/* jQuery */}
-<Script src="/js/jquery-3.6.0.min.js"  />
-<Script src="/js/jquery-migrate-3.3.0.min.js"  />
 
 {/* Bootstrap */}
-<Script src="/js/bootstrap.bundle.min.js"  />
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
-{/* Other Libraries */}
-<Script src="/js/waypoints.js" strategy="afterInteractive" />
-<Script src="/js/wow.js" strategy="afterInteractive" />
-<Script src="/js/magnific-popup.js" strategy="afterInteractive" />
-<Script src="/js/perfect-scrollbar.min.js" strategy="afterInteractive" />
-<Script src="/js/select2.min.js" strategy="afterInteractive" />
-<Script src="/js/isotope.js" strategy="afterInteractive" />
-<Script src="/js/scrollup.js" strategy="afterInteractive" />
-<Script src="/js/swiper-bundle.min.js" strategy="afterInteractive" />
-<Script src="/js/noUISlider.js" strategy="afterInteractive" />
-<Script src="/js/slider.js" strategy="afterInteractive" />
-
-{/* Count down */}
-<Script src="/js/counterup.js" strategy="afterInteractive" />
-<Script src="/js/jquery.countdown.min.js"  />
-
-{/* Zoom and slick */}
-<Script src="/js/jquery.elevatezoom.js" strategy="afterInteractive" />
-<Script src="/js/slick.js" strategy="afterInteractive" />
-
-{/* Main and shop scripts */}
-<Script src="/js/main.js" strategy="afterInteractive" />
-<Script src="/js/shop.js" strategy="afterInteractive" />
 
         </>
       );
