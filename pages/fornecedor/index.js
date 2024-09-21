@@ -64,13 +64,13 @@ const FornecedorHome = () => {
   }
 
   const handleSubmit = async (e) => {
-   
+    setloading(true)
     e.preventDefault();
     if(selectedPeca){
       handleEdit()
       return false
     }
-    setloading(true)
+   
     var novapeca = peca
     novapeca.fornecedor = user.nome
     novapeca.email = user.email
@@ -179,7 +179,7 @@ if(file){
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(peca),
+      body: JSON.stringify(novapeca),
     });
 
     if (res.ok) {
@@ -196,6 +196,7 @@ if(file){
     if (res.ok) {
      fetchPecas()
     }
+    setloading(false)
   };
 
   return (
