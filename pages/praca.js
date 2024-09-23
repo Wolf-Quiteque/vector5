@@ -16,8 +16,8 @@ const Praca = () => {
       <div className="user-profile d-flex align-items-center">
         <img src="https://picsum.photos/50/50" alt="User Profile" className="me-3" />
         <div>
-          <h6 className="mb-0">Olá, Usuário</h6>
-          <small><a href="#" className="text-light">Configurações <i className="fas fa-cog"></i></a></small>
+          <h6 className="mb-0">Olá, Judith</h6>
+          <small>  <a href="#" className="text-light">Configurações <i className="fas fa-cog"></i></a></small>
         </div>
       </div>
       <div className="list-group list-group-flush p-3">
@@ -63,8 +63,11 @@ const Praca = () => {
           <button className="btn btn-outline-light" id="menu-toggle">
             <i className="fa fa-shopping-cart"></i>
           </button>
-          <a className="navbar-brand ms-2" href="/">      <img alt="Ecom" src="images/logobranco.png" style={{height: "50px"}} />
-          </a>
+        <Link href="/">
+        <a className="navbar-brand ms-2">      
+          <img alt="Ecom" src="images/logobranco.png" style={{height: "50px"}} />
+          </a> 
+        </Link>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>

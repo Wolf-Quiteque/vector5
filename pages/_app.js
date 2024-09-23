@@ -1,9 +1,19 @@
 
 import MainLayout from '../components/MainLayout'
 import Head from 'next/head';
+import Router from 'next/router';
 import 'animate.css';
+import NProgress from 'nprogress'; // Import NProgress
 import Script from 'next/script';
+
 function MyApp({ Component, pageProps }) {
+
+  // Start NProgress on route change start
+Router.events.on('routeChangeStart', () => NProgress.start());
+// Stop NProgress on route change complete
+Router.events.on('routeChangeComplete', () => NProgress.done());
+// Stop NProgress on route change error
+Router.events.on('routeChangeError', () => NProgress.done());
     return (
         <>
  <Head>

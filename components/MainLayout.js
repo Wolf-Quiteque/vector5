@@ -56,7 +56,7 @@ const CheckSessionFornecedor = async () => {
         </li>
       </ul>
       <ul className="navbar-nav">
-        <li className="nav-item" style={{backgroundColor:'#381552'}}>
+        <li className="nav-item" style={{backgroundColor:'#6c3494'}}>
           <a className="nav-link" style={{color:"white"}} href="#">Entrar/Registrar</a>
         </li>
       </ul>
