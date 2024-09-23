@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 
 const Praca = () => {
-
   const wrapperRef = useRef(null);
   const toggleButtonRef = useRef(null);
 
@@ -11,46 +10,171 @@ const Praca = () => {
     const wrapper = wrapperRef.current;
     const toggleButton = toggleButtonRef.current;
 
-    // Function to check window width and toggle sidebar accordingly
-    function checkWidth() {
-      if (window.innerWidth <= 768) {
-        wrapper.classList.add('toggled');
-      } else {
-        wrapper.classList.remove('toggled');
-      }
-    }
-
-    // Initial check
-    checkWidth();
-
-    // Check on window resize
-    window.addEventListener('resize', checkWidth);
-
-    // Toggle button click event
-    toggleButton.addEventListener('click', function (e) {
+    function toggleSidebar(e) {
       e.preventDefault();
       wrapper.classList.toggle('toggled');
-    });
+    }
 
-    // Cleanup
+    toggleButton.addEventListener('click', toggleSidebar);
+
     return () => {
-      window.removeEventListener('resize', checkWidth);
-      toggleButton.removeEventListener('click', function (e) {
-        e.preventDefault();
-        wrapper.classList.toggle('toggled');
-      });
+      toggleButton.removeEventListener('click', toggleSidebar);
     };
   }, []);
+
 
   return (
     <>
       <Head>
         <title>Praça</title>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
-        <link href="css/style2.css" rel="stylesheet"  />
+       
         <link href="css/stylePraca.css" rel="stylesheet"  />
+        <style jsx global>{`
+          :root {
+            --primary-color: #381552;
+            --secondary-color: #5c2589;
+            --dark-color: #2c1141;
+            --light-color: #ffffff;
+          }
 
-        
+          html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+          }
+
+          #wrapper {
+            min-height: 100vh;
+            display: flex;
+          }
+
+          #sidebar-wrapper {
+            width: 350px;
+            height: 100vh; /* Full viewport height */
+            min-height: -webkit-fill-available; /* For iOS Safari */
+            background-color: var(--primary-color);
+            color: var(--light-color);
+            overflow-y: auto;
+            position: fixed;
+            top: 0;
+            left: -350px;
+            transition: left 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+          }
+
+          #page-content-wrapper {
+            flex: 1;
+            width: 100%;
+            transition: margin-left 0.3s ease;
+          }
+
+          #wrapper.toggled #sidebar-wrapper {
+            left: 0;
+          }
+
+          .navbar {
+            background-color: var(--dark-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+          }
+
+          .navbar .navbar-brand,
+          .navbar .nav-link {
+            color: var(--light-color);
+          }
+
+          .btn-outline-light:hover {
+            background-color: var(--secondary-color);
+          }
+
+          #sidebar-wrapper::-webkit-scrollbar {
+            width: 8px;
+          }
+
+          #sidebar-wrapper::-webkit-scrollbar-thumb {
+            background-color: var(--secondary-color);
+            border-radius: 4px;
+          }
+
+          .cart-item {
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            padding: 10px;
+          }
+
+          .cart-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+          }
+
+          .quantity-control {
+            display: flex;
+            align-items: center;
+          }
+
+          .quantity-control button {
+            background-color: var(--secondary-color);
+            border: none;
+            color: var(--light-color);
+            padding: 5px 10px;
+            font-size: 14px;
+          }
+
+          .quantity-control span {
+            padding: 0 10px;
+          }
+
+          .user-profile {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+          }
+
+          .user-profile img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+          }
+
+          .finalizar-compra {
+            background-color: var(--secondary-color);
+            color: var(--light-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+          }
+
+          .finalizar-compra:hover {
+            background-color: #8347b4;
+          }
+
+          @media (min-width: 769px) {
+            #sidebar-wrapper {
+              left: 0;
+            }
+            #page-content-wrapper {
+              margin-left: 350px;
+            }
+            #wrapper.toggled #sidebar-wrapper {
+              left: -350px;
+            }
+            #wrapper.toggled #page-content-wrapper {
+              margin-left: 0;
+            }
+          }
+
+          @media screen and (max-height: 450px) {
+            #sidebar-wrapper {
+              overflow-y: scroll;
+            }
+          }
+        `}</style>
         
       </Head>
       <div className="d-flex" id="wrapper" ref={wrapperRef}>
