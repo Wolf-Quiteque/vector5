@@ -9,6 +9,9 @@ const Praca = () => {
         <title>Praça</title>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
         <link href="css/style2.css" rel="stylesheet"  />
+        <link href="css/stylePraca.css" rel="stylesheet"  />
+
+        
         
       </Head>
       <div className="d-flex" id="wrapper">
@@ -24,31 +27,88 @@ const Praca = () => {
         <h4 className="mb-3">Seu Carrinho</h4>
         <div className="cart-item">
           <div className="d-flex align-items-center">
-            <img src="https://picsum.photos/60/60" alt="Product 1" className="me-3" />
+            <img src="https://picsum.photos/60/60" style={{height:"40px"}} alt="Product 1" className="me-3" />
             <div>
-              <h6 className="mb-0">Produto 1</h6>
-              <p className="mb-0">50,00 kz</p>
-            </div>
-          </div>
-          <div className="quantity-control mt-2">
+              <div className="row">
+                <div className="col-6">      <h6 className="mb-0">Produto 1</h6>
+              <p className="mb-0">50,00 kz</p></div>
+              <div className="col-6">
+              <div className="quantity-control mt-2">
             <button className="btn btn-sm">-</button>
             <span>1</span>
             <button className="btn btn-sm">+</button>
+
           </div>
+              </div>
+              </div>
+        
+            </div>
+          </div>
+     
         </div>
         <div className="cart-item">
           <div className="d-flex align-items-center">
-            <img src="https://picsum.photos/60/60" alt="Product 2" className="me-3" />
+            <img src="https://picsum.photos/60/60" style={{height:"40px"}} alt="Product 1" className="me-3" />
             <div>
-              <h6 className="mb-0">Produto 2</h6>
-              <p className="mb-0">75,00 kz</p>
-            </div>
-          </div>
-          <div className="quantity-control mt-2">
+              <div className="row">
+                <div className="col-6">      <h6 className="mb-0">Produto 1</h6>
+              <p className="mb-0">50,00 kz</p></div>
+              <div className="col-6">
+              <div className="quantity-control mt-2">
             <button className="btn btn-sm">-</button>
             <span>1</span>
             <button className="btn btn-sm">+</button>
+
           </div>
+              </div>
+              </div>
+        
+            </div>
+          </div>
+     
+        </div>
+        <div className="cart-item">
+          <div className="d-flex align-items-center">
+            <img src="https://picsum.photos/60/60" style={{height:"40px"}} alt="Product 1" className="me-3" />
+            <div>
+              <div className="row">
+                <div className="col-6">      <h6 className="mb-0">Produto 1</h6>
+              <p className="mb-0">50,00 kz</p></div>
+              <div className="col-6">
+              <div className="quantity-control mt-2">
+            <button className="btn btn-sm">-</button>
+            <span>1</span>
+            <button className="btn btn-sm">+</button>
+
+          </div>
+              </div>
+              </div>
+        
+            </div>
+          </div>
+     
+        </div>
+      
+        <div className="cart-item">
+          <div className="d-flex align-items-center">
+            <img src="https://picsum.photos/60/60" style={{height:"40px"}}  alt="Product 1" className="me-3" />
+            <div>
+              <div className="row">
+                <div className="col-6">      <h6 className="mb-0">Produto 1</h6>
+              <p className="mb-0">50,00 kz</p></div>
+              <div className="col-6">
+              <div className="quantity-control mt-2">
+            <button className="btn btn-sm">-</button>
+            <span>1</span>
+            <button className="btn btn-sm">+</button>
+
+          </div>
+              </div>
+              </div>
+        
+            </div>
+          </div>
+     
         </div>
       </div>
       <div className="p-3">
@@ -58,7 +118,7 @@ const Praca = () => {
     </div>
 
     <div id="page-content-wrapper">
-      <nav className="navbar navbar-expand-lg">
+      <nav className="navbar navbar-expand-lg sticky-top">
         <div className="container-fluid">
           <button className="btn btn-outline-light" id="menu-toggle">
             <i className="fa fa-shopping-cart"></i>
@@ -84,9 +144,104 @@ const Praca = () => {
       </nav>
 
       <div className="container mt-4">
-        <h1>Praça</h1>
-        <p>Explore nossos produtos e adicione-os ao seu carrinho!</p>
-   
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="card-icon">🛢️</div>
+                        <h5 class="card-title">Lubrificantes / Óleo do motor</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="card-icon">💨</div>
+                        <h5 class="card-title">Filtro de Ar do Motor</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="card-icon">🔧</div>
+                        <h5 class="card-title">Filtro de Óleo</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="card-icon">⚡</div>
+                        <h5 class="card-title">Velas de ignição</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="card-icon">🔩</div>
+                        <h5 class="card-title">Calços Frente e Trás</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="card-icon">🛑</div>
+                        <h5 class="card-title">Discos de freio/Cintas</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="card-icon">🚗</div>
+                        <h5 class="card-title">Pneus</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="card-icon">🔋</div>
+                        <h5 class="card-title">Bateria</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="card-icon">❄️</div>
+                        <h5 class="card-title">Sistema de arrefecimento</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="card-icon">⛓️</div>
+                        <h5 class="card-title">Correias e tensores</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="card-icon">🎛️</div>
+                        <h5 class="card-title">Terminais de suspensão e direção</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="card-icon">🔨</div>
+                        <h5 class="card-title">Amortecedores frente e trás</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
       </div>
     </div>
   </div>
