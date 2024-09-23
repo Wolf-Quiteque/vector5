@@ -1,8 +1,47 @@
 import Head from 'next/head';
-import Link from 'next/link'
-import Script from 'next/script';
+import Link from 'next/link';
+import { useEffect, useRef } from 'react';
 
 const Praca = () => {
+
+  const wrapperRef = useRef(null);
+  const toggleButtonRef = useRef(null);
+
+  useEffect(() => {
+    const wrapper = wrapperRef.current;
+    const toggleButton = toggleButtonRef.current;
+
+    // Function to check window width and toggle sidebar accordingly
+    function checkWidth() {
+      if (window.innerWidth <= 768) {
+        wrapper.classList.add('toggled');
+      } else {
+        wrapper.classList.remove('toggled');
+      }
+    }
+
+    // Initial check
+    checkWidth();
+
+    // Check on window resize
+    window.addEventListener('resize', checkWidth);
+
+    // Toggle button click event
+    toggleButton.addEventListener('click', function (e) {
+      e.preventDefault();
+      wrapper.classList.toggle('toggled');
+    });
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('resize', checkWidth);
+      toggleButton.removeEventListener('click', function (e) {
+        e.preventDefault();
+        wrapper.classList.toggle('toggled');
+      });
+    };
+  }, []);
+
   return (
     <>
       <Head>
@@ -14,7 +53,7 @@ const Praca = () => {
         
         
       </Head>
-      <div className="d-flex" id="wrapper">
+      <div className="d-flex" id="wrapper" ref={wrapperRef}>
     <div className="border-end" id="sidebar-wrapper">
       <div className="user-profile d-flex align-items-center">
         <img src="https://picsum.photos/50/50" alt="User Profile" className="me-3" />
@@ -118,11 +157,11 @@ const Praca = () => {
     </div>
 
     <div id="page-content-wrapper">
-      <nav className="navbar navbar-expand-lg sticky-top">
-        <div className="container-fluid">
-          <button className="btn btn-outline-light" id="menu-toggle" >
-            <i className="fa fa-shopping-cart"></i>
-          </button>
+          <nav className="navbar navbar-expand-lg sticky-top">
+            <div className="container-fluid">
+              <button className="btn btn-outline-light" id="menu-toggle" ref={toggleButtonRef}>
+                <i className="fa fa-shopping-cart"></i>
+              </button>
         <Link href="/">
         <a className="navbar-brand ms-2">      
           <img alt="Ecom" src="images/logobranco.png" style={{height: "50px"}} />
@@ -245,9 +284,7 @@ const Praca = () => {
       </div>
     </div>
   </div>
-  <Script
-        src="js/main2.js"
-      />
+
     </>
   );
 };
