@@ -29,10 +29,10 @@ const CheckSessionFornecedor = async () => {
   return (
       <>
       {router.pathname !="/praca" && router.pathname !="/fornecedor" && router.pathname !="/login" && router.pathname !="/registrar" && router.pathname !="/fornecedor/login" && router.pathname !="/fornecedor/registrar" &&(<>  <div className="topbar">
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg">
   <div className="container">
     <a className="navbar-brand" href="#">
-      <img alt="Ecom" src="images/vetor5.png" style={{height: "40px"}} />
+      <img alt="Ecom" src="images/logobranco.png" style={{height: "50px"}} />
     </a>
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>
@@ -69,10 +69,10 @@ const CheckSessionFornecedor = async () => {
         {children}
 
       {router.pathname !="/praca" && router.pathname !="/fornecedor" && router.pathname !=="/login" && router.pathname !=="/registrar" && router.pathname !="/fornecedor/login" && router.pathname !="/fornecedor/registrar" &&(<>
-        <footer class="bg-light text-center text-lg-start mt-5">
-    <div class="container p-4">
-      <div class="text-center">
-        <p class="text-muted">&copy; 2024 vetor5. Todos os direitos reservados.</p>
+        <footer className="bg-light text-center text-lg-start mt-5">
+    <div className="container p-4">
+      <div className="text-center">
+        <p className="text-muted">&copy; 2024 vetor5. Todos os direitos reservados.</p>
       </div>
     </div>
   </footer></>)  }

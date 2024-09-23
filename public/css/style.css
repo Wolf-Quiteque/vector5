@@ -1,19 +1,17 @@
-.sidebar {
-    background-color: #381552;
-    color: white;
-    height: 100vh;
-}
-.category-btn {
-    background-color: #4a1d6e;
-    color: white;
-    transition: all 0.3s;
-}
-.category-btn:hover {
-    background-color: #5c2589;
-    transform: scale(1.05);
-}
-.profile-pic {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-}
+:root {
+    --primary-color: #391653;
+    --secondary-color: #6c3494;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+  }
+
+
+.navbar {
+    background-color: var(--dark-color);
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+  }
+
+  .navbar .navbar-brand,
+  .navbar .nav-link {
+    color: var(--light-color);
+  }

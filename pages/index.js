@@ -1,4 +1,6 @@
 import React from 'react';
+import Link from 'next/link'
+
 
 const HomeScreen = () => {
 
@@ -18,7 +20,12 @@ const HomeScreen = () => {
 </div>
       </div>
     <div className="col-md-12 text-center">
-   <a href="/praca" className="text-dark"> <i className="bi bi-cart"  style={{fontSize:"50px"}}></i> </a>
+    <Link href="/praca" className="text-dark">
+            <a>
+                <i className="bi bi-cart" style={{ fontSize: "50px" }}></i>
+            </a>
+        </Link>
+   
 
     </div>
 
