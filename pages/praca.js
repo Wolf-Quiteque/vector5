@@ -209,27 +209,7 @@ const Praca = () => {
           </div>
      
         </div>
-        <div className="cart-item">
-          <div className="d-flex align-items-center">
-            <img src="https://picsum.photos/60/60" style={{height:"40px"}} alt="Product 1" className="me-3" />
-            <div>
-              <div className="row">
-                <div className="col-6">      <h6 className="mb-0">Produto 1</h6>
-              <p className="mb-0">50,00 kz</p></div>
-              <div className="col-6">
-              <div className="quantity-control mt-2">
-            <button className="btn btn-sm">-</button>
-            <span>1</span>
-            <button className="btn btn-sm">+</button>
-
-          </div>
-              </div>
-              </div>
-        
-            </div>
-          </div>
-     
-        </div>
+   
         <div className="cart-item">
           <div className="d-flex align-items-center">
             <img src="https://picsum.photos/60/60" style={{height:"40px"}} alt="Product 1" className="me-3" />
@@ -308,23 +288,23 @@ const Praca = () => {
 
       <div className="container mt-4">
         <div class="row g-4">
-            <div class="col col-md-4 col-sm-6 col-xs-12">
+            <div class="col col-md-3 col-sm-6 col-xs-12">
                 <div class="card h-100">
                     <div class="card-body">
-                        <div class="card-icon">🛢️</div>
+                        <div class="card-icon"><img src="images/oleomotor.png" className="img-fluid" /> </div>
                         <h5 class="card-title">Lubrificantes / Óleo do motor</h5>
                     </div>
                 </div>
             </div>
-            <div class="col col-md-4 col-sm-6 col-xs-12">
+            <div class="col col-md-3 col-sm-6 col-xs-12">
                 <div class="card h-100">
                     <div class="card-body">
-                        <div class="card-icon">💨</div>
+                        <div class="card-icon"> <img src="images/filtros.png" className="img-fluid" /> </div>
                         <h5 class="card-title">Filtro de Ar do Motor</h5>
                     </div>
                 </div>
             </div>
-            <div class="col col-md-4 col-sm-6 col-xs-12">
+            <div class="col col-md-3 col-sm-6 col-xs-12">
                 <div class="card h-100">
                     <div class="card-body">
                         <div class="card-icon">🔧</div>
@@ -332,23 +312,23 @@ const Praca = () => {
                     </div>
                 </div>
             </div>
-            <div class="col col-md-4 col-sm-6 col-xs-12">
+            <div class="col col-md-3 col-sm-6 col-xs-12">
                 <div class="card h-100">
                     <div class="card-body">
-                        <div class="card-icon">⚡</div>
+                        <div class="card-icon"><img src="images/velasing.png" className="img-fluid" /> </div>
                         <h5 class="card-title">Velas de ignição</h5>
                     </div>
                 </div>
             </div>
-            <div class="col col-md-4 col-sm-6 col-xs-12">
+            <div class="col col-md-3 col-sm-6 col-xs-12">
                 <div class="card h-100">
                     <div class="card-body">
-                        <div class="card-icon">🔩</div>
+                        <div class="card-icon"><img src="images/calco.jpg" className="img-fluid" /></div>
                         <h5 class="card-title">Calços Frente e Trás</h5>
                     </div>
                 </div>
             </div>
-            <div class="col col-md-4 col-sm-6 col-xs-12">
+            <div class="col col-md-3 col-sm-6 col-xs-12">
                 <div class="card h-100">
                     <div class="card-body">
                         <div class="card-icon">🛑</div>
@@ -356,23 +336,24 @@ const Praca = () => {
                     </div>
                 </div>
             </div>
-            <div class="col col-md-4 col-sm-6 col-xs-12">
+            <div class="col col-md-3 col-sm-6 col-xs-12">
                 <div class="card h-100">
                     <div class="card-body">
-                        <div class="card-icon">🚗</div>
+                        <div class="card-icon"><img src="images/pneus.png" className="img-fluid" /></div>
                         <h5 class="card-title">Pneus</h5>
                     </div>
                 </div>
             </div>
-            <div class="col col-md-4 col-sm-6 col-xs-12">
+            <div class="col col-md-3 col-sm-6 col-xs-12">
                 <div class="card h-100">
                     <div class="card-body">
-                        <div class="card-icon">🔋</div>
+                        <div class="card-icon"><img src="images/baterias.jpg" className="img-fluid" /> </div>
+                        <div class="card-icon"></div>
                         <h5 class="card-title">Bateria</h5>
                     </div>
                 </div>
             </div>
-            <div class="col col-md-4 col-sm-6 col-xs-12">
+            <div class="col col-md-3 col-sm-6 col-xs-12">
                 <div class="card h-100">
                     <div class="card-body">
                         <div class="card-icon">❄️</div>
@@ -380,15 +361,15 @@ const Praca = () => {
                     </div>
                 </div>
             </div>
-            <div class="col col-md-4 col-sm-6 col-xs-12">
+            <div class="col col-md-3 col-sm-6 col-xs-12">
                 <div class="card h-100">
                     <div class="card-body">
-                        <div class="card-icon">⛓️</div>
+                        <div class="card-icon"> <img src="images/correios.png" className="img-fluid" /> </div>
                         <h5 class="card-title">Correias e tensores</h5>
                     </div>
                 </div>
             </div>
-            <div class="col col-md-4 col-sm-6 col-xs-12">
+            <div class="col col-md-3 col-sm-6 col-xs-12">
                 <div class="card h-100">
                     <div class="card-body">
                         <div class="card-icon">🎛️</div>
@@ -396,10 +377,10 @@ const Praca = () => {
                     </div>
                 </div>
             </div>
-            <div class="col col-md-4 col-sm-6 col-xs-12">
+            <div class="col col-md-3 col-sm-6 col-xs-12">
                 <div class="card h-100">
                     <div class="card-body">
-                        <div class="card-icon">🔨</div>
+                        <div class="card-icon">  <img src="images/Amortecedores.webp" className="img-fluid" /> </div>
                         <h5 class="card-title">Amortecedores frente e trás</h5>
                     </div>
                 </div>
