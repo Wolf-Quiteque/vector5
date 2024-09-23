@@ -18,7 +18,7 @@ const HomeScreen = () => {
 </div>
       </div>
     <div className="col-md-12 text-center">
-   <a href="#" className="text-dark"> <i className="bi bi-cart"  style={{fontSize:"50px"}}></i> </a>
+   <a href="/praca" className="text-dark"> <i className="bi bi-cart"  style={{fontSize:"50px"}}></i> </a>
 
     </div>
 
