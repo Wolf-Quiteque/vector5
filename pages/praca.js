@@ -120,7 +120,7 @@ const Praca = () => {
     <div id="page-content-wrapper">
       <nav className="navbar navbar-expand-lg sticky-top">
         <div className="container-fluid">
-          <button className="btn btn-outline-light" id="menu-toggle">
+          <button className="btn btn-outline-light" id="menu-toggle" >
             <i className="fa fa-shopping-cart"></i>
           </button>
         <Link href="/">
@@ -128,7 +128,7 @@ const Praca = () => {
           <img alt="Ecom" src="images/logobranco.png" style={{height: "50px"}} />
           </a> 
         </Link>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style={{backgroundColor:"white"}}>
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
