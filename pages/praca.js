@@ -149,6 +149,17 @@ const Praca = () => {
             margin: 0;
             padding: 0;
           }
+          
+           .btn-outline-custom {
+  color: #5c2589;
+  border-color: #5c2589;
+  background-color: transparent;
+}
+
+.btn-outline-custom:hover {
+  background-color: #5c2589;
+  color: white;
+}
 
           #wrapper {
             min-height: 100vh;
@@ -281,16 +292,7 @@ const Praca = () => {
             }
           }
           
-          .btn-outline-custom {
-  color: #5c2589;
-  border-color: #5c2589;
-  background-color: transparent;
-}
-
-.btn-outline-custom:hover {
-  background-color: #5c2589;
-  color: white;
-}
+         
           
         `}</style>
         
@@ -390,7 +392,7 @@ const Praca = () => {
                     <div className="col" key={p.id}>
                       <div className="card h-100">
                       <div className="card-header d-flex justify-content-end" style={{backgroundColor: "transparent", border: "none"}}>
-  <button className="btn btn-sm" style={{ color: '#381552', borderColor: '#381552', backgroundColor: 'transparent' }}>
+  <button className="btn btn-sm btn-outline-custom">
     <i className="fas fa-heart"></i>
   </button>
 </div>
