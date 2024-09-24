@@ -89,7 +89,8 @@ const Praca = () => {
     { id: 1, name: "Motor", price: 50.00, image: "images/correios.png" },
     { id: 2, name: "Transmissão", price: 75.00, image: "images/baterias.jpg" },
   { id: 3, name: "Suspensão", price: 100.00, image: "images/pneus.png" },
-    { id: 4, name: "Freios", price: 125.00, image: "images/oleomotor.png" }
+    { id: 4, name: "Freios", price: 125.00, image: "images/oleomotor.png" },
+    { id: 5, name: "Pneus", price: 150.00, image: "images/Amortecedores.webp" },
   ];
   
   const handleCategoryClick = (category) => {
@@ -370,8 +371,10 @@ const Praca = () => {
                     <h3>{selectedCategory.name}</h3>
                     </div>
                   </div>
+                    <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4" >
+                    
                   {products.map((p) => (
-                    <div className="col col-md-3 col-sm-6 col-xs-12" key={p.id}>
+                    <div className="col" key={p.id}>
                       <div className="card h-100">
                       <div className="card-header d-flex justify-content-end" style={{backgroundColor: "transparent", border: "none"}}>
   <button className='btn btn-outline-danger btn-sm'>
@@ -392,7 +395,7 @@ const Praca = () => {
                         </div>
                       </div>
                     </div>
-                  ))}
+                  ))}</div>
                 </>
               )}
             </div>
