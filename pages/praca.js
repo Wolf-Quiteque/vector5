@@ -22,7 +22,6 @@ const Praca = () => {
     };
   }, []);
 
-
   return (
     <>
       <Head>
@@ -292,7 +291,7 @@ const Praca = () => {
                 <div class="card h-100">
                     <div class="card-body">
                         <div class="card-icon"><img src="images/oleomotor.png" className="img-fluid" /> </div>
-                        <h5 class="card-title">Lubrificantes / Óleo do motor</h5>
+                        <h5 class="card-title">Óleos e Fluidos</h5>
                     </div>
                 </div>
             </div>
@@ -300,23 +299,16 @@ const Praca = () => {
                 <div class="card h-100">
                     <div class="card-body">
                         <div class="card-icon"> <img src="images/filtros.png" className="img-fluid" /> </div>
-                        <h5 class="card-title">Filtro de Ar do Motor</h5>
+                        <h5 class="card-title">Filtros</h5>
                     </div>
                 </div>
             </div>
-            <div class="col col-md-3 col-sm-6 col-xs-12">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <div class="card-icon">🔧</div>
-                        <h5 class="card-title">Filtro de Óleo</h5>
-                    </div>
-                </div>
-            </div>
+          
             <div class="col col-md-3 col-sm-6 col-xs-12">
                 <div class="card h-100">
                     <div class="card-body">
                         <div class="card-icon"><img src="images/velasing.png" className="img-fluid" /> </div>
-                        <h5 class="card-title">Velas de ignição</h5>
+                        <h5 class="card-title">Sistema de ignição e incandescência</h5>
                     </div>
                 </div>
             </div>
@@ -349,7 +341,7 @@ const Praca = () => {
                     <div class="card-body">
                         <div class="card-icon"><img src="images/baterias.jpg" className="img-fluid" /> </div>
                         <div class="card-icon"></div>
-                        <h5 class="card-title">Bateria</h5>
+                        <h5 class="card-title">Sistema elétrico</h5>
                     </div>
                 </div>
             </div>
@@ -357,7 +349,7 @@ const Praca = () => {
                 <div class="card h-100">
                     <div class="card-body">
                         <div class="card-icon">❄️</div>
-                        <h5 class="card-title">Sistema de arrefecimento</h5>
+                        <h5 class="card-title">Embraiagem / peças</h5>
                     </div>
                 </div>
             </div>
@@ -373,7 +365,7 @@ const Praca = () => {
                 <div class="card h-100">
                     <div class="card-body">
                         <div class="card-icon">🎛️</div>
-                        <h5 class="card-title">Terminais de suspensão e direção</h5>
+                        <h5 class="card-title">Suspensão e braços</h5>
                     </div>
                 </div>
             </div>
