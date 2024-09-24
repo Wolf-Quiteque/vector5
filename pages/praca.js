@@ -387,9 +387,9 @@ const Praca = () => {
                           </div>
                           <h5 className="card-title">{p.name}</h5>
                           <p className="card-text">{p.price.toFixed(2)} kz</p>
-                          <button className="btn btn-outline-dark" onClick={() => addToCart(p)} style={{marginRight:"10px"}}> <i className='fa fa-shopping-cart'></i>
+                          <button className="btn btn-outline-dark" onClick={() => addToCart(p)} style={{marginRight:"5px"}}> <i className='fa fa-shopping-cart'></i>
                           </button>
-                          <button className="btn btn-outline-dark"  style={{marginRight:"10px"}}> <i className='fa fa-eye'></i>
+                          <button className="btn btn-outline-dark" > <i className='fa fa-eye'></i>
                           </button>
                        
                         </div>
