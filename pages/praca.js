@@ -1,11 +1,16 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef,useState } from 'react';
 
 const Praca = () => {
   const wrapperRef = useRef(null);
   const toggleButtonRef = useRef(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+ 
+  const [selectedSubcategory, setSelectedSubcategory] = useState(null);
 
+  const [showProducts, setShowProducts] = useState(false);
+ 
   useEffect(() => {
     const wrapper = wrapperRef.current;
     const toggleButton = toggleButtonRef.current;
@@ -21,6 +26,84 @@ const Praca = () => {
       toggleButton.removeEventListener('click', toggleSidebar);
     };
   }, []);
+
+  const categories = [
+    { 
+      name: "Pneus", 
+      icon: "images/pneus.png", 
+      subcategories: ["Pneu de Carro", "Pneu de Moto", "Pneu de Caminhão", "Pneu de Bicicleta"] 
+    },
+    { 
+      name: "Motor", 
+      icon: "images/motor.png", 
+      subcategories: ["Bloco de Motor", "Pistão", "Válvulas", "Turbocompressor"] 
+    },
+    { 
+      name: "Sistema Elétrico", 
+      icon: "images/sistemaeletrico.png", 
+      subcategories: ["Bateria", "Alternador", "Fiação", "Velas de Ignição"] 
+    },
+    { 
+      name: "Embriagem / Peças", 
+      icon: "images/embriagem.png", 
+      subcategories: ["Disco de Embreagem", "Placa de Pressão", "Rolamento de Embreagem"] 
+    },
+    { 
+      name: "Suspensão e Braços", 
+      icon: "images/suspensao.png", 
+      subcategories: ["Amortecedores", "Molas", "Braços de Controle", "Bieletas"] 
+    },
+    { 
+      name: "Correias, Correntes e Polias", 
+      icon: "images/correias.png", 
+      subcategories: ["Correia Dentada", "Correia Poly-V", "Corrente de Comando", "Polias"] 
+    },
+    { 
+      name: "Filtros", 
+      icon: "images/filtros.png", 
+      subcategories: ["Filtro de Ar", "Filtro de Óleo", "Filtro de Combustível"] 
+    },
+    { 
+      name: "Óleos e Fluidos", 
+      icon: "images/oleomotor.png", 
+      subcategories: ["Óleo de Motor", "Fluido de Freio", "Líquido de Arrefecimento"] 
+    },
+    { 
+      name: "Sistema de Amortecimento", 
+      icon: "images/amortecimento.png", 
+      subcategories: ["Amortecedores", "Batente de Amortecedor", "Coifa de Amortecedor"] 
+    },
+    { 
+      name: "Carroçaria", 
+      icon: "images/carrocaria.png", 
+      subcategories: ["Para-choques", "Capô", "Paralamas", "Portas"] 
+    },
+    { 
+      name: "Sistema de Travagem", 
+      icon: "images/travagem.png", 
+      subcategories: ["Pastilhas de Freio", "Discos de Freio", "Pinças de Freio", "Fluido de Freio"] 
+    }
+  ];
+  
+  
+    const products = [
+      { id: 1, name: "Produto 1", price: "50,00 kz", image: "https://picsum.photos/200/200?random=1" },
+      { id: 2, name: "Produto 2", price: "75,00 kz", image: "https://picsum.photos/200/200?random=2" },
+      { id: 3, name: "Produto 3", price: "100,00 kz", image: "https://picsum.photos/200/200?random=3" },
+      { id: 4, name: "Produto 4", price: "125,00 kz", image: "https://picsum.photos/200/200?random=4" },
+      { id: 5, name: "Produto 5", price: "150,00 kz", image: "https://picsum.photos/200/200?random=5" },
+    ];
+  
+    const handleCategoryClick = (category) => {
+      setSelectedCategory(category);
+    };
+  
+    const handleSubcategoryClick = (subcategory) => {
+      setSelectedSubcategory(subcategory);
+      setShowProducts(true);
+    };
+  
+
 
   return (
     <>
@@ -287,99 +370,48 @@ const Praca = () => {
 
       <div className="container mt-4">
         <div class="row g-4">
-            <div class="col col-md-3 col-sm-6 col-xs-12">
-                <div class="card h-100">
+
+            {categories && categories.map((category)=>(
+              <div class="col col-md-3 col-sm-6 col-xs-12">
+                <div class="card h-100" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onClick={()=>{handleCategoryClick(category) }}>
                     <div class="card-body">
-                        <div class="card-icon"><img src="images/oleomotor.png" className="img-fluid" /> </div>
-                        <h5 class="card-title">Óleos e Fluidos</h5>
+                        <div class="card-icon">  <img src={category.icon} className="img-fluid" /> </div>
+                        <h5 class="card-title">{category.name}</h5>
                     </div>
                 </div>
             </div>
-            <div class="col col-md-3 col-sm-6 col-xs-12">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <div class="card-icon"> <img src="images/filtros.png" className="img-fluid" /> </div>
-                        <h5 class="card-title">Filtros</h5>
-                    </div>
-                </div>
-            </div>
-          
-            <div class="col col-md-3 col-sm-6 col-xs-12">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <div class="card-icon"><img src="images/velasing.png" className="img-fluid" /> </div>
-                        <h5 class="card-title">Sistema de ignição e incandescência</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col col-md-3 col-sm-6 col-xs-12">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <div class="card-icon"><img src="images/calco.jpg" className="img-fluid" /></div>
-                        <h5 class="card-title">Calços Frente e Trás</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col col-md-3 col-sm-6 col-xs-12">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <div class="card-icon">🛑</div>
-                        <h5 class="card-title">Discos de freio/Cintas</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col col-md-3 col-sm-6 col-xs-12">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <div class="card-icon"><img src="images/pneus.png" className="img-fluid" /></div>
-                        <h5 class="card-title">Pneus</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col col-md-3 col-sm-6 col-xs-12">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <div class="card-icon"><img src="images/baterias.jpg" className="img-fluid" /> </div>
-                        <div class="card-icon"></div>
-                        <h5 class="card-title">Sistema elétrico</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col col-md-3 col-sm-6 col-xs-12">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <div class="card-icon">❄️</div>
-                        <h5 class="card-title">Embraiagem / peças</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col col-md-3 col-sm-6 col-xs-12">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <div class="card-icon"> <img src="images/correios.png" className="img-fluid" /> </div>
-                        <h5 class="card-title">Correias e tensores</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col col-md-3 col-sm-6 col-xs-12">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <div class="card-icon">🎛️</div>
-                        <h5 class="card-title">Suspensão e braços</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col col-md-3 col-sm-6 col-xs-12">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <div class="card-icon">  <img src="images/Amortecedores.webp" className="img-fluid" /> </div>
-                        <h5 class="card-title">Amortecedores frente e trás</h5>
-                    </div>
-                </div>
-            </div>
+            ))}
+            
         </div>
       </div>
     </div>
+
+    <div class="modal" tabindex="-1" id="staticBackdrop">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+
+    <div class="modal-content">
+      <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">{selectedCategory && selectedCategory.name}</h1>
+
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      {selectedCategory && selectedCategory.subcategories.map((subcategory, index) => (
+  <button
+    key={index}
+    style={{marginRight:"3px"}}
+    className='btn btn-light ml-2 mb-2'
+    data-bs-dismiss="modal"
+    onClick={() => handleSubcategoryClick(subcategory)}
+  >
+    {subcategory}
+  </button>
+))}
+
+      </div>
+    </div>
+  </div>
+</div>
   </div>
 
     </>
