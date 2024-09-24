@@ -328,6 +328,7 @@ const Praca = () => {
             <div className="container-fluid">
               <button className="btn btn-outline-light" id="menu-toggle" ref={toggleButtonRef}>
                 <i className="fa fa-shopping-cart"></i>
+                <span className="badge bg-danger">{cart ?(cart.length):""}</span>
               </button>
         <Link href="/">
         <a className="navbar-brand ms-2">      
