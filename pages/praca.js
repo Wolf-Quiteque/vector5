@@ -390,7 +390,7 @@ const Praca = () => {
                     <div className="col" key={p.id}>
                       <div className="card h-100">
                       <div className="card-header d-flex justify-content-end" style={{backgroundColor: "transparent", border: "none"}}>
-  <button className='btn btn-outline-custom btn-sm'>
+  <button className="btn btn-sm" style={{ color: '#381552', borderColor: '#381552', backgroundColor: 'transparent' }}>
     <i className="fas fa-heart"></i>
   </button>
 </div>
