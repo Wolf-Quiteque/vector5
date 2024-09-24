@@ -89,8 +89,7 @@ const Praca = () => {
     { id: 1, name: "Motor", price: 50.00, image: "images/correios.png" },
     { id: 2, name: "Transmissão", price: 75.00, image: "images/baterias.jpg" },
   { id: 3, name: "Suspensão", price: 100.00, image: "images/pneus.png" },
-    { id: 4, name: "Freios", price: 125.00, image: "images/oleomotor.png" },
-    { id: 5, name: "Pneus", price: 150.00, image: "images/Amortecedores.webp" },
+    { id: 4, name: "Freios", price: 125.00, image: "images/oleomotor.png" }
   ];
   
   const handleCategoryClick = (category) => {
@@ -381,7 +380,7 @@ const Praca = () => {
 </div>
                         <div className="card-body">
                           <div className="card-icon">
-                            <img src={p.image} className="img-fluid" style={{height:"100px"}}  alt={p.name} />
+                            <img src={p.image}  style={{height:"100px", width:'100px'}}  alt={p.name} />
                           </div>
                           <h5 className="card-title">{p.name}</h5>
                           <p className="card-text">{p.price.toFixed(2)} kz</p>
