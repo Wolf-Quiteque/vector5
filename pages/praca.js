@@ -340,7 +340,7 @@ const Praca = () => {
             <div className="container-fluid">
               <button className="btn btn-outline-light" id="menu-toggle" ref={toggleButtonRef}>
                 <i className="fa fa-shopping-cart"></i>
-                <span className="badge" style={{ backgroundColor: '#381552' }}>{cart ?(cart.length):""}</span>
+                <span className="badge" style={{ backgroundColor: '#5c2589' }}>{cart ?(cart.length):""}</span>
               </button>
         <Link href="/">
         <a className="navbar-brand ms-2">      
