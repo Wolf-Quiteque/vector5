@@ -282,13 +282,13 @@ const Praca = () => {
           }
           
           .btn-outline-custom {
-  color: #381552;
-  border-color: #381552;
+  color: #5c2589;
+  border-color: #5c2589;
   background-color: transparent;
 }
 
 .btn-outline-custom:hover {
-  background-color: #381552;
+  background-color: #5c2589;
   color: white;
 }
           
