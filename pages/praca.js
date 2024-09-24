@@ -1,16 +1,15 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { useEffect, useRef,useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const Praca = () => {
   const wrapperRef = useRef(null);
   const toggleButtonRef = useRef(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
- 
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
-
   const [showProducts, setShowProducts] = useState(false);
- 
+  const [cart, setCart] = useState([]);
+
   useEffect(() => {
     const wrapper = wrapperRef.current;
     const toggleButton = toggleButtonRef.current;
@@ -86,28 +85,53 @@ const Praca = () => {
   ];
   
   
-    const products = [
-      { id: 1, name: "Produto 1", price: "50,00 kz", image: "https://picsum.photos/200/200?random=1" },
-      { id: 2, name: "Produto 2", price: "75,00 kz", image: "https://picsum.photos/200/200?random=2" },
-      { id: 3, name: "Produto 3", price: "100,00 kz", image: "https://picsum.photos/200/200?random=3" },
-      { id: 4, name: "Produto 4", price: "125,00 kz", image: "https://picsum.photos/200/200?random=4" },
-      { id: 5, name: "Produto 5", price: "150,00 kz", image: "https://picsum.photos/200/200?random=5" },
-    ];
+  const products = [
+    { id: 1, name: "Motor", price: 50.00, image: "images/correios.png" },
+    { id: 2, name: "Transmissão", price: 75.00, image: "images/baterias.jpg" },
+  { id: 3, name: "Suspensão", price: 100.00, image: "images/pneus.png" },
+    { id: 4, name: "Freios", price: 125.00, image: "images/oleomotor.png" },
+    { id: 5, name: "Pneus", price: 150.00, image: "images/Amortecedores.webp" },
+  ];
   
-    const handleCategoryClick = (category) => {
-      setSelectedCategory(category);
-    };
-  
-    const handleSubcategoryClick = (subcategory) => {
-      setSelectedSubcategory(subcategory);
-      setShowProducts(true);
-    };
-  
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category);
+  };
 
+  const handleSubcategoryClick = (subcategory) => {
+    setSelectedSubcategory(subcategory);
+    setShowProducts(true);
+  };
+
+  const addToCart = (product) => {
+    setCart(prevCart => {
+      const existingItem = prevCart.find(item => item.id === product.id);
+      if (existingItem) {
+        return prevCart.map(item =>
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      }
+      return [...prevCart, { ...product, quantity: 1 }];
+    });
+  };
+
+  const updateQuantity = (id, change) => {
+    setCart(prevCart => prevCart.map(item => {
+      if (item.id === id) {
+        const newQuantity = item.quantity + change;
+        return newQuantity > 0 ? { ...item, quantity: newQuantity } : null;
+      }
+      return item;
+    }).filter(Boolean));
+  };
+
+  const calculateTotal = () => {
+    return cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
+  };
 
   return (
     <>
-      <Head>
+     
+     <Head>
         <title>Praça</title>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
        
@@ -260,90 +284,47 @@ const Praca = () => {
         
       </Head>
       <div className="d-flex" id="wrapper" ref={wrapperRef}>
-    <div className="border-end" id="sidebar-wrapper">
-      <div className="user-profile d-flex align-items-center">
+        <div className="border-end" id="sidebar-wrapper">
+        <div className="user-profile d-flex align-items-center">
         <img src="https://picsum.photos/50/50" alt="User Profile" className="me-3" />
         <div>
           <h6 className="mb-0">Olá, Judith</h6>
           <small>  <a href="#" className="text-light">Configurações <i className="fas fa-cog"></i></a></small>
         </div>
       </div>
-      <div className="list-group list-group-flush p-3">
-        <h4 className="mb-3">Seu Carrinho</h4>
-        <div className="cart-item">
-          <div className="d-flex align-items-center">
-            <img src="https://picsum.photos/60/60" style={{height:"40px"}} alt="Product 1" className="me-3" />
-            <div>
-              <div className="row">
-                <div className="col-6">      <h6 className="mb-0">Produto 1</h6>
-              <p className="mb-0">50,00 kz</p></div>
-              <div className="col-6">
-              <div className="quantity-control mt-2">
-            <button className="btn btn-sm">-</button>
-            <span>1</span>
-            <button className="btn btn-sm">+</button>
-
-          </div>
+          <div className="list-group list-group-flush p-3">
+            <h4 className="mb-3">Seu Carrinho</h4>
+            {cart.map(item => (
+              <div className="cart-item" key={item.id}>
+                <div className="d-flex align-items-center">
+                  <img src={item.image} style={{height:"40px"}} alt={item.name} className="me-3" />
+                  <div>
+                    <div className="row">
+                      <div className="col-6">
+                        <h6 className="mb-0">{item.name}</h6>
+                        <p className="mb-0">{item.price.toFixed(2)} kz</p>
+                      </div>
+                      <div className="col-6">
+                        <div className="quantity-control mt-2">
+                          <button className="btn btn-sm" onClick={() => updateQuantity(item.id, -1)}>-</button>
+                          <span>{item.quantity}</span>
+                          <button className="btn btn-sm" onClick={() => updateQuantity(item.id, 1)}>+</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              </div>
-        
-            </div>
+            ))}
           </div>
-     
+          <div className="p-3">
+            <h5>Total: {calculateTotal()} kz</h5>
+            <button className="btn finalizar-compra w-100 mt-3">Finalizar Compra</button>
+          </div>
         </div>
-   
-        <div className="cart-item">
-          <div className="d-flex align-items-center">
-            <img src="https://picsum.photos/60/60" style={{height:"40px"}} alt="Product 1" className="me-3" />
-            <div>
-              <div className="row">
-                <div className="col-6">      <h6 className="mb-0">Produto 1</h6>
-              <p className="mb-0">50,00 kz</p></div>
-              <div className="col-6">
-              <div className="quantity-control mt-2">
-            <button className="btn btn-sm">-</button>
-            <span>1</span>
-            <button className="btn btn-sm">+</button>
 
-          </div>
-              </div>
-              </div>
-        
-            </div>
-          </div>
-     
-        </div>
-      
-        <div className="cart-item">
-          <div className="d-flex align-items-center">
-            <img src="https://picsum.photos/60/60" style={{height:"40px"}}  alt="Product 1" className="me-3" />
-            <div>
-              <div className="row">
-                <div className="col-6">      <h6 className="mb-0">Produto 1</h6>
-              <p className="mb-0">50,00 kz</p></div>
-              <div className="col-6">
-              <div className="quantity-control mt-2">
-            <button className="btn btn-sm">-</button>
-            <span>1</span>
-            <button className="btn btn-sm">+</button>
-
-          </div>
-              </div>
-              </div>
-        
-            </div>
-          </div>
-     
-        </div>
-      </div>
-      <div className="p-3">
-        <h5>Total: 125,00 kz</h5>
-        <button className="btn finalizar-compra w-100 mt-3">Finalizar Compra</button>
-      </div>
-    </div>
-
-    <div id="page-content-wrapper">
-          <nav className="navbar navbar-expand-lg sticky-top">
+        <div id="page-content-wrapper">
+        <nav className="navbar navbar-expand-lg sticky-top">
             <div className="container-fluid">
               <button className="btn btn-outline-light" id="menu-toggle" ref={toggleButtonRef}>
                 <i className="fa fa-shopping-cart"></i>
@@ -368,24 +349,58 @@ const Praca = () => {
         </div>
       </nav>
 
-      <div className="container mt-4">
-        <div class="row g-4">
-
-            {categories && categories.map((category)=>(
+          <div className="container mt-4">
+            <div className="row g-4">
+              
+            {!showProducts && categories && categories.map((category)=>(
               <div class="col col-md-3 col-sm-6 col-xs-12">
                 <div class="card h-100" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onClick={()=>{handleCategoryClick(category) }}>
                     <div class="card-body">
-                        <div class="card-icon">  <img src={category.icon} className="img-fluid" /> </div>
+                        <div class="card-icon">  <img src={category.icon} className="img-fluid" style={{maxHeight:"80px"}} /> </div>
                         <h5 class="card-title">{category.name}</h5>
                     </div>
                 </div>
             </div>
             ))}
-            
-        </div>
-      </div>
-    </div>
 
+              {showProducts && (
+                <>
+                  <div className='col-md-12'>
+                    <button className='btn btn-dark' onClick={() => { setShowProducts(false) }}> <i className='fa fa-arrow-left'></i> Voltar   </button>
+                    <div className='text-center'>
+                    <h3>{selectedCategory.name}</h3>
+                    </div>
+                  </div>
+                  {products.map((p) => (
+                    <div className="col col-md-3 col-sm-6 col-xs-12" key={p.id}>
+                      <div className="card h-100">
+                      <div className="card-header d-flex justify-content-end" style={{backgroundColor: "transparent", border: "none"}}>
+  <button className='btn btn-outline-danger btn-sm'>
+    <i className="fas fa-heart"></i>
+  </button>
+</div>
+                        <div className="card-body">
+                          <div className="card-icon">
+                            <img src={p.image} className="img-fluid" style={{height:"100px"}}  alt={p.name} />
+                          </div>
+                          <h5 className="card-title">{p.name}</h5>
+                          <p className="card-text">{p.price.toFixed(2)} kz</p>
+                          <button className="btn btn-outline-dark" onClick={() => addToCart(p)} style={{marginRight:"10px"}}> <i className='fa fa-shopping-cart'></i>
+                          </button>
+                          <button className="btn btn-outline-dark"  style={{marginRight:"10px"}}> <i className='fa fa-eye'></i>
+                          </button>
+                       
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+
+        
     <div class="modal" tabindex="-1" id="staticBackdrop">
     <div class="modal-dialog modal-dialog-centered modal-lg">
 
@@ -412,12 +427,9 @@ const Praca = () => {
     </div>
   </div>
 </div>
-  </div>
-
+      </div>
     </>
   );
 };
 
 export default Praca;
-
-
