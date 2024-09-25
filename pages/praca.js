@@ -44,7 +44,7 @@ const Praca = () => {
     },
     { 
       name: "Embriagem / Peças", 
-      icon: "images/embriagem.png", 
+      icon: "images/.png", 
       subcategories: ["Disco de Embreagem", "Placa de Pressão", "Rolamento de Embreagem"] 
     },
     { 
