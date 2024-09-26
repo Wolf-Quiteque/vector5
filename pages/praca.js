@@ -318,26 +318,33 @@ const Envio  = async ()=>{
 
   
 
-    const data = new FormData();
-    const fileName = Date.now() + file.name;
-    data.append("file", file);
-    data.append("name", fileName);
-    data.append("upload_preset", "utjuauqd");
-  
-    const response = await fetch(
-      `https://api.cloudinary.com/v1_1/dbagu0ju8/image/upload`,
-      {
-        method: 'POST',
-        body: data,
-      }
-    );
-  
-  
-    const res = await response.json();
-    console.log(response)
+  const data = new FormData();
 
-    console.log(res)
-    pedido.comprovativo = res.secure_url
+  // Generate the file name with the current timestamp and append it to the FormData
+  const fileName = Date.now() + file.name;
+  data.append("file", file); // Append the file itself
+  data.append("public_id", fileName); // Append the custom file name
+  data.append("upload_preset", "utjuauqd"); // Append your unsigned upload preset
+  
+  try {
+    // Send the request to Cloudinary
+    const response = await fetch(`https://api.cloudinary.com/v1_1/dbagu0ju8/image/upload`, {
+      method: 'POST',
+      body: data, // Pass the FormData with the file and other data
+    });
+  
+    // Wait for the response and parse it as JSON
+    const res = await response.json();
+  
+    // Log the Cloudinary response to check the URL and other details
+    console.log(res);
+  
+    // Assign the Cloudinary URL to `pedido.comprovativo`
+    pedido.comprovativo = res.secure_url;
+  } catch (error) {
+    // Handle any errors that occur during the upload
+    console.error('Upload failed:', error);
+  }
   
   
   try {
@@ -490,7 +497,7 @@ const Envio  = async ()=>{
       const response = await axios.get(`/api/Pecas/all?page=${currentPage}&limit=${itemsPerPage}&search=${selectedCategory.name}`);
     
       setproducts(response.data.produtos)
-      setTotalPages(Math.ceil(response.data.total / itemsPerPage));
+      // setTotalPages(Math.ceil(response.data.total / itemsPerPage));
     } catch (error) {
       console.error('Erro ao buscar produtos:', error);
    
@@ -528,6 +535,12 @@ const Envio  = async ()=>{
     setNovoComentario({ nome: '', texto: '', foto: null });
   };
 
+
+  const triggerMenuClick = () => {
+    if (toggleButtonRef.current) {
+      toggleButtonRef.current.click(); // Triggers the button click
+    }
+  };
   return (
     <>
      
@@ -753,12 +766,31 @@ const Envio  = async ()=>{
           </div>
           <div className="p-3">
             
-          { cart.length > 0 && (<> <h5>Total: {calculateTotal()} kz</h5> <button className="btn finalizar-compra w-100 mt-3" onClick={()=>{
-              if(setupdone){
-                setStep(1)
-                setSetupdone(false)
-              }
-            }} data-bs-toggle="modal" data-bs-target="#pagamentos">Finalizar Compra</button></>)}
+          { cart.length > 0 && (<> <h5>Total: {calculateTotal()} kz</h5> <button
+  className="btn finalizar-compra w-100 mt-3"
+  onClick={() => {
+    // Trigger the 'menu-toggle' click first
+    triggerMenuClick();
+
+    // Proceed with your logic
+    if (setupdone) {
+      setStep(1);
+      setSetupdone(false);
+    }
+
+    // Wait for 1500 milliseconds (1.5 seconds) before opening the modal
+    setTimeout(() => {
+      // Manually trigger the Bootstrap modal
+      const modal = new bootstrap.Modal(document.getElementById('pagamentos'));
+      modal.show();
+    }, 300);
+  }}
+>
+  Finalizar Compra
+</button>
+
+
+</>)}
           </div>
         </div>
 
@@ -985,7 +1017,7 @@ const Envio  = async ()=>{
 
 
       </div>
-<div class="modal" tabindex="-1" id="pagamentos">
+<div class="modal" tabindex="-1" id="pagamentos"  style={{zIndex:'9999'}}>
     <div class="modal-dialog  modal-lg">
 
     <div class="modal-content">
