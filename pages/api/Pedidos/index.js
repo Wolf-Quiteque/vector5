@@ -11,22 +11,10 @@ export default async function handler(req, res) {
       const pedidos = await db.collection('pedidos').find({}).toArray();
       res.status(200).json(pedidos);
     } else if (req.method === 'POST') {
-      const { clienteId, items, total, status } = req.body;
+  
 
-      if (!clienteId || !items || !total || !status) {
-        return res.status(400).json({ error: 'Falta campo' });
-      }
 
-      const newPedido = {
-        clienteId: new ObjectId(clienteId),
-        items,  // Expected to be an array of items in the order
-        total,
-        status,
-        criado_em: new Date(),
-        atualizado_em: new Date(),
-      };
-
-      const result = await db.collection('pedidos').insertOne(newPedido);
+      const result = await db.collection('pedidos').insertOne(req.body);
       res.status(201).json({ message: 'Pedido feito com sucesso', id: result.insertedId });
     } else {
       res.setHeader('Allow', ['GET', 'POST']);

@@ -14,6 +14,8 @@ const Praca = () => {
   const [products, setproducts] = useState(null);
   const [file, setFile] = useState("");
   const [setupdone, setSetupdone] = useState(false);
+  const [loading, setloading] = useState(false);
+
 
 
 
@@ -133,7 +135,6 @@ const handleUserDataChange = (e) => {
 
 const handleFileChange = (e) => {
   setComprovativo(e.target.files[0]);
-  console.log(e.target.files[0])
 };
 
 const copyIBAN = () => {
@@ -232,7 +233,17 @@ const renderStep = () => {
         <div>
           <h5>Adicionar Comprovativo</h5>
      
-<div className='text-center'>
+          {loading ?(<>
+          
+              <div className='text-center mt-5'>
+              <div className="spinner-grow" role="status" style={{fontSize:"100px",color:"#5c2589"}}>
+      <span className="visually-hidden">Loading...</span>
+    </div>
+              </div>
+
+          </>):(
+            <>
+            <div className='text-center'>
     
     {comprovativo ? (
       <>
@@ -268,9 +279,11 @@ const renderStep = () => {
        </div>
       )}
                  <button className="btn btn-outline-dark mt-3" onClick={() => setStep(3)}> <i className='fa fa-arrow-left'></i> Voltar</button>
-{comprovativo &&(  <button className="btn btn-outline-dark mt-3 text-light float-end" style={{backgroundColor:"#5c2589"}} onClick={() => {setStep(5); generatePDF() }}>Finalizar</button>
+{comprovativo &&(  <button className="btn btn-outline-dark mt-3 text-light float-end" onClick={()=>{Envio()}} style={{backgroundColor:"#5c2589"}} >Finalizar</button>
         )}
         </div>
+            </>
+          )}
         </div>
 
       );
@@ -289,10 +302,69 @@ const renderStep = () => {
 };
 
 
-//----------------------------------------
+//CARREGAR COMPROFAVTIO----------------------------
+
+const Envio  = async ()=>{
+  setloading(true)
+  var pedido = {
+    id:receiptNumber,
+    nome:userData.nome,
+    telefone:userData.phone,
+    endereco:userData.address,
+    carrinha:cart,
+    estadoPagamento:false,
+    estadoEnvio:false,
+  }
+
+  
+
+    const data = new FormData();
+    const fileName = Date.now() + file.name;
+    data.append("file", file);
+    data.append("name", fileName);
+    data.append("upload_preset", "utjuauqd");
+  
+    const response = await fetch(
+      `https://api.cloudinary.com/v1_1/dbagu0ju8/image/upload`,
+      {
+        method: 'POST',
+        body: data,
+      }
+    );
+  
+  
+    const res = await response.json();
+    console.log(response)
+
+    console.log(res)
+    pedido.comprovativo = res.secure_url
+  
+  
+  try {
+    const res = await fetch(`/api/Pedidos/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(pedido),
+    });
+  
+ 
+      setloading(false)
+      setStep(5); 
+      generatePDF() 
+    
+  } catch (error) {
+    console.log(error)
+  }
+      
+      
+      setloading(false)
+}
 
 
 
+//------------------------------------
   useEffect(() => {
     const wrapper = wrapperRef.current;
     const toggleButton = toggleButtonRef.current;
@@ -912,6 +984,7 @@ const renderStep = () => {
 
 
 
+      </div>
 <div class="modal" tabindex="-1" id="pagamentos">
     <div class="modal-dialog  modal-lg">
 
@@ -927,7 +1000,6 @@ const renderStep = () => {
     </div>
   </div>
 </div>
-      </div>
     </>
   );
 };
