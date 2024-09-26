@@ -44,6 +44,8 @@ const generatePDF = () => {
   const pageWidth = doc.internal.pageSize.width;
   const pageHeight = doc.internal.pageSize.height;
 
+  const pw = pageWidth - 50
+
   // Helper function to add text
   const addText = (text, x, y, size = 10, style = 'normal') => {
     doc.setFontSize(size);
@@ -74,7 +76,7 @@ const generatePDF = () => {
   addText(userData.address, 20, 102);
 
   // Table for order items
-  const tableColumn = ["Item", "Quantity", "Unit Price", "Total"];
+  const tableColumn = ["Iten", "Qty", "Preço U.", "Total"];
   const tableRows = cart.map(item => [
     item.nome,
     item.quantity,
@@ -106,7 +108,7 @@ const generatePDF = () => {
   // Footer
   doc.setDrawColor(92, 37, 137);
   doc.line(20, pageHeight - 30, pageWidth - 20, pageHeight - 30);
-  addText('Obrigado pela preferencia', pageWidth / 2, pageHeight - 20, 10, 'normal', 'center');
+  addText('Obrigado pela preferencia', pw / 2, pageHeight - 20, 10, 'normal', 'center');
 
   // Save the PDF
   doc.save(`invoice_${receiptNumber}.pdf`);
@@ -160,7 +162,7 @@ const renderStep = () => {
             Total: {cart.reduce((total, item) => total + item.preco * item.quantity, 0)+' kz'} 
           </div>
           <button className="btn btn-outline-dark mt-3 text-light" style={{backgroundColor:"#5c2589"}}  onClick={() => setStep(2)}>Confirmar <i className='fa fa-arrow-right'></i> </button>
-          <button className="btn btn-dark mt-3 float-end" onClick={() => setStep(2)}>Cancelar</button>
+          <button className="btn btn-dark mt-3 float-end" data-bs-dismiss="modal">Cancelar</button>
         </div>
       );
     case 2:
@@ -178,7 +180,7 @@ const renderStep = () => {
           <input
             type="tel"
             className="form-control mb-2"
-            placeholder="Número de Telefone"
+            placeholder="Número de Telefone / Whatsapp"
             name="phone"
             value={userData.phone}
             onChange={handleUserDataChange}
