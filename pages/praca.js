@@ -16,6 +16,149 @@ const Praca = () => {
   const [currentPage, setCurrentPage] = useState(1);
 const itemsPerPage = 10;
 
+//CONFIRMAÇÃO DE COMPRA--------------------------------------------
+const [step, setStep] = useState(1);
+const [userData, setUserData] = useState({ name: '', phone: '', address: '' });
+const [selectedBank, setSelectedBank] = useState('');
+const [comprovativo, setComprovativo] = useState(null);
+
+
+const bancos = [
+  "Banco Angolano de Investimentos (BAI)",
+  "Banco de Fomento Angola (BFA)",
+  "Banco BIC",
+  "Banco Millennium Atlântico",
+  "Banco de Poupança e Crédito (BPC)",
+  "Banco Sol",
+  "Banco Caixa Geral Angola",
+  "Standard Bank Angola",
+  "Banco Keve",
+  "Banco Comercial do Huambo"
+];
+
+const handleUserDataChange = (e) => {
+  setUserData({ ...userData, [e.target.name]: e.target.value });
+};
+
+const handleFileChange = (e) => {
+  setComprovativo(e.target.files[0]);
+};
+
+const copyIBAN = () => {
+  // Simulação de IBAN
+  const iban = "AO06000600000100037131174";
+  navigator.clipboard.writeText(iban);
+  alert("IBAN copiado para a área de transferência!");
+};
+
+
+
+const renderStep = () => {
+  switch(step) {
+    case 1:
+      return (
+        <div>
+          <h5>Confirmar Pedido</h5>
+          {cart.map((item) => (
+            <div key={item._id} className="mb-2">
+              <span>{item.nome} / <strong> {item.quantity} </strong> </span>
+              <span className="float-end">{item.preco * item.quantity+' kz'}</span>
+            </div>
+          ))}
+          <hr />
+          <div className="fw-bold">
+            Total: {cart.reduce((total, item) => total + item.preco * item.quantity, 0)+' kz'} 
+          </div>
+          <button className="btn btn-outline-dark mt-3 text-light" style={{backgroundColor:"#5c2589"}}  onClick={() => setStep(2)}>Confirmar <i className='fa fa-arrow-right'></i> </button>
+          <button className="btn btn-dark mt-3 float-end" onClick={() => setStep(2)}>Cancelar</button>
+        </div>
+      );
+    case 2:
+      return (
+        <div>
+          <h5>Dados do Usuário</h5>
+          <input
+            type="text"
+            className="form-control mb-2"
+            placeholder="Nome"
+            name="name"
+            value={userData.name}
+            onChange={handleUserDataChange}
+          />
+          <input
+            type="tel"
+            className="form-control mb-2"
+            placeholder="Número de Telefone"
+            name="phone"
+            value={userData.phone}
+            onChange={handleUserDataChange}
+          />
+          <textarea
+            className="form-control mb-2"
+            placeholder="Endereço"
+            name="address"
+            value={userData.address}
+            onChange={handleUserDataChange}
+          ></textarea>
+         
+          <button className="btn btn-outline-dark mt-3" onClick={() => setStep(1)}> <i className='fa fa-arrow-left'></i> Voltar</button>
+          <button className="btn btn-outline-dark mt-3 text-light float-end" style={{backgroundColor:"#5c2589"}}  onClick={() => setStep(3)}>Próximo <i className='fa fa-arrow-right'></i> </button>
+
+        </div>
+      );
+    case 3:
+      return (
+        <div>
+          <h5>Selecione o Banco</h5>
+          <select
+            className="form-select mb-2"
+            value={selectedBank}
+            onChange={(e) => setSelectedBank(e.target.value)}
+          >
+            <option value="">Selecione um banco</option>
+            {bancos.map((banco, index) => (
+              <option key={index} value={banco}>{banco}</option>
+            ))}
+          </select>
+          {selectedBank && (
+            <div>
+              <p>IBAN: AO06000600000100037131174</p>
+              <button className="btn btn-secondary btn-sm mb-2" onClick={copyIBAN}><i className='fa fa-copy'></i> {" "}Copiar IBAN </button>
+            </div>
+          )}
+                 <button className="btn btn-outline-dark mt-3" onClick={() => setStep(2)}> <i className='fa fa-arrow-left'></i> Voltar</button>
+          <button className="btn btn-outline-dark mt-3 text-light float-end" style={{backgroundColor:"#5c2589"}}  onClick={() => setStep(4)}>Próximo <i className='fa fa-arrow-right'></i> </button>
+
+        </div>
+      );
+    case 4:
+      return (
+        <div>
+          <h5>Adicionar Comprovativo</h5>
+          <input
+            type="file"
+            className="form-control mb-2"
+            onChange={handleFileChange}
+          />
+          <button className="btn btn-primary" onClick={() => setStep(5)}>Finalizar</button>
+        </div>
+      );
+    case 5:
+      return (
+        <div>
+          <h5>Pedido Concluído</h5>
+          <p>Obrigado pela sua compra!</p>
+          <button className="btn btn-secondary" onClick={onClose}>Fechar</button>
+        </div>
+      );
+    default:
+      return null;
+  }
+};
+
+
+//----------------------------------------
+
 
 
   useEffect(() => {
@@ -120,6 +263,7 @@ const itemsPerPage = 10;
       }
       return [...prevCart, { ...product, quantity: 1 }];
     });
+    console.log(cart)
   };
 
   const updateQuantity = (id, change) => {
@@ -361,6 +505,10 @@ const itemsPerPage = 10;
           background-color: #f8f9fa;
           border-left: 4px solid #381552;
         }
+
+
+
+        
           
         `}</style>
         
@@ -401,7 +549,7 @@ const itemsPerPage = 10;
           </div>
           <div className="p-3">
             <h5>Total: {calculateTotal()} kz</h5>
-            <button className="btn finalizar-compra w-100 mt-3">Finalizar Compra</button>
+            <button className="btn finalizar-compra w-100 mt-3" data-bs-toggle="modal" data-bs-target="#pagamentos">Finalizar Compra</button>
           </div>
         </div>
 
@@ -619,6 +767,25 @@ const itemsPerPage = 10;
   </button>
 ))}
 
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="modal" tabindex="-1" id="pagamentos">
+    <div class="modal-dialog  modal-lg">
+
+    <div class="modal-content">
+      <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">FECHAR COMPRA</h1>
+
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      {renderStep()}
       </div>
     </div>
   </div>
