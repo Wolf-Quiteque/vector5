@@ -22,6 +22,16 @@ const Praca = () => {
   const [loading, setloading] = useState(false);
 
 
+  const [inputValue, setInputValue] = useState('');
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+    e.preventDefault();
+
+      // Redirect to /praca with the query parameter
+      setSelectedCategory({name:inputValue})
+      fetchpecas(inputValue)
+    }
+  };
 
 
   const [productDetail, setProductDetail] = useState(null);
@@ -828,8 +838,9 @@ const Envio  = async ()=>{
             
             </ul>
             <form className="d-flex">
-              <input className="form-control me-2" type="search" placeholder="Buscar produtos" aria-label="Search" />
-              <button className="btn btn-outline-light" type="submit"> <i className="fa fa-search"></i> </button>
+              <input className="form-control me-2" type="search"  onChange={(e) => setInputValue(e.target.value)}
+      onKeyPress={handleKeyPress} placeholder="Buscar produtos" aria-label="Search" />
+               <i className="fa fa-search fa-x3 text-white mt-2"></i> 
             </form>
           </div>
         </div>
