@@ -2,6 +2,8 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios'
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 const Praca = () => {
   const wrapperRef = useRef(null);
   const toggleButtonRef = useRef(null);
@@ -10,6 +12,10 @@ const Praca = () => {
   const [showProducts, setShowProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const [products, setproducts] = useState(null);
+  const [file, setFile] = useState("");
+  const [setupdone, setSetupdone] = useState(false);
+
+
 
   const [productDetail, setProductDetail] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -21,7 +27,90 @@ const [step, setStep] = useState(1);
 const [userData, setUserData] = useState({ name: '', phone: '', address: '' });
 const [selectedBank, setSelectedBank] = useState('');
 const [comprovativo, setComprovativo] = useState(null);
+const [receiptNumber, setReceiptNumber] = useState('');
 
+
+function Getrecptnumber (){
+  setReceiptNumber(`REC${Math.floor(Math.random() * 1000000).toString().padStart(6, '0')}`);
+}
+
+const generatePDF = () => {
+  setCart([])
+  setSetupdone(true)
+  setUserData({ name: '', phone: '', address: '' })
+  setFile(null)
+  setComprovativo(null)
+  const doc = new jsPDF();
+  const pageWidth = doc.internal.pageSize.width;
+  const pageHeight = doc.internal.pageSize.height;
+
+  // Helper function to add text
+  const addText = (text, x, y, size = 10, style = 'normal') => {
+    doc.setFontSize(size);
+    doc.setFont('helvetica', style);
+    doc.text(text, x, y);
+  };
+
+
+
+  // Header
+  addText('Vetor5', 20, 30, 24, 'bold');
+  addText('Proforma Invoice', pageWidth - 60, 30, 16, 'bold', 'right');
+
+  // Company details
+  addText('Vetor5', 20, 45);
+  addText('Talatana, rua 39, predio 4', 20, 52);
+  addText('Email: geral@vetor5.co.ao', 20, 59);
+  addText('Telefone: +244963852741', 20, 66);
+
+  // Invoice details
+  addText(`Invoice Number: ${receiptNumber}`, pageWidth - 60, 45, 10, 'normal', 'right');
+  addText(`Date: ${new Date().toLocaleDateString()}`, pageWidth - 60, 52, 10, 'normal', 'right');
+
+  // Client details
+  addText('Factura Para:', 20, 80, 12, 'bold');
+  addText(userData.name, 20, 88);
+  addText(userData.phone, 20, 95);
+  addText(userData.address, 20, 102);
+
+  // Table for order items
+  const tableColumn = ["Item", "Quantity", "Unit Price", "Total"];
+  const tableRows = cart.map(item => [
+    item.nome,
+    item.quantity,
+    `${item.preco+' kz'}`,
+    `${(item.preco * item.quantity)+' kz'}`
+  ]);
+
+  doc.autoTable({
+    startY: 120,
+    head: [tableColumn],
+    body: tableRows,
+    headStyles: { fillColor: [92, 37, 137], textColor: 255 },
+    alternateRowStyles: { fillColor: [241, 241, 241] },
+    tableLineColor: [189, 195, 199],
+    tableLineWidth: 0.25,
+  });
+
+  // Calculate totals
+  const subtotal = cart.reduce((sum, item) => sum +Number( item.preco) * Number(item.quantity), 0);
+  const tax = subtotal * 0.14; // Assuming 14% tax
+  const total = subtotal + tax;
+
+  // Add totals
+  let yPos = doc.lastAutoTable.finalY + 20;
+  addText(`Subtotal: ${subtotal.toFixed(2)+ ' kz'}`, pageWidth - 60, yPos, 10, 'normal', 'right');
+  addText(`Taxa (14%): ${tax.toFixed(2)+ ' kz'}`, pageWidth - 60, yPos + 7, 10, 'normal', 'right');
+  addText(`Total: ${total.toFixed(2)+ ' kz'}`, pageWidth - 60, yPos + 14, 12, 'bold', 'right');
+
+  // Footer
+  doc.setDrawColor(92, 37, 137);
+  doc.line(20, pageHeight - 30, pageWidth - 20, pageHeight - 30);
+  addText('Obrigado pela preferencia', pageWidth / 2, pageHeight - 20, 10, 'normal', 'center');
+
+  // Save the PDF
+  doc.save(`invoice_${receiptNumber}.pdf`);
+};
 
 const bancos = [
   "Banco Angolano de Investimentos (BAI)",
@@ -42,6 +131,7 @@ const handleUserDataChange = (e) => {
 
 const handleFileChange = (e) => {
   setComprovativo(e.target.files[0]);
+  console.log(e.target.files[0])
 };
 
 const copyIBAN = () => {
@@ -102,7 +192,8 @@ const renderStep = () => {
           ></textarea>
          
           <button className="btn btn-outline-dark mt-3" onClick={() => setStep(1)}> <i className='fa fa-arrow-left'></i> Voltar</button>
-          <button className="btn btn-outline-dark mt-3 text-light float-end" style={{backgroundColor:"#5c2589"}}  onClick={() => setStep(3)}>Próximo <i className='fa fa-arrow-right'></i> </button>
+          {userData && userData.name && userData.phone && userData.address && (          <button className="btn btn-outline-dark mt-3 text-light float-end" style={{backgroundColor:"#5c2589"}}  onClick={() => setStep(3)}>Próximo <i className='fa fa-arrow-right'></i> </button>
+)}
 
         </div>
       );
@@ -127,28 +218,67 @@ const renderStep = () => {
             </div>
           )}
                  <button className="btn btn-outline-dark mt-3" onClick={() => setStep(2)}> <i className='fa fa-arrow-left'></i> Voltar</button>
-          <button className="btn btn-outline-dark mt-3 text-light float-end" style={{backgroundColor:"#5c2589"}}  onClick={() => setStep(4)}>Próximo <i className='fa fa-arrow-right'></i> </button>
+            {selectedBank && (
+                <button className="btn btn-outline-dark mt-3 text-light float-end" style={{backgroundColor:"#5c2589"}}  onClick={() => {setStep(4); Getrecptnumber()}}>Próximo <i className='fa fa-arrow-right'></i> </button>
 
+            )}
+        
         </div>
       );
     case 4:
       return (
         <div>
           <h5>Adicionar Comprovativo</h5>
-          <input
-            type="file"
-            className="form-control mb-2"
-            onChange={handleFileChange}
-          />
-          <button className="btn btn-primary" onClick={() => setStep(5)}>Finalizar</button>
+     
+<div className='text-center'>
+    
+    {comprovativo ? (
+      <>
+        <a className="btn btn-info btn-sm btn-danger" onClick={() => { setFile(""); setComprovativo(null) }}>
+          <i className="fa fa-trash"></i>
+        </a>
+      </>
+    ) : ""}
+    <label htmlFor="profilpic">
+      {!comprovativo ? (
+        <>    
+        <a className="btn   btn-outline-danger" >
+          <i className="fa fa-file-pdf" style={{fontSize:"80px"}}></i>{" "}
+       
+        </a><p>Carregar</p></>
+      ) : ""}
+      <input
+        type="file"
+        id="profilpic"
+        accept=".png, .jpeg, .jpg,.pdf,"
+        onChange={(e) => {
+          handleFileChange(e);
+        }}
+        style={{ display: "none" }}
+      />
+    </label>
+    </div>
+    <div>
+      {comprovativo && (
+        <div className='text-center mt-3'>
+       <i className='fa fa-file-pdf' style={{fontSize:"80px"}} ></i>
+       <p> {comprovativo.name} </p>
+       </div>
+      )}
+                 <button className="btn btn-outline-dark mt-3" onClick={() => setStep(3)}> <i className='fa fa-arrow-left'></i> Voltar</button>
+{comprovativo &&(  <button className="btn btn-outline-dark mt-3 text-light float-end" style={{backgroundColor:"#5c2589"}} onClick={() => {setStep(5); generatePDF() }}>Finalizar</button>
+        )}
         </div>
+        </div>
+
       );
     case 5:
       return (
-        <div>
+        <div className="text-center">
           <h5>Pedido Concluído</h5>
           <p>Obrigado pela sua compra!</p>
-          <button className="btn btn-secondary" onClick={onClose}>Fechar</button>
+          <p className='mt-3'><i className='fa fa-circle-check' style={{fontSize:"86px", color:"#5c2589"}}></i></p>
+          <button className="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
         </div>
       );
     default:
@@ -548,8 +678,13 @@ const renderStep = () => {
             ))}
           </div>
           <div className="p-3">
-            <h5>Total: {calculateTotal()} kz</h5>
-            <button className="btn finalizar-compra w-100 mt-3" data-bs-toggle="modal" data-bs-target="#pagamentos">Finalizar Compra</button>
+            
+          { cart.length > 0 && (<> <h5>Total: {calculateTotal()} kz</h5> <button className="btn finalizar-compra w-100 mt-3" onClick={()=>{
+              if(setupdone){
+                setStep(1)
+                setSetupdone(false)
+              }
+            }} data-bs-toggle="modal" data-bs-target="#pagamentos">Finalizar Compra</button></>)}
           </div>
         </div>
 
