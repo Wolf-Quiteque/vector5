@@ -4,7 +4,12 @@ import { useEffect, useRef, useState } from 'react';
 import axios from 'axios'
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import { useRouter } from 'next/router';
+
+
+
 const Praca = () => {
+  const router = useRouter();
   const wrapperRef = useRef(null);
   const toggleButtonRef = useRef(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -373,6 +378,14 @@ const Envio  = async ()=>{
 
 //------------------------------------
   useEffect(() => {
+
+    
+
+    if(router.query){
+      const { nome } = router.query;
+      setSelectedCategory({name:nome})
+      fetchpecas(nome)
+    }
     const wrapper = wrapperRef.current;
     const toggleButton = toggleButtonRef.current;
 
@@ -492,9 +505,10 @@ const Envio  = async ()=>{
   };
 
 
-  const fetchpecas = async () => {
+  const fetchpecas = async (data) => {
+
     try {
-      const response = await axios.get(`/api/Pecas/all?page=${currentPage}&limit=${itemsPerPage}&search=${selectedCategory.name}`);
+      const response = await axios.get(`/api/Pecas/all?page=${currentPage}&limit=${itemsPerPage}&search=${data?data:selectedCategory.name}`);
     
       setproducts(response.data.produtos)
       // setTotalPages(Math.ceil(response.data.total / itemsPerPage));
@@ -876,6 +890,13 @@ const Envio  = async ()=>{
                   ))}</div>
                 </>
               )}
+              
+
+              {!productDetail && products && products.length < 1 && (
+                <div className='text-center mt-5'> 
+                <p>SEM RESULTADOS</p>
+                </div>
+              )}
 
 
 
@@ -985,8 +1006,7 @@ const Envio  = async ()=>{
           </div>
         </div>
 
-        
-    <div class="modal" tabindex="-1" id="staticBackdrop">
+        {selectedCategory && selectedCategory.subcategories && (    <div class="modal" tabindex="-1" id="staticBackdrop">
     <div class="modal-dialog modal-dialog-centered modal-lg">
 
     <div class="modal-content">
@@ -1011,7 +1031,8 @@ const Envio  = async ()=>{
       </div>
     </div>
   </div>
-</div>
+</div>)}
+
 
 
 
