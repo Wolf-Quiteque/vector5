@@ -10,11 +10,10 @@ export default async function handler(req, res) {
       const { email, password } = req.body;
 
       const user = await db.collection('usuario').findOne({ email });
-      console.log(user);
 
       if (user && await bcrypt.compare(password, user.password)) {
         const { password, ...userWithoutPassword } = user;
-        res.status(200).json({ success: true, user: userWithoutPassword });
+        res.status(200).json({ success: true, user: user });
       } else {
         res.status(401).json({ success: false, message: 'Invalid credentials' });
       }

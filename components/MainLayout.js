@@ -53,11 +53,7 @@ const CheckSessionFornecedor = async () => {
           <a className="nav-link" href="#">Todas Marcas</a>
         </li>
       </ul>
-      <ul className="navbar-nav">
-        <li className="nav-item" style={{backgroundColor:'#6c3494'}}>
-          <a className="btn" style={{color:"white"}} href="#">Entrar/Registrar</a>
-        </li>
-      </ul>
+   
     </div>
   </div>
 </nav>

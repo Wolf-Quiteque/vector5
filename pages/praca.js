@@ -20,6 +20,7 @@ const Praca = () => {
   const [lgoincadastrar, setlgoincadastrar] = useState(true);
   const [cadastrosucces, setcadastrosucces] = useState(false);
   const [session, setsession] = useState(false);
+  const [loggedin, setloggedin] = useState(false);
 
 
   
@@ -438,7 +439,6 @@ const Envio  = async ()=>{
     if(data.success){
       localStorage.setItem('session', JSON.stringify(userData));
       setsession(userData)
-      setUserData({ name: '', phone: '', address: '' })
       setloading(false)
     }
       setcadastrosucces(true)
@@ -463,16 +463,15 @@ const Envio  = async ()=>{
  
    const data = await res.json()
    if(data.success){
-     localStorage.setItem('session', JSON.stringify(userData));
-     setsession(userData)
-     setUserData({ name: '', phone: '', address: '' })
+    console.log(data.user)
+     localStorage.setItem('session', JSON.stringify(data.user));
+     setsession(data.user)
+     setUserData(data.user)
      setloading(false)
+      setloggedin(true)
    }
 
-   const modal = new bootstrap.Modal(document.getElementById('iniciarsessao'));
 
-// To close the modal
-modal.hide();
    
  } catch (error) {
    console.log(error)
@@ -1158,7 +1157,15 @@ modal.hide();
             <div className="spinner-grow" role="status" style={{fontSize:"100px",color:"#5c2589"}}>
     <span className="visually-hidden">Loading...</span>
   </div>
-            </div>):(<>
+            </div>):(
+            
+            loggedin ? (<> <div className="text-center">
+              <h5>Sessão Iniciado com sucesso</h5>
+              <p>Seja bem-vindo de Volta {userData && userData.name}! </p>
+
+              <p className='mt-3'><i className='fa fa-circle-check' style={{fontSize:"86px", color:"#5c2589"}}></i></p>
+              <button className="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div></>) :(<>
         
         <div className="row w-100">
         <div className='col-md-2'> </div>
@@ -1193,6 +1200,10 @@ modal.hide();
 
      </div>
      </>)
+            
+            
+            
+            )
           
           ):(
             loading ? (<>   <div className='text-center mt-5'>
@@ -1202,7 +1213,8 @@ modal.hide();
               </div></>):(
              cadastrosucces ? (<> <div className="text-center">
               <h5>Cadastrado com sucesso</h5>
-              <p>Seja bem-vindo {userData && userData.name}!</p>
+              <p>Seja bem-vindo {userData && userData.name}! </p>
+
               <p className='mt-3'><i className='fa fa-circle-check' style={{fontSize:"86px", color:"#5c2589"}}></i></p>
               <button className="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
             </div></>):(
