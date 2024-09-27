@@ -440,7 +440,7 @@ const Envio  = async ()=>{
       setUserData({ name: '', phone: '', address: '' })
       setloading(false)
     }
-    setloading(false)
+      setloading(false)
     
   } catch (error) {
     console.log(error)
@@ -1155,7 +1155,7 @@ modal.hide();
         <div className="row w-100">
         <div className='col-md-2'> </div>
      
-       <div className="col-8 d-flex align-items-center justify-content-center">
+       <div className="col-md-8 col-sm-12 d-flex align-items-center justify-content-center">
          <div className="w-100 p-5">
          <div className='text-center'>
                  <img className='img-fluid' src="/images/logovector.png"  />
@@ -1200,7 +1200,7 @@ modal.hide();
             </div></>):(
               <div className="row w-100">
               <div className='col-md-2'> </div>
-             <div className="col-md-8 d-flex align-items-center justify-content-center">
+             <div className="col-md-8 col-sm-12 d-flex align-items-center justify-content-center">
                <div className="w-100 p-5">
                <div className='text-center'>
                        <img className='img-fluid' src="/images/logovector.png"  />
