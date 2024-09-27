@@ -17,6 +17,12 @@ const Praca = () => {
   const [showProducts, setShowProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const [products, setproducts] = useState(null);
+  const [lgoincadastrar, setlgoincadastrar] = useState(true);
+  const [cadastrosucces, setcadastrosucces] = useState(false);
+  const [session, setsession] = useState(false);
+
+
+  
   const [file, setFile] = useState("");
   const [setupdone, setSetupdone] = useState(false);
   const [loading, setloading] = useState(false);
@@ -41,7 +47,8 @@ const itemsPerPage = 10;
 
 //CONFIRMAÇÃO DE COMPRA--------------------------------------------
 const [step, setStep] = useState(1);
-const [userData, setUserData] = useState({ name: '', phone: '', address: '' });
+const [userData, setUserData] = useState({ name: '', phone: '', address: '',email:'' });
+
 const [selectedBank, setSelectedBank] = useState('');
 const [comprovativo, setComprovativo] = useState(null);
 const [receiptNumber, setReceiptNumber] = useState('');
@@ -389,7 +396,10 @@ const Envio  = async ()=>{
 //------------------------------------
   useEffect(() => {
 
-    
+    const storedSession = localStorage.getItem('session');
+      if (storedSession) {
+        setsession(JSON.parse(storedSession));
+      }
 
     if(router.query){
       const { nome } = router.query;
@@ -410,6 +420,62 @@ const Envio  = async ()=>{
       toggleButton.removeEventListener('click', toggleSidebar);
     };
   }, []);
+
+
+  const NovoUsuario = async ()=>{
+     setloading(true)
+  try {
+    const res = await fetch(`/api/auth/novo`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    });
+  
+    const data = await res.json()
+    if(data.success){
+      localStorage.setItem('session', JSON.stringify(userData));
+      setsession(userData)
+      setUserData({ name: '', phone: '', address: '' })
+      setloading(false)
+    }
+    setloading(false)
+    
+  } catch (error) {
+    console.log(error)
+  }
+  }
+
+
+  const Login = async ()=>{
+    setloading(true)
+ try {
+   const res = await fetch(`/api/auth/login`, {
+     method: 'POST',
+     headers: {
+       'Content-Type': 'application/json',
+     },
+     body: JSON.stringify(userData),
+   });
+ 
+   const data = await res.json()
+   if(data.success){
+     localStorage.setItem('session', JSON.stringify(userData));
+     setsession(userData)
+     setUserData({ name: '', phone: '', address: '' })
+     setloading(false)
+   }
+
+   const modal = new bootstrap.Modal(document.getElementById('iniciarsessao'));
+
+// To close the modal
+modal.hide();
+   
+ } catch (error) {
+   console.log(error)
+ }
+ }
 
   const categories = [
     { 
@@ -759,8 +825,22 @@ const Envio  = async ()=>{
         <div className="user-profile d-flex align-items-center">
         <img src="https://picsum.photos/50/50" alt="User Profile" className="me-3" />
         <div>
-          <h6 className="mb-0">Olá, Judith</h6>
-          <small>  <a href="#" className="text-light">Configurações <i className="fas fa-cog"></i></a></small>
+          
+          {session ? (<> <h6 className="mb-0">Olá, {session.nome}</h6></>):<>    <small>  
+            <a href="#" className="text-light"  onClick={()=>{
+          triggerMenuClick();
+
+          // Wait for 1500 milliseconds (1.5 seconds) before opening the modal
+          setTimeout(() => {
+          // Manually trigger the Bootstrap modal
+          const modal = new bootstrap.Modal(document.getElementById('iniciarsessao'));
+          modal.show();
+          }, 300);
+          }}>Iniciar Sessão <i className="fas fa-cog"></i></a></small></>}
+         
+          {/* <small>  <a href="#" className="text-light">Configurações <i className="fas fa-cog"></i></a></small> */}
+      
+
         </div>
       </div>
           <div className="list-group list-group-flush p-3">
@@ -1049,6 +1129,133 @@ const Envio  = async ()=>{
 
 
       </div>
+
+      <div class="modal" tabindex="-1" id="iniciarsessao"  >
+    <div class="modal-dialog  modal-lg">
+
+    <div class="modal-content">
+      <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel"></h1>
+
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <div className="row w-100">
+        
+       
+
+        {lgoincadastrar ? (
+          
+          loading ? (<div className='text-center mt-5'>
+            <div className="spinner-grow" role="status" style={{fontSize:"100px",color:"#5c2589"}}>
+    <span className="visually-hidden">Loading...</span>
+  </div>
+            </div>):(<>
+        
+        <div className="row w-100">
+        <div className='col-md-2'> </div>
+     
+       <div className="col-8 d-flex align-items-center justify-content-center">
+         <div className="w-100 p-5">
+         <div className='text-center'>
+                 <img className='img-fluid' src="/images/logovector.png"  />
+             </div>
+           <h2 className="text-center mb-4" style={{ color: '#381552' }}>Iniciar Sessão</h2>
+           <form>
+             <div className="mb-3">
+               <label htmlFor="email" className="form-label">Email</label>
+               <input type="email" onChange={handleUserDataChange}  name="email" className="form-control" id="email" required />
+             </div>
+             <div className="mb-3">
+               <label htmlFor="senha" className="form-label">Senha</label>
+               <input type="password" name="password" onChange={handleUserDataChange}  className="form-control" id="senha" required />
+             </div>
+             <a className="btn btn-primary w-100" style={{ backgroundColor: '#381552', borderColor: '#381552' }}>
+               Entrar
+             </a>
+           </form>
+           <p className="text-center mt-3">
+             Não tem conta?<a href="#"  style={{ color: '#381552' }} onClick={()=>{
+             setlgoincadastrar(false)
+              } }>Cadastre-se</a>
+           </p>
+         </div>
+       </div>
+       <div className='col-md-2'> </div>
+
+     </div>
+     </>)
+          
+          ):(
+            loading ? (<>   <div className='text-center mt-5'>
+              <div className="spinner-grow" role="status" style={{fontSize:"100px",color:"#5c2589"}}>
+      <span className="visually-hidden">Loading...</span>
+    </div>
+              </div></>):(
+             cadastrosucces ? (<> <div className="text-center">
+              <h5>Cadastrado com sucesso</h5>
+              <p>Seja bem-vindo {userData && userData.name}!</p>
+              <p className='mt-3'><i className='fa fa-circle-check' style={{fontSize:"86px", color:"#5c2589"}}></i></p>
+              <button className="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div></>):(
+              <div className="row w-100">
+              <div className='col-md-2'> </div>
+             <div className="col-md-8 d-flex align-items-center justify-content-center">
+               <div className="w-100 p-5">
+               <div className='text-center'>
+                       <img className='img-fluid' src="/images/logovector.png"  />
+                   </div>
+                 <h2 className="text-center mb-4" style={{ color: '#381552' }}>Nova Conta</h2>
+                 <form>
+                 <div className="mb-3">
+                     <label htmlFor="nome" className="form-label">Nome</label>
+                     <input type="text" name="name" onChange={handleUserDataChange}  className="form-control" id="nome" required />
+                   </div>
+                   <div className="mb-3">
+                     <label htmlFor="email" className="form-label">Email</label>
+                     <input type="email" name="email" onChange={handleUserDataChange} className="form-control" id="email" required />
+                   </div>
+                   <div className="mb-3">
+                     <label htmlFor="password" className="form-label">Senha</label>
+                     <input type="password" name="password" onChange={handleUserDataChange} className="form-control" id="password" required />
+                   </div>
+                   <div className="mb-3">
+                     <label htmlFor="tel" className="form-label">Telefone</label>
+                     <input type="text" name='phone' onChange={handleUserDataChange}  className="form-control" id="tel" required />
+                   </div>
+                   
+                   <div className="mb-3">
+                     <label htmlFor="addresss" className="form-label">Endereço</label>
+                     <textarea type="text" name='address' onChange={handleUserDataChange}    className="form-control" id="addresss" required ></textarea>
+                   </div>
+                
+                   <a className="btn btn-primary w-100" onClick={()=>{
+                    NovoUsuario()
+                   }} style={{ backgroundColor: '#381552', borderColor: '#381552' }}>
+                     Criar Conta
+                   </a>
+                 </form>
+                 <p className="text-center mt-3">
+                   Não tem conta?<a href="#"  style={{ color: '#381552' }} onClick={()=>{
+                   setlgoincadastrar(true)
+                    } }>Iniciar Sessão</a>
+                 </p>
+               </div>
+             </div>
+             <div className='col-md-2'> </div>
+  
+           </div>
+             )
+            )
+         )}
+      </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <div class="modal" tabindex="-1" id="pagamentos"  style={{zIndex:'9999'}}>
     <div class="modal-dialog  modal-lg">
 
