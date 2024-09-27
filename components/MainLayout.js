@@ -66,14 +66,34 @@ const CheckSessionFornecedor = async () => {
   
         {children}
 
-      {router.pathname !="/praca" && router.pathname !="/fornecedor" && router.pathname !=="/login" && router.pathname !=="/registrar" && router.pathname !="/fornecedor/login" && router.pathname !="/fornecedor/registrar" &&(<>
-        {/* <footer className="bg-light text-center text-lg-start mt-5">
-    <div className="container p-4">
-      <div className="text-center">
-        <p className="text-muted">&copy; 2024 vetor5. Todos os direitos reservados.</p>
+      {router.pathname !="/fornecedor" && router.pathname !=="/login" && router.pathname !=="/registrar" && router.pathname !="/fornecedor/login" && router.pathname !="/fornecedor/registrar" &&(<>
+    
+    <footer style={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      position: 'fixed',
+      bottom: 0,
+      width: '100%',
+      height: '40px',
+      backgroundColor: 'transparent',
+      padding: '0 20px',
+      fontSize: '0.9rem',
+      color: 'white'
+    }}>
+      <div>
+        <span>&copy; 2024 Vetor5</span>
       </div>
-    </div>
-  </footer>*/}</>)  } 
+
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <a href="/termos" style={{ color: 'white', textDecoration: 'none', marginRight: '15px' }}>
+          Termos e Políticas
+        </a>
+        <a href="/ajuda" style={{ color: 'white', textDecoration: 'none' }}>
+          Ajuda
+        </a>
+      </div>
+    </footer></>)  } 
 
 
       </>

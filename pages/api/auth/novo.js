@@ -1,9 +1,11 @@
 // pages/api/pedidos/index.js
 
 import clientPromise from '../../../lib/mongodb';
+import bcrypt from 'bcryptjs';
+
 
 export default async function handler(req, res) {
-  try {
+
     const client = await clientPromise;
     const db = client.db('vector5'); // Replace with your actual database name
 if (req.method === 'POST') {
@@ -24,7 +26,5 @@ if (req.method === 'POST') {
       res.setHeader('Allow', ['GET', 'POST']);
       res.status(405).end(`Method ${req.method} Não Permitido`);
     }
-  } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
+
 }

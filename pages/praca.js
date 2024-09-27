@@ -423,6 +423,7 @@ const Envio  = async ()=>{
 
 
   const NovoUsuario = async ()=>{
+
      setloading(true)
   try {
     const res = await fetch(`/api/auth/novo`, {
@@ -440,6 +441,7 @@ const Envio  = async ()=>{
       setUserData({ name: '', phone: '', address: '' })
       setloading(false)
     }
+      setcadastrosucces(true)
       setloading(false)
     
   } catch (error) {
@@ -597,9 +599,9 @@ modal.hide();
 
 
   const [comentarios, setComentarios] = useState([
-    { nome: 'Ana Silva', texto: 'Ótimo produto! Superou minhas expectativas.', foto: 'https://picsum.photos/50/50?random=1' },
-    { nome: 'João Santos', texto: 'Entrega rápida e produto de qualidade.', foto: 'https://picsum.photos/50/50?random=2' },
-    { nome: 'Maria Oliveira', texto: 'Recomendo! Custo-benefício excelente.', foto: 'https://picsum.photos/50/50?random=3' },
+    { nome: 'Ana Silva', texto: 'Ótimo produto! Superou minhas expectativas.', foto: 'https://randomuser.me/api/portraits/women/89.jpg',ratings:[0,0,0,],date:"23-09-2024" },
+    { nome: 'João Santos', texto: 'Entrega rápida e produto de qualidade.', foto: 'https://randomuser.me/api/portraits/men/55.jpg',ratings:[0,0,0,0,0] ,date:"19-09-2024"},
+    { nome: 'Maria Oliveira', texto: 'Recomendo! Custo-benefício excelente.', foto: 'https://randomuser.me/api/portraits/women/62.jpg',ratings:[0,0,0,0],date:"18-09-2024" },
   ]);
 
   const [novoComentario, setNovoComentario] = useState({ nome: '', texto: '', foto: null });
@@ -826,7 +828,7 @@ modal.hide();
         <img src="https://picsum.photos/50/50" alt="User Profile" className="me-3" />
         <div>
           
-          {session ? (<> <h6 className="mb-0">Olá, {session.nome}</h6></>):<>    <small>  
+          {session ? (<> <h6 className="mb-0">Olá, {session.name}</h6></>):<>    <small>  
             <a href="#" className="text-light"  onClick={()=>{
           triggerMenuClick();
 
@@ -1047,6 +1049,13 @@ modal.hide();
                     </div>
                   </div>
                   <p className="mt-2">{comentario.texto}</p>
+                    {comentario.ratings.map((rating, i) => (
+                               <i className='fa fa-star text-warning'></i>
+                              ))}
+
+                              <p className='float-end pull-right float-right'>
+                            {comentario.date}
+                              </p>
                 </div>
               ))}
               <button className="btn btn-outline-dark">Ver Mais</button>
@@ -1091,7 +1100,6 @@ modal.hide();
                 </>
               )}
               
-
 
             </div>
           </div>
@@ -1170,7 +1178,7 @@ modal.hide();
                <label htmlFor="senha" className="form-label">Senha</label>
                <input type="password" name="password" onChange={handleUserDataChange}  className="form-control" id="senha" required />
              </div>
-             <a className="btn btn-primary w-100" style={{ backgroundColor: '#381552', borderColor: '#381552' }}>
+             <a className="btn btn-primary w-100" onClick={()=>{Login()}} style={{ backgroundColor: '#381552', borderColor: '#381552' }}>
                Entrar
              </a>
            </form>
