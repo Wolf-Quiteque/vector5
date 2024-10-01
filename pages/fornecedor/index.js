@@ -17,8 +17,11 @@ const FornecedorHome = () => {
   const [file, setFile] = useState("");
   const [filepic, setfilepic] = useState("")
   const [selectedPeca, setSelectedPeca] = useState(null);
-  
+  const [subcategories, setSubcategories] = useState([]);
 
+  const [images, setImages] = useState([]);
+  const [imageUrls, setImageUrls] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [user, setuser] = useState({});
   const router = useRouter();
 
@@ -48,53 +51,144 @@ const FornecedorHome = () => {
     }));
   };
 
-  async function cloudinaryUp(){
-    const response = await fetch(
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    setImages([...images, ...files]);
+    
+    const newImageUrls = files.map(file => URL.createObjectURL(file));
+    setImageUrls([...imageUrls, ...newImageUrls]);
+  };
+
+
+  const handleCategoryChange = (e) => {
+    const category = e.target.value;
+    setSelectedCategory(category);
+    setPeca(prevPeca => ({
+      ...prevPeca,
+      categoria: category
+    }));
+    
+    const selectedCategoryObj = categories.find(cat => cat.name === category);
+    setSubcategories(selectedCategoryObj ? selectedCategoryObj.subcategories : []);
+  };
+
+  const handleSubcategoryChange = (e) => {
+    const subcategory = e.target.value;
+    setPeca(prevPeca => ({
+      ...prevPeca,
+      subcategoria: subcategory
+    }));
+  };
+
+
+  const categories = [
+    { 
+      name: "Pneus", 
+      icon: "images/pneus.png", 
+      subcategories: ["Pneu de Carro", "Pneu de Moto", "Pneu de Caminhão", "Pneu de Bicicleta"] 
+    },
+    { 
+      name: "Motor", 
+      icon: "images/motor.png", 
+      subcategories: ["Bloco de Motor", "Pistão", "Válvulas", "Turbocompressor"] 
+    },
+    { 
+      name: "Sistema Elétrico", 
+      icon: "images/sistemaeletrico.png", 
+      subcategories: ["Bateria", "Alternador", "Fiação", "Velas de Ignição"] 
+    },
+    { 
+      name: "Embriagem / Peças", 
+      icon: "images/embriagem.png", 
+      subcategories: ["Disco de Embreagem", "Placa de Pressão", "Rolamento de Embreagem"] 
+    },
+    { 
+      name: "Suspensão e Braços", 
+      icon: "images/suspensao.png", 
+      subcategories: ["Amortecedores", "Molas", "Braços de Controle", "Bieletas"] 
+    },
+    { 
+      name: "Correias, Correntes e Polias", 
+      icon: "images/correias.png", 
+      subcategories: ["Correia Dentada", "Correia Poly-V", "Corrente de Comando", "Polias"] 
+    },
+    { 
+      name: "Filtros", 
+      icon: "images/filtros.png", 
+      subcategories: ["Filtro de Ar", "Filtro de Óleo", "Filtro de Combustível"] 
+    },
+    { 
+      name: "Óleos e Fluidos", 
+      icon: "images/oleomotor.png", 
+      subcategories: ["Óleo de Motor", "Fluido de Freio", "Líquido de Arrefecimento"] 
+    },
+    { 
+      name: "Sistema de Amortecimento", 
+      icon: "images/amortecimento.png", 
+      subcategories: ["Amortecedores", "Batente de Amortecedor", "Coifa de Amortecedor"] 
+    },
+    { 
+      name: "Carroçaria", 
+      icon: "images/carrocaria.png", 
+      subcategories: ["Para-choques", "Capô", "Paralamas", "Portas"] 
+    },
+    { 
+      name: "Sistema de Travagem", 
+      icon: "images/travagem.png", 
+      subcategories: ["Pastilhas de Freio", "Discos de Freio", "Pinças de Freio", "Fluido de Freio"] 
+    }
+  ];
+  const removeImage = (index) => {
+    const newImages = [...images];
+    newImages.splice(index, 1);
+    setImages(newImages);
+
+    const newImageUrls = [...imageUrls];
+    newImageUrls.splice(index, 1);
+    setImageUrls(newImageUrls);
+  };
+
+  const uploadImagesToCloudinary = async () => {
+    const uploadedUrls = [];
+    for (const file of images) {
+      const data = new FormData();
+      const fileName = Date.now() + file.name;
+      data.append("file", file);
+      data.append("name", fileName);
+      data.append("upload_preset", "utjuauqd");
+
+      const response = await fetch(
         `https://api.cloudinary.com/v1_1/dbagu0ju8/image/upload`,
         {
           method: 'POST',
-          body: formdata,
+          body: data,
         }
       );
 
-      const data = await response.json();
-      
-      return(data.secure_url)
-     
-  }
+      const res = await response.json();
+      uploadedUrls.push(res.secure_url);
+    }
+    return uploadedUrls;
+  };
 
-  const handleSubmit = async (e) => {
-    setloading(true)
+
+
+
+
+ const handleSubmit = async (e) => {
+    setloading(true);
     e.preventDefault();
-    if(selectedPeca){
-      handleEdit()
-      return false
+    if (selectedPeca) {
+      handleEdit();
+      return false;
     }
    
-    var novapeca = peca
-    novapeca.fornecedor = user.nome
-    novapeca.email = user.email
+    var novapeca = peca;
+    novapeca.fornecedor = user.nome;
+    novapeca.email = user.email;
 
-
-    const data = new FormData();
-    const fileName = Date.now() + file.name;
-    data.append("file", file);
-    data.append("name", fileName);
-    data.append("upload_preset", "utjuauqd");
-
-    const response = await fetch(
-      `https://api.cloudinary.com/v1_1/dbagu0ju8/image/upload`,
-      {
-        method: 'POST',
-        body: data,
-      }
-    );
-
-
-    const res = await response.json();
-    novapeca.img = res.secure_url
-
-
+    const uploadedImageUrls = await uploadImagesToCloudinary();
+    novapeca.img = uploadedImageUrls;
 
     try {
       const res = await fetch("/api/Pecas", {
@@ -104,17 +198,41 @@ const FornecedorHome = () => {
         },
         body: JSON.stringify(novapeca),
       });
-    setloading(false)
-      fetchPecas()
-        const data = await res.json()
-      alert(data.message)
+      setloading(false);
+      fetchPecas();
+      const data = await res.json();
+      alert(data.message);
     } catch (error) {
-      console.log(error)
-      alert('houve um erro')
-      console.log(error)
+      console.log(error);
+      alert('houve um erro');
+      console.log(error);
     }
-    
   };
+
+
+  const handleEdit = async () => {
+    var novapeca = peca;
+    if (images.length > 0) {
+      const uploadedImageUrls = await uploadImagesToCloudinary();
+      novapeca.img = uploadedImageUrls;
+    }
+
+    const res = await fetch(`/api/Pecas/${selectedPeca._id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(novapeca),
+    });
+
+    if (res.ok) {
+      alert('Peça atualizada com sucesso!');
+      fetchPecas();
+    }
+  };
+
+
+
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
@@ -126,13 +244,15 @@ const FornecedorHome = () => {
 //PEGAR PEÇAS
 
     const fetchPecas = async () => {
+      const response = await getDecryptedCookie("authsesh")
+      console.log()
       try {
         const res = await fetch("/api/Pecas/fornecedor", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({email:user.email}),
+          body: JSON.stringify({email:response.email}),
         });
 
         const data = await res.json()
@@ -152,41 +272,7 @@ const FornecedorHome = () => {
 
   //EDITAR PEÇAS
 
-  const handleEdit = async (e) => {
-  var novapeca = peca
-if(file){
-  const data = new FormData();
-  const fileName = Date.now() + file.name;
-  data.append("file", file);
-  data.append("name", fileName);
-  data.append("upload_preset", "utjuauqd");
 
-  const response = await fetch(
-    `https://api.cloudinary.com/v1_1/dbagu0ju8/image/upload`,
-    {
-      method: 'POST',
-      body: data,
-    }
-  );
-
-
-  const res = await response.json();
-  novapeca.img = res.secure_url
-}
-
-    const res = await fetch(`/api/Pecas/${selectedPeca._id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(novapeca),
-    });
-
-    if (res.ok) {
-      alert('Peça atualizada com sucesso!');
-     fetchPecas()
-    }
-  };
 
   const handleDelete = async () => {
     const res = await fetch(`/api/Pecas/${selectedPeca._id}`, {
@@ -301,9 +387,41 @@ if(file){
   </div>
 
   <div className="col-md-6 mb-3">
-    <label htmlFor="categoria" className="form-label">Categoria</label>
-    <input type="text" className="form-control" id="categoria" defaultValue={selectedPeca ? selectedPeca.categoria : ""} onChange={handleChange} />
-  </div>
+                    <label htmlFor="categoria" className="form-label">Categoria</label>
+                    <select 
+                    defaultValue={selectedPeca ? selectedPeca.categoria : ""} 
+                      className="form-select" 
+                      id="categoria" 
+                      value={selectedCategory}
+                      onChange={handleCategoryChange}
+                    >
+                      <option value="">Selecione uma categoria</option>
+                      {categories.map((category, index) => (
+                        <option key={index} value={category.name}>
+                          {category.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="col-md-6 mb-3">
+                    <label htmlFor="subcategoria" className="form-label">Subcategoria</label>
+                    <select 
+                    defaultValue={selectedPeca ? selectedPeca.subcategoria : ""} 
+
+                      className="form-select" 
+                      id="subcategoria" 
+                      onChange={handleSubcategoryChange}
+                      disabled={!selectedCategory}
+                    >
+                      <option value="">Selecione uma subcategoria</option>
+                      {subcategories.map((subcategory, index) => (
+                        <option key={index} value={subcategory}>
+                          {subcategory}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
   <div className="col-md-6 mb-3">
     <label htmlFor="estoque" className="form-label">Estoque</label>
@@ -321,46 +439,40 @@ if(file){
   </div>
 
   <div className="col-md-6 mb-3">
-    <div>
-      <label htmlFor="imagem" className="form-label"> Selecione Imagem</label>
-    </div>
-    {filepic ? (
-      <>
-        <a className="btn btn-info btn-sm btn-danger" onClick={() => { setFile(""); setfilepic(""); }}>
-          <i className="fa fa-trash"></i>
-        </a>
-      </>
-    ) : ""}
-    <label htmlFor="profilpic">
-      {!filepic ? (
-        <a className="btn text-white btn-sm" style={{ backgroundColor: "#381552" }}>
-          <i className="fa fa-camera"></i>{" "}
-        </a>
-      ) : ""}
-      <input
-        type="file"
-        id="profilpic"
-        accept=".png, .jpeg, .jpg,"
-        onChange={(e) => {
-          setFile(e.target.files[0]);
-          setfilepic(URL.createObjectURL(e.target.files[0]));
-        }}
-        style={{ display: "none" }}
-      />
-    </label>
-    <div>
-      {filepic && (
-        <img
-          className="mt-3 profile-user-img img-fluid img-circle"
-          src={filepic}
-          alt="User profile picture"
-          style={{ objectFit: "cover", width: "200px", height: "200px" }}
-        />
-      )}
+                    <div>
+                      <label htmlFor="imagens" className="form-label">Selecione Imagens</label>
+                    </div>
+                    <input
+                      type="file"
+                      id="imagens"
+                      accept=".png, .jpeg, .jpg"
+                      multiple
+                      onChange={handleImageChange}
+                      className="form-control"
+                    />
+                  </div>
 
-
-    </div>
-  </div>
+                  <div className="col-md-12 mb-3">
+                    <div className="d-flex flex-wrap">
+                      {imageUrls.map((url, index) => (
+                        <div key={index} className="position-relative m-2">
+                          <img
+                            src={url}
+                            alt={`Preview ${index + 1}`}
+                            style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+                            className="img-thumbnail"
+                          />
+                          <button
+                            type="button"
+                            className="btn btn-danger btn-sm position-absolute top-0 end-0"
+                            onClick={() => removeImage(index)}
+                          >
+                            &times;
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
 
   <div className="col-md-6 mb-3">
     <label htmlFor="peso" className="form-label">Peso</label>
@@ -466,7 +578,7 @@ if(file){
         <tbody>
           {pecas.map((peca) => (
             <tr key={peca._id}>
-             {peca && peca.img &&( <td><img src={peca.img} class="img-thumbnail" style={{height:"60px"}} alt="..."></img></td>)}
+             {peca && peca.img &&( <td><img src={peca.img[0]} class="img-thumbnail" style={{height:"60px"}} alt="..."></img></td>)}
               <td>{peca && peca.nome}</td>
               <td>{peca && peca.marca}</td>
               <td>{peca && peca.categoria}</td>
