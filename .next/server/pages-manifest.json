@@ -2,5 +2,9 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/fornecedor": "pages/fornecedor.js"
+  "/fornecedor": "pages/fornecedor.js",
+  "/fornecedor/pecas": "pages/fornecedor/pecas.js",
+  "/api/Pedidos": "pages/api/Pedidos.js",
+  "/api/Pecas/all": "pages/api/Pecas/all.js",
+  "/api/Pecas/fornecedor": "pages/api/Pecas/fornecedor.js"
 }

@@ -12,7 +12,7 @@ const Sidebar = ({ onSignout, children }) => {
   };
 
   const menuItems = [
-    { icon: <Home size={24} />, label: 'Home', path: '/fornecedor/home' },
+    { icon: <Home size={24} />, label: 'Home', path: '/fornecedor' },
     { icon: <Box size={24} />, label: 'Peças', path: '/fornecedor/pecas' },
     { icon: <ShoppingCart size={24} />, label: 'Vendas', path: '/fornecedor/vendas' },
     { icon: <User size={24} />, label: 'Perfil', path: '/fornecedor/profile' },

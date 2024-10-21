@@ -1,4 +1,4 @@
-// pages/api/pedidos/index.js
+// /api/pedidos/index.js
 
 import clientPromise from '../../../lib/mongodb';
 
