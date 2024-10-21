@@ -230,6 +230,8 @@ const FornecedorHome = () => {
       alert('Peça atualizada com sucesso!');
       fetchPecas();
     }
+
+    setloading(false)
   };
 
 
@@ -308,8 +310,11 @@ const FornecedorHome = () => {
                 className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg text-white transition-colors"
                 data-bs-toggle="modal" 
                 data-bs-target="#novoproduto"
+                onClick={()=>{
+                  setSelectedPeca(null)
+                }}
               >
-                Nova
+             <i className="fa fa-add"> </i> Adicionar Produto
               </button>
             </div>
   
@@ -348,6 +353,7 @@ const FornecedorHome = () => {
                           onClick={() => {
                             setSelectedPeca(peca);
                             if(peca.img) setfilepic(peca.img);
+                            console.log(peca)
                           }}
                         >
                           Editar
@@ -430,8 +436,10 @@ const FornecedorHome = () => {
                             className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-purple-500"
                             value={selectedCategory}
                             onChange={handleCategoryChange}
+                        
+
                           >
-                            <option value="">Selecione uma categoria</option>
+                           {selectedPeca? ( <option value="">{selectedPeca?.categoria}</option>):( <option value="">Selecione uma categoria</option>)}
                             {categories.map((category, index) => (
                               <option key={index} value={category.name}>
                                 {category.name}
@@ -449,7 +457,8 @@ const FornecedorHome = () => {
                             onChange={handleSubcategoryChange}
                             disabled={!selectedCategory}
                           >
-                            <option value="">Selecione uma subcategoria</option>
+                                                       {selectedPeca? ( <option value="">{selectedPeca?.subcategoria}</option>):( <option value="">Selecione uma categoria</option>)}
+
                             {subcategories.map((subcategory, index) => (
                               <option key={index} value={subcategory}>
                                 {subcategory}

@@ -72,7 +72,6 @@ const Sidebar = ({ onSignout, children }) => {
         </button>
       </div>
 
-      {/* Main Content Wrapper */}
       <div 
         className={`flex-1 transition-all duration-300 bg-gray-100
           ${isOpen ? 'ml-55' : 'ml-8'}`}
