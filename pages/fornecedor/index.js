@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import {
   deleteCookie, getDecryptedCookie,
 } from "../../lib/session";
+import Sidebar from '../../components/Sidebar';
 const FornecedorHome = () => {
   const [search, setSearch] = useState('');
   const [loading, setloading] = useState(false);
@@ -286,411 +287,320 @@ const FornecedorHome = () => {
   };
 
   return (
-    <>
-      {/* Navbar */}
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <div className="container-fluid">
-          <a className="navbar-brand" href="#">Fornecedor  {user && user.nome}</a>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <button
-                  className={`nav-link btn ${activeTab === 'home' ? 'active' : ''}`}
-                  style={{ backgroundColor: activeTab === 'home' ? '#381552' : 'transparent', color: activeTab === 'home' ? 'white' : '' }}
-                  onClick={() => setActiveTab('home')}
-                >
-                  Home
-                </button>
-              </li>
-              <li className="nav-item">
-                <button
-                  className={`nav-link btn ${activeTab === 'profile' ? 'active' : ''}`}
-                  style={{ backgroundColor: activeTab === 'profile' ? '#381552' : 'transparent', color: activeTab === 'profile' ? 'white' : '' }}
-                  onClick={() => setActiveTab('profile')}
-                >
-                  Perfil
-                </button>
-              </li>
-              <li className="nav-item">
-                <button
-                  className={`nav-link btn ${activeTab === 'sales' ? 'active' : ''}`}
-                  style={{ backgroundColor: activeTab === 'sales' ? '#381552' : 'transparent', color: activeTab === 'sales' ? 'white' : '' }}
-                  onClick={() => setActiveTab('sales')}
-                >
-                  Vendas
-                </button>
-              </li>
-              <li className="nav-item">
-                <button
-                  className={`nav-link btn ${activeTab === 'pecas' ? 'active' : ''}`}
-                  style={{ backgroundColor: activeTab === 'pecas' ? '#381552' : 'transparent', color: activeTab === 'pecas' ? 'white' : '' }}
-                  onClick={() => setActiveTab('pecas')}
-                >
-                  Peças
-                </button>
-              </li>
-            </ul>
-            <button className="btn btn-danger" onClick={handleSignout}>
-              <i className="fas fa-power-off"></i> Sair
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      {/* Main Content */}
-      <div className="container mt-1">
-
-
-        {/* Search Bar */}
-        <div className="mb-4">
-          <div className='float-end mb-2'>
-            <button className='btn btn-sm float-right text-white' data-bs-toggle="modal" data-bs-target="#novoproduto" style={{backgroundColor:"#381552"}}>Nova</button>
-          </div>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Pesquisar Peças"
-            value={search}
-            onChange={handleSearch}
-          />
-        </div>
-        <div className="modal fade" id="novoproduto" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-  <div className="modal-dialog modal-dialog-centered modal-lg">
-    <div className="modal-content">
-      <div className="modal-header">
-        <h1 className="modal-title fs-5" id="exampleModalToggleLabel"  >Novo Peça</h1>
-        <button type="button" className="btn-close" data-bs-dismiss="modal" onClick={()=>{
-          setSelectedPeca(null)
-        }}  aria-label="Close"></button>
-      </div>
-      <div className="modal-body">
-      <div className="container mt-5">
-        <h5 className="mb-4">Cadastrar Clientes</h5>
-        <form onSubmit={handleSubmit}>
-        <div className="row">
-  <div className="col-md-6 mb-3">
-    <label htmlFor="nome" className="form-label">Nome</label>
-    <input type="text" className="form-control" id="nome" defaultValue={selectedPeca ? selectedPeca.nome : ""} onChange={handleChange} />
-  </div>
-
-  <div className="col-md-6 mb-3">
-    <label htmlFor="descricao" className="form-label">Descrição</label>
-    <textarea className="form-control" id="descricao" defaultValue={selectedPeca ? selectedPeca.descricao : ""} onChange={handleChange}></textarea>
-  </div>
-
-  <div className="col-md-6 mb-3">
-    <label htmlFor="marca" className="form-label">Marca</label>
-    <input type="text" className="form-control" id="marca" defaultValue={selectedPeca ? selectedPeca.marca : ""} onChange={handleChange} />
-  </div>
-
-  <div className="col-md-6 mb-3">
-                    <label htmlFor="categoria" className="form-label">Categoria</label>
-                    <select 
-                    defaultValue={selectedPeca ? selectedPeca.categoria : ""} 
-                      className="form-select" 
-                      id="categoria" 
-                      value={selectedCategory}
-                      onChange={handleCategoryChange}
+    <div className="min-h-screen bg-gray-900 text-gray-100">
+      <div className="flex h-screen">
+        <Sidebar onSignout={handleSignout} />
+        
+        <div className="flex-1 overflow-auto p-8">
+          <div className="max-w-7xl mx-auto space-y-6">
+            {/* Search and New Button Section */}
+            <div className="flex justify-between items-center gap-4">
+              <div className="flex-1">
+                <input
+                  type="text"
+                  className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  placeholder="Pesquisar Peças"
+                  value={search}
+                  onChange={handleSearch}
+                />
+              </div>
+              <button 
+                className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg text-white transition-colors"
+                data-bs-toggle="modal" 
+                data-bs-target="#novoproduto"
+              >
+                Nova
+              </button>
+            </div>
+  
+            {/* Table Section */}
+            <div className="overflow-x-auto rounded-lg border border-gray-700">
+              <table className="min-w-full divide-y divide-gray-700">
+                <thead className="bg-gray-800">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"></th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Nome</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Marca</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Categoria</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Peso</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Preço</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Ações</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-gray-900 divide-y divide-gray-700">
+                  {pecas.map((peca) => (
+                    <tr key={peca._id} className="hover:bg-gray-800">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {peca?.img && (
+                          <img src={peca.img[0]} alt="Product" className="h-12 w-12 object-cover rounded-md"/>
+                        )}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">{peca?.nome}</td>
+                      <td className="px-6 py-4 whitespace-nowrap">{peca?.marca}</td>
+                      <td className="px-6 py-4 whitespace-nowrap">{peca?.categoria}</td>
+                      <td className="px-6 py-4 whitespace-nowrap">{peca?.peso}</td>
+                      <td className="px-6 py-4 whitespace-nowrap">{peca?.preco} AOA</td>
+                      <td className="px-6 py-4 whitespace-nowrap space-x-2">
+                        <button
+                          className="px-3 py-1 bg-yellow-600 hover:bg-yellow-700 rounded text-white text-sm transition-colors"
+                          data-bs-toggle="modal"
+                          data-bs-target="#novoproduto"
+                          onClick={() => {
+                            setSelectedPeca(peca);
+                            if(peca.img) setfilepic(peca.img);
+                          }}
+                        >
+                          Editar
+                        </button>
+                        <button
+                          className="px-3 py-1 bg-red-600 hover:bg-red-700 rounded text-white text-sm transition-colors"
+                          data-bs-toggle="modal"
+                          data-bs-target="#deletePecaModal"
+                          onClick={() => setSelectedPeca(peca)}
+                        >
+                          Eliminar
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+  
+            {/* Add/Edit Modal */}
+            <div className="modal fade" id="novoproduto" tabIndex="-1" aria-hidden="true">
+              <div className="modal-dialog modal-dialog-centered modal-lg">
+                <div className="modal-content bg-gray-800 text-gray-100">
+                  <div className="modal-header border-b border-gray-700 p-4">
+                    <h5 className="text-xl font-medium">{selectedPeca ? 'Editar' : 'Nova'} Peça</h5>
+                    <button 
+                      className="text-gray-400 hover:text-gray-200"
+                      data-bs-dismiss="modal"
+                      onClick={() => setSelectedPeca(null)}
                     >
-                      <option value="">Selecione uma categoria</option>
-                      {categories.map((category, index) => (
-                        <option key={index} value={category.name}>
-                          {category.name}
-                        </option>
-                      ))}
-                    </select>
+                      <span className="sr-only">Close</span>
+                      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
                   </div>
-
-                  <div className="col-md-6 mb-3">
-                    <label htmlFor="subcategoria" className="form-label">Subcategoria</label>
-                    <select 
-                    defaultValue={selectedPeca ? selectedPeca.subcategoria : ""} 
-
-                      className="form-select" 
-                      id="subcategoria" 
-                      onChange={handleSubcategoryChange}
-                      disabled={!selectedCategory}
-                    >
-                      <option value="">Selecione uma subcategoria</option>
-                      {subcategories.map((subcategory, index) => (
-                        <option key={index} value={subcategory}>
-                          {subcategory}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-  <div className="col-md-6 mb-3">
-    <label htmlFor="estoque" className="form-label">Estoque</label>
-    <input type="text" className="form-control" id="estoque" defaultValue={selectedPeca ? selectedPeca.estoque : ""} onChange={handleChange} />
-  </div>
-
-  <div className="col-md-6 mb-3">
-    <label htmlFor="preco" className="form-label">Preço</label>
-    <input type="number" className="form-control" id="preco" step="0.01" defaultValue={selectedPeca ? selectedPeca.preco : ""} onChange={handleChange} />
-  </div>
-
-  <div className="col-md-6 mb-3">
-    <label htmlFor="preco_promocional" className="form-label">Preço Promocional</label>
-    <input type="number" className="form-control" id="preco_promocional" step="0.01" defaultValue={selectedPeca ? selectedPeca.preco_promocional : ""} onChange={handleChange} />
-  </div>
-
-  <div className="col-md-6 mb-3">
-                    <div>
-                      <label htmlFor="imagens" className="form-label">Selecione Imagens</label>
-                    </div>
-                    <input
-                      type="file"
-                      id="imagens"
-                      accept=".png, .jpeg, .jpg"
-                      multiple
-                      onChange={handleImageChange}
-                      className="form-control"
-                    />
-                  </div>
-
-                  <div className="col-md-12 mb-3">
-                    <div className="d-flex flex-wrap">
-                      {imageUrls.map((url, index) => (
-                        <div key={index} className="position-relative m-2">
-                          <img
-                            src={url}
-                            alt={`Preview ${index + 1}`}
-                            style={{ width: '100px', height: '100px', objectFit: 'cover' }}
-                            className="img-thumbnail"
+                  <div className="modal-body p-4">
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {/* Nome */}
+                        <div>
+                          <label className="block text-sm font-medium mb-1">Nome</label>
+                          <input
+                            type="text"
+                            id="nome"
+                            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-purple-500"
+                            defaultValue={selectedPeca?.nome}
+                            onChange={handleChange}
                           />
-                          <button
-                            type="button"
-                            className="btn btn-danger btn-sm position-absolute top-0 end-0"
-                            onClick={() => removeImage(index)}
-                          >
-                            &times;
-                          </button>
                         </div>
-                      ))}
-                    </div>
+  
+                        {/* Descrição */}
+                        <div>
+                          <label className="block text-sm font-medium mb-1">Descrição</label>
+                          <textarea
+                            id="descricao"
+                            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-purple-500"
+                            defaultValue={selectedPeca?.descricao}
+                            onChange={handleChange}
+                          />
+                        </div>
+  
+                        {/* Marca */}
+                        <div>
+                          <label className="block text-sm font-medium mb-1">Marca</label>
+                          <input
+                            type="text"
+                            id="marca"
+                            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-purple-500"
+                            defaultValue={selectedPeca?.marca}
+                            onChange={handleChange}
+                          />
+                        </div>
+  
+                        {/* Categoria */}
+                        <div>
+                          <label className="block text-sm font-medium mb-1">Categoria</label>
+                          <select
+                            id="categoria"
+                            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-purple-500"
+                            value={selectedCategory}
+                            onChange={handleCategoryChange}
+                          >
+                            <option value="">Selecione uma categoria</option>
+                            {categories.map((category, index) => (
+                              <option key={index} value={category.name}>
+                                {category.name}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+  
+                        {/* Subcategoria */}
+                        <div>
+                          <label className="block text-sm font-medium mb-1">Subcategoria</label>
+                          <select
+                            id="subcategoria"
+                            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-purple-500"
+                            onChange={handleSubcategoryChange}
+                            disabled={!selectedCategory}
+                          >
+                            <option value="">Selecione uma subcategoria</option>
+                            {subcategories.map((subcategory, index) => (
+                              <option key={index} value={subcategory}>
+                                {subcategory}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+  
+                        {/* Estoque */}
+                        <div>
+                          <label className="block text-sm font-medium mb-1">Estoque</label>
+                          <input
+                            type="text"
+                            id="estoque"
+                            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-purple-500"
+                            defaultValue={selectedPeca?.estoque}
+                            onChange={handleChange}
+                          />
+                        </div>
+  
+                        {/* Preço */}
+                        <div>
+                          <label className="block text-sm font-medium mb-1">Preço</label>
+                          <input
+                            type="number"
+                            id="preco"
+                            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-purple-500"
+                            step="0.01"
+                            defaultValue={selectedPeca?.preco}
+                            onChange={handleChange}
+                          />
+                        </div>
+  
+                        {/* Preço Promocional */}
+                        <div>
+                          <label className="block text-sm font-medium mb-1">Preço Promocional</label>
+                          <input
+                            type="number"
+                            id="preco_promocional"
+                            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-purple-500"
+                            step="0.01"
+                            defaultValue={selectedPeca?.preco_promocional}
+                            onChange={handleChange}
+                          />
+                        </div>
+  
+                        {/* Imagens */}
+                        <div className="col-span-2">
+                          <label className="block text-sm font-medium mb-1">Imagens</label>
+                          <input
+                            type="file"
+                            id="imagens"
+                            multiple
+                            onChange={handleImageChange}
+                            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-purple-500"
+                            accept=".png, .jpeg, .jpg"
+                          />
+                          
+                          <div className="flex flex-wrap gap-2 mt-2">
+                            {imageUrls.map((url, index) => (
+                              <div key={index} className="relative">
+                                <img
+                                  src={url}
+                                  alt={`Preview ${index + 1}`}
+                                  className="h-24 w-24 object-cover rounded-md"
+                                />
+                                <button
+                                  type="button"
+                                  className="absolute -top-2 -right-2 bg-red-600 rounded-full p-1 hover:bg-red-700"
+                                  onClick={() => removeImage(index)}
+                                >
+                                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                  </svg>
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+  
+                        {/* Rest of your form fields following the same pattern */}
+                        {/* ... */}
+  
+                      </div>
+  
+                      <div className="flex justify-end space-x-3 mt-6">
+                        <button
+                          type="button"
+                          className="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-md transition-colors"
+                          data-bs-dismiss="modal"
+                        >
+                          Cancelar
+                        </button>
+                        <button
+                          type="submit"
+                          className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-md transition-colors"
+                          disabled={loading}
+                        >
+                          {loading ? (
+                            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mx-auto"/>
+                          ) : (
+                            selectedPeca ? 'Salvar Alterações' : 'Cadastrar'
+                          )}
+                        </button>
+                      </div>
+                    </form>
                   </div>
-
-  <div className="col-md-6 mb-3">
-    <label htmlFor="peso" className="form-label">Peso</label>
-    <input type="number" className="form-control" id="peso" step="0.01" defaultValue={selectedPeca ? selectedPeca.peso : ""} onChange={handleChange} />
-  </div>
-
-  <div className="col-md-6 mb-3">
-    <label htmlFor="medida" className="form-label">Forma de Medir (peso)</label>
-    <select id="medida" className="form-select" defaultValue={selectedPeca ? selectedPeca.medida : ""} onChange={handleChange}>
-      <option value="">Selecione uma opção</option>
-      <option value="L">Litros (L)</option>
-      <option value="K">Kilos (K)</option>
-      <option value="G">Gramas (G)</option>
-      <option value="M">Metros (M)</option>
-      <option value="CM">Centímetros (CM)</option>
-      <option value="MM">Milímetros (MM)</option>
-      <option value="UN">Unidades (UN)</option>
-    </select>
-  </div>
-
-  <div className="col-md-6 mb-3">
-    <label htmlFor="dimensao" className="form-label">Dimensão</label>
-    <input type="text" className="form-control" id="dimensao" defaultValue={selectedPeca ? selectedPeca.dimensao : ""} onChange={handleChange} />
-  </div>
-
-  <div className="col-md-6 mb-3">
-    <label htmlFor="compatibilidade" className="form-label">Compatibilidade</label>
-    <input type="text" className="form-control" id="compatibilidade" defaultValue={selectedPeca ? selectedPeca.compatibilidade : ""} onChange={handleChange} />
-  </div>
-
-  <div className="col-md-6 mb-3">
-    <label htmlFor="quantidade_fornecida" className="form-label">Quantidade Fornecida</label>
-    <input type="number" className="form-control" id="quantidade_fornecida" defaultValue={selectedPeca ? selectedPeca.quantidade_fornecida : ""} onChange={handleChange} />
-  </div>
-
-  <div className="col-md-6 mb-3">
-    <label htmlFor="material" className="form-label">Material</label>
-    <input type="text" className="form-control" id="material" defaultValue={selectedPeca ? selectedPeca.material : ""} onChange={handleChange} />
-  </div>
-
-  <div className="col-md-6 mb-3">
-    <label htmlFor="condicao" className="form-label">Condição</label>
-    <input type="text" className="form-control" id="condicao" defaultValue={selectedPeca ? selectedPeca.condicao : ""} onChange={handleChange} />
-  </div>
-
-  <div className="col-md-6 mb-3">
-    <label htmlFor="instrucao_instalacao" className="form-label">Instrução de Instalação</label>
-    <textarea className="form-control" id="instrucao_instalacao" defaultValue={selectedPeca ? selectedPeca.instrucao_instalacao : ""} onChange={handleChange}></textarea>
-  </div>
-
-  <div className="col-md-6 mb-3">
-    <label htmlFor="fornecedor" className="form-label">Fornecedor</label>
-    <input type="text" className="form-control" id="fornecedor" value={user && user.nome} disabled />
-  </div>
-
-  <div className="col-md-6 mb-3">
-    <label htmlFor="garantia" className="form-label">Garantia</label>
-    <input type="text" className="form-control" id="garantia" defaultValue={selectedPeca ? selectedPeca.garantia : ""} onChange={handleChange} />
-  </div>
-
-  <div className="col-md-6 mb-3">
-    <label htmlFor="prazo_entrega" className="form-label">Prazo de Entrega</label>
-    <input type="text" className="form-control" id="prazo_entrega" defaultValue={selectedPeca ? selectedPeca.prazo_entrega : ""} onChange={handleChange} />
-  </div>
-</div>
-
-    {loading?(
-      <div className="spinner-grow" role="status">
-      <span className="visually-hidden">Loading...</span>
-    </div>
-    ):(
-  <button type="submit" className="btn btn-primary"> {selectedPeca ? 'Salvar Alterações':'Cadastrar'} </button>
-
-    )}
-
-</form>
-
-      </div>
-      </div>
-      <div className="modal-footer">
-        <button className="btn btn-dark" data-bs-target="#exampleModalToggle2" data-bs-dismiss="modal">Fechar</button>
-      </div>
-    </div>
-  </div>
-</div>
-      </div>
-
-      
-      <div className="container mt-5">
-      <h1 className="my-4">Peças</h1>
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th></th>
-            <th>Nome</th>
-            <th>Marca</th>
-            <th>Categoria</th>
-            <th>Peso</th>
-            <th>Preço</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {pecas.map((peca) => (
-            <tr key={peca._id}>
-             {peca && peca.img &&( <td><img src={peca.img[0]} class="img-thumbnail" style={{height:"60px"}} alt="..."></img></td>)}
-              <td>{peca && peca.nome}</td>
-              <td>{peca && peca.marca}</td>
-              <td>{peca && peca.categoria}</td>
-              <td>{peca && peca.peso}</td>
-              <td>{peca && peca.preco} AOA</td>
-              <td>
-                <button
-                  className="btn btn-warning btn-sm me-2"
-                  data-bs-toggle="modal"
-                  data-bs-target="#novoproduto"
-                  onClick={() => {setSelectedPeca(peca); if(peca.img){ setfilepic(peca.img)} }}
-                >
-                  Editar
-                </button>
-                <button
-                  className="btn btn-danger btn-sm"
-                  data-bs-toggle="modal"
-                  data-bs-target="#deletePecaModal"
-                  onClick={() => setSelectedPeca(peca)}
-                >
-                  Eliminar
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {/* Edit Modal */}
-      <div
-        className="modal fade"
-        id="editPecaModal"
-        tabIndex="-1"
-        aria-labelledby="editPecaModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="editPecaModalLabel">Editar Peça</h5>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form onSubmit={handleEdit}>
-              <div className="modal-body">
-                {selectedPeca && (
-                  <>
-                    <div className="mb-3">
-                      <label htmlFor="nome" className="form-label">Nome</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="nome"
-                        defaultValue={selectedPeca.nome}
-                      />
-                    </div>
-                    <div className="mb-3">
-                      <label htmlFor="descricao" className="form-label">Descrição</label>
-                      <textarea
-                        className="form-control"
-                        id="descricao"
-                        defaultValue={selectedPeca.descricao}
-                      ></textarea>
-                    </div>
-                    <div className="mb-3">
-                      <label htmlFor="preco" className="form-label">Preço</label>
-                      <input
-                        type="number"
-                        className="form-control"
-                        id="preco"
-                        step="0.01"
-                        defaultValue={selectedPeca.preco}
-                      />
-                    </div>
-                  </>
-                )}
+                </div>
               </div>
-              <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" className="btn btn-primary">Salvar Alterações</button>
+            </div>
+  
+            {/* Delete Modal */}
+            <div className="modal fade" id="deletePecaModal" tabIndex="-1" aria-hidden="true">
+              <div className="modal-dialog modal-dialog-centered">
+                <div className="modal-content bg-gray-800 text-gray-100">
+                  <div className="modal-header border-b border-gray-700 p-4">
+                    <h5 className="text-xl font-medium">Eliminar Peça</h5>
+                    <button className="text-gray-400 hover:text-gray-200" data-bs-dismiss="modal">
+                      <span className="sr-only">Close</span>
+                      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                  <div className="modal-body p-4">
+                    {selectedPeca && (
+                      <p>Tem certeza que deseja eliminar {selectedPeca.nome}?</p>
+                    )}
+                  </div>
+                  <div className="modal-footer border-gray-700">
+                    <button
+                      className="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-md"
+                      data-bs-dismiss="modal"
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-md ml-3"
+                      onClick={handleDelete}
+                      data-bs-dismiss="modal"
+                    >
+                      Eliminar
+                    </button>
+                  </div>
+                </div>
               </div>
-            </form>
-          </div>
-        </div>
-      </div>
-
-      {/* Delete Modal */}
-      <div
-        className="modal fade"
-        id="deletePecaModal"
-        tabIndex="-1"
-        aria-labelledby="deletePecaModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="deletePecaModalLabel">Eliminar Peça</h5>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div className="modal-body">
-              {selectedPeca && <p>Tem certeza que deseja eliminar {selectedPeca.nome}?</p>}
-            </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-              <button type="button" className="btn btn-danger" data-bs-dismiss="modal" onClick={handleDelete}>Eliminar</button>
             </div>
           </div>
         </div>
       </div>
     </div>
-
-    </>
   );
 };
 

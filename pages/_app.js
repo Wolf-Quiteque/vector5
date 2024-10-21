@@ -3,6 +3,7 @@ import MainLayout from '../components/MainLayout'
 import Head from 'next/head';
 import Router from 'next/router';
 import 'animate.css';
+import '../globals.css';
 import NProgress from 'nprogress'; // Import NProgress
 import Script from 'next/script';
 

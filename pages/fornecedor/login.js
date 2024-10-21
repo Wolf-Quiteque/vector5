@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link'
 import { useRouter } from "next/router";
-
 import {
   setEncryptedCookie,
 } from "../../lib/session";
@@ -10,10 +9,13 @@ import { useState, useEffect } from 'react';
 const LoginPage = () => {
   const router = useRouter();
 
+  const [loading, setloading] = useState(false)
 
   var fornecedor = {}
 
   const login = async () => {
+
+    setloading(true)
 
     try {
       const response = await fetch('/api/fornecedores', {
@@ -27,19 +29,30 @@ const LoginPage = () => {
       const data = await response.json();
       
   
-      if (response.ok) {
+      if (data[0]) {
         console.log('Supplier registered successfully:');
         setEncryptedCookie("authsesh", data[0]);
         router.push("/fornecedor/")
         
       } else {
+        alert('Fornecedor não existente')
         console.error('Failed to register supplier:', data);
         // Handle failure, show error message
       }
     } catch (error) {
       console.error('An error occurred while registering supplier:', error);
     }
+
+    setloading(false)
   };
+
+
+  
+const handlekeypress = (e) =>{
+  if(e.key == 'Enter'){
+    login()
+  }
+}
 
   return (
     <>
@@ -71,15 +84,20 @@ const LoginPage = () => {
                 </div>
                 <div className="mb-3">
                   <label htmlFor="senha" className="form-label">Senha</label>
-                  <input type="password" onChange={(e)=>{
+                  <input type="password" onKeyDownCapture={handlekeypress}  onChange={(e)=>{
                     fornecedor.senha = e.target.value;
                   }} className="form-control" id="senha" required />
                 </div>
-                <a onClick={(e)=>{
+                {loading ? (<>  <a className="btn btn-primary w-100 disabled" style={{ backgroundColor: '#381552', borderColor: '#381552' }}>
+                  <div class="spinner-grow text-light" role="status">
+  <span class="sr-only">Loading...</span>
+</div>
+                </a></>):(<> <a onClick={(e)=>{
                   login()
                 }} className="btn btn-primary w-100" style={{ backgroundColor: '#381552', borderColor: '#381552' }}>
                   Entrar
-                </a>
+                </a></>)}
+               
               </form>
               <p className="text-center mt-3">
                 Não tem conta? <Link href="/fornecedor/registrar"><a  style={{ color: '#381552' }}>Cadastre-se</a></Link> 
@@ -91,5 +109,7 @@ const LoginPage = () => {
     </>
   );
 };
+
+
 
 export default LoginPage;

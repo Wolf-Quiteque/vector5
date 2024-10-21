@@ -6,6 +6,9 @@ import {
   setEncryptedCookie,
   deleteCookie,
 } from "../lib/session";
+
+
+
 const MainLayout = ({ children }) => {
   const router = useRouter();
 
@@ -25,6 +28,10 @@ const CheckSessionFornecedor = async () => {
   useEffect (()=>{
     CheckSessionFornecedor()
   },[router.asPath])
+
+ 
+
+
 
   return (
       <>
