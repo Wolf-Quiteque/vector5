@@ -74,7 +74,7 @@ const Sidebar = ({ onSignout, children }) => {
 
       <div 
         className={`flex-1 transition-all duration-300 bg-gray-100
-          ${isOpen ? 'ml-55' : 'ml-8'}`}
+          ${isOpen ? 'ml-56' : 'ml-8'}`}
       >
         <div className="p-6">
           {children}

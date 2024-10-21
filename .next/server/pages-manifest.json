@@ -2,7 +2,5 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/fornecedor": "pages/fornecedor.js",
-  "/api/Pecas/fornecedor": "pages/api/Pecas/fornecedor.js",
-  "/api/Pecas/[id]": "pages/api/Pecas/[id].js"
+  "/fornecedor": "pages/fornecedor.js"
 }

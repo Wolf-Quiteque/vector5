@@ -8,6 +8,7 @@ import {
   deleteCookie, getDecryptedCookie,
 } from "../../lib/session";
 import Sidebar from '../../components/Sidebar';
+import Toast from '../../components/Toast';
 const FornecedorHome = () => {
   const [search, setSearch] = useState('');
   const [loading, setloading] = useState(false);
@@ -16,6 +17,7 @@ const FornecedorHome = () => {
   const [peca, setPeca] = useState([]);
   const [pecas, setPecas] = useState([]);
   const [file, setFile] = useState("");
+  const [modal, setModal] = useState()
   const [filepic, setfilepic] = useState("")
   const [selectedPeca, setSelectedPeca] = useState(null);
   const [subcategories, setSubcategories] = useState([]);
@@ -25,6 +27,17 @@ const FornecedorHome = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [user, setuser] = useState({});
   const router = useRouter();
+
+  const [toast, setToast] = useState({ show: false, message: '', type: '' });
+
+  const showToast = (type, message) => {
+    setToast({ show: true, type, message });
+  };
+
+  const closeToast = () => {
+    setToast({ show: false, message: '', type: '' });
+  };
+
 
   const handleSignout = async () => {
     await deleteCookie("authsesh");
@@ -41,6 +54,10 @@ const FornecedorHome = () => {
   useEffect(()=>{
     GetUser();
 
+    setTimeout(() => {
+      setModal( new bootstrap.Modal(document.getElementById('novoproduto')))
+      }, 1500);
+   
   },[])
 
 
@@ -179,6 +196,10 @@ const FornecedorHome = () => {
  const handleSubmit = async (e) => {
     setloading(true);
     e.preventDefault();
+
+    if(!peca){
+      return false
+    }
     if (selectedPeca) {
       handleEdit();
       return false;
@@ -202,10 +223,13 @@ const FornecedorHome = () => {
       setloading(false);
       fetchPecas();
       const data = await res.json();
-      alert(data.message);
+      setPeca(null)
+      modal.hide();
+      showToast('success', data.message)
     } catch (error) {
       console.log(error);
-      alert('houve um erro');
+      showToast('success',"Houve um erro")
+
       console.log(error);
     }
   };
@@ -227,7 +251,13 @@ const FornecedorHome = () => {
     });
 
     if (res.ok) {
-      alert('Peça atualizada com sucesso!');
+      modal.hide();
+
+      setTimeout(() => {
+      showToast('success', 'Peça atualizada com sucesso!')
+        }, 300);
+     
+      
       fetchPecas();
     }
 
@@ -262,7 +292,7 @@ const FornecedorHome = () => {
         setPecas(data)
       } catch (error) {
         console.log(error)
-        alert('houve um erro')
+        showToast('failure', 'Aguarde, houve um erro.')
         console.log(error)
       }
     };
@@ -294,6 +324,14 @@ const FornecedorHome = () => {
         <Sidebar onSignout={handleSignout} />
         
         <div className="flex-1 overflow-auto p-8">
+        {toast.show && (
+        <Toast
+          type={toast.type}
+          message={toast.message}
+          isVisible={toast.show}
+          onClose={closeToast}
+        />
+      )}
           <div className="max-w-7xl mx-auto space-y-6">
             {/* Search and New Button Section */}
             <div className="flex justify-between items-center gap-4">
@@ -309,9 +347,14 @@ const FornecedorHome = () => {
               <button 
                 className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg text-white transition-colors"
                 data-bs-toggle="modal" 
-                data-bs-target="#novoproduto"
+                
                 onClick={()=>{
                   setSelectedPeca(null)
+                  setTimeout(() => {
+                    // Manually trigger the Bootstrap modal
+                    modal.show();
+                    }, 300);
+                  
                 }}
               >
              <i className="fa fa-add"> </i> Adicionar Produto
@@ -349,11 +392,15 @@ const FornecedorHome = () => {
                         <button
                           className="px-3 py-1 bg-yellow-600 hover:bg-yellow-700 rounded text-white text-sm transition-colors"
                           data-bs-toggle="modal"
-                          data-bs-target="#novoproduto"
+                          
                           onClick={() => {
                             setSelectedPeca(peca);
-                            if(peca.img) setfilepic(peca.img);
                             console.log(peca)
+                            if(peca.img) setfilepic(peca.img);
+                            setTimeout(() => {
+                              // Manually trigger the Bootstrap modal
+                              modal.show();
+                              }, 300);
                           }}
                         >
                           Editar
@@ -404,6 +451,29 @@ const FornecedorHome = () => {
                             onChange={handleChange}
                           />
                         </div>
+
+                        <div>
+                          <label className="block text-sm font-medium mb-1">Chassi / VIN</label>
+                          <input
+                            type="text"
+                            id="chassi"
+                            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-purple-500"
+                            defaultValue={selectedPeca?.chassi}
+                            onChange={handleChange}
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium mb-1">Ano</label>
+                          <input
+                            type="number"
+                            id="ano"
+                            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-purple-500"
+                            defaultValue={selectedPeca?.ano}
+                            onChange={handleChange}
+                          />
+                        </div>
+  
   
                         {/* Descrição */}
                         <div>
@@ -539,8 +609,148 @@ const FornecedorHome = () => {
                           </div>
                         </div>
   
-                        {/* Rest of your form fields following the same pattern */}
-                        {/* ... */}
+                        {/* transform the  Rest of the form fields following the same  pattern */}
+             
+{/* Peso */}
+<div>
+  <label className="block text-sm font-medium mb-1">Peso</label>
+  <input
+    type="number"
+    id="peso"
+    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-purple-500"
+    step="0.01"
+    defaultValue={selectedPeca ? selectedPeca.peso : ""}
+    onChange={handleChange}
+  />
+</div>
+
+{/* Forma de Medir (peso) */}
+<div>
+  <label className="block text-sm font-medium mb-1">Forma de Medir (peso)</label>
+  <select
+    id="medida"
+    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-purple-500"
+    defaultValue={selectedPeca ? selectedPeca.medida : ""}
+    onChange={handleChange}
+  >
+    <option value="">Selecione uma opção</option>
+    <option value="L">Litros (L)</option>
+    <option value="K">Kilos (K)</option>
+    <option value="G">Gramas (G)</option>
+    <option value="M">Metros (M)</option>
+    <option value="CM">Centímetros (CM)</option>
+    <option value="MM">Milímetros (MM)</option>
+    <option value="UN">Unidades (UN)</option>
+  </select>
+</div>
+
+{/* Dimensão */}
+<div>
+  <label className="block text-sm font-medium mb-1">Dimensão</label>
+  <input
+    type="text"
+    id="dimensao"
+    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-purple-500"
+    defaultValue={selectedPeca ? selectedPeca.dimensao : ""}
+    onChange={handleChange}
+  />
+</div>
+
+{/* Compatibilidade */}
+<div>
+  <label className="block text-sm font-medium mb-1">Compatibilidade</label>
+  <input
+    type="text"
+    id="compatibilidade"
+    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-purple-500"
+    defaultValue={selectedPeca ? selectedPeca.compatibilidade : ""}
+    onChange={handleChange}
+  />
+</div>
+
+{/* Quantidade Fornecida */}
+<div>
+  <label className="block text-sm font-medium mb-1">Quantidade Fornecida</label>
+  <input
+    type="number"
+    id="quantidade_fornecida"
+    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-purple-500"
+    defaultValue={selectedPeca ? selectedPeca.quantidade_fornecida : ""}
+    onChange={handleChange}
+  />
+</div>
+
+{/* Material */}
+<div>
+  <label className="block text-sm font-medium mb-1">Material</label>
+  <input
+    type="text"
+    id="material"
+    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-purple-500"
+    defaultValue={selectedPeca ? selectedPeca.material : ""}
+    onChange={handleChange}
+  />
+</div>
+
+{/* Condição */}
+<div>
+  <label className="block text-sm font-medium mb-1">Condição</label>
+  <input
+    type="text"
+    id="condicao"
+    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-purple-500"
+    defaultValue={selectedPeca ? selectedPeca.condicao : ""}
+    onChange={handleChange}
+  />
+</div>
+
+{/* Instrução de Instalação */}
+<div>
+  <label className="block text-sm font-medium mb-1">Instrução de Instalação</label>
+  <textarea
+    id="instrucao_instalacao"
+    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-purple-500"
+    defaultValue={selectedPeca ? selectedPeca.instrucao_instalacao : ""}
+    onChange={handleChange}
+  />
+</div>
+
+{/* Fornecedor */}
+<div>
+  <label className="block text-sm font-medium mb-1">Fornecedor</label>
+  <input
+    type="text"
+    id="fornecedor"
+    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-purple-500"
+    value={user && user.nome}
+    disabled
+  />
+</div>
+
+{/* Garantia */}
+<div>
+  <label className="block text-sm font-medium mb-1">Garantia</label>
+  <input
+    type="text"
+    id="garantia"
+    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-purple-500"
+    defaultValue={selectedPeca ? selectedPeca.garantia : ""}
+    onChange={handleChange}
+  />
+</div>
+
+{/* Prazo de Entrega */}
+<div>
+  <label className="block text-sm font-medium mb-1">Prazo de Entrega</label>
+  <input
+    type="text"
+    id="prazo_entrega"
+    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-2 focus:ring-purple-500"
+    defaultValue={selectedPeca ? selectedPeca.prazo_entrega : ""}
+    onChange={handleChange}
+  />
+</div>
+
   
                       </div>
   
