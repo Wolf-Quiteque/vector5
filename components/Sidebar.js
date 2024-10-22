@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Link from 'next/link';
 import { Menu, Home, Box, ShoppingCart, User, LogOut, ChevronLeft, ChevronRight } from 'lucide-react';
 
+
 const Sidebar = ({ onSignout, children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
@@ -19,64 +20,72 @@ const Sidebar = ({ onSignout, children }) => {
   ];
 
   return (
-    <div className="flex min-h-screen">
+    <div className="d-flex min-vh-100">
       {/* Sidebar */}
       <div 
-        className={`fixed left-0 top-0 h-screen bg-gray-900 text-white transition-all duration-300 ease-in-out z-50
-          ${isOpen ? 'w-64' : 'w-20'}`}
+        className={`position-fixed start-0 top-0 h-100 bg-dark text-white transition ${isOpen ? 'width-240' : 'width-80'}`}
+        style={{
+          transition: 'all 0.3s ease-in-out',
+          zIndex: 1050
+        }}
       >
         {/* Toggle Button */}
         <button
-          className="absolute -right-3 top-9 bg-gray-900 text-white p-1 rounded-full"
+          className="position-absolute top-40 translate-middle-y bg-dark text-white border-0 rounded-circle p-1"
+          style={{ right: '-12px' }}
           onClick={toggleSidebar}
         >
           {isOpen ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
         </button>
 
         {/* Logo Area */}
-        <div className="flex items-center justify-center h-20 border-b border-gray-800">
+        <div className="d-flex align-items-center justify-content-center border-bottom border-secondary" style={{ height: '80px' }}>
           {isOpen ? (
-            <h1 className="text-xl font-bold">Vector5</h1>
+            <h1 className="fs-4 fw-bold mb-0">Vector5</h1>
           ) : (
             <Menu size={24} />
           )}
         </div>
 
         {/* Menu Items */}
-        <nav className="mt-8">
+        <nav className="mt-4">
           {menuItems.map((item, index) => (
-           <Link 
-           key={index}
-           href={item.path}
-           legacyBehavior
-         >
-           <a className={`flex items-center px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors
-             ${isOpen ? 'justify-start space-x-4' : 'justify-center'}
-             ${router.pathname === item.path ? 'bg-gray-800 text-white' : ''}`}
-           >
-             {item.icon}
-             {isOpen && <span className="ml-2">{item.label}</span>}
-           </a>
-         </Link>
+            <Link 
+              key={index}
+              href={item.path}
+              legacyBehavior
+            >
+              <a 
+                className={`d-flex align-items-center px-3 py-2 text-decoration-none text-light
+                  ${isOpen ? 'justify-content-start' : 'justify-content-center'}
+                  ${router.pathname === item.path ? 'bg-secondary' : 'hover-bg-secondary'}`}
+                style={{ transition: 'background-color 0.2s' }}
+              >
+                {item.icon}
+                {isOpen && <span className="ms-3">{item.label}</span>}
+              </a>
+            </Link>
           ))}
         </nav>
 
         {/* Logout Button */}
         <button
           onClick={onSignout}
-          className={`absolute bottom-8 px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors w-full
-            ${isOpen ? 'justify-start space-x-4' : 'justify-center'} flex items-center`}
+          className={`position-absolute bottom-0 mb-4 px-3 py-2 text-light bg-transparent border-0 w-100
+            ${isOpen ? 'text-start' : 'text-center'} d-flex align-items-center hover-bg-secondary`}
+          style={{ transition: 'background-color 0.2s' }}
         >
           <LogOut size={24} />
-          {isOpen && <span className="ml-4">Sair</span>}
+          {isOpen && <span className="ms-3">Sair</span>}
         </button>
       </div>
 
+      {/* Main Content */}
       <div 
-        className={`flex-1 transition-all duration-300 bg-gray-100
-          ${isOpen ? 'ml-56' : 'ml-8'}`}
+        className={`flex-grow-1 transition-all bg-light ${isOpen ? 'ms-240' : 'ms-80'}`}
+        style={{ transition: 'margin-left 0.3s ease-in-out' }}
       >
-        <div className="p-6">
+        <div className="p-4">
           {children}
         </div>
       </div>
@@ -85,3 +94,4 @@ const Sidebar = ({ onSignout, children }) => {
 };
 
 export default Sidebar;
+
