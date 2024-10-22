@@ -21,8 +21,8 @@ export default async function handler(req, res) {
           }
         })
         .toArray();
-
-        console.log(pedidos)
+        console.log(1)
+        
         res.status(200).json(pedidos);
       }
     

@@ -3,23 +3,29 @@ import { useRouter } from "next/router";
 import { Search } from 'lucide-react';
 import Sidebar from '../../components/Sidebar';
 import { deleteCookie, getDecryptedCookie } from "../../lib/session";
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 
 const VendasDashboard = () => {
   const router = useRouter();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null); // Start with null to indicate no user data yet
+  const [selectedOrder, setSelectedOrder] = useState(null); // For the selected order details
+  const [showModal, setShowModal] = useState(false); // For modal visibility
   
   const GetUser = async () => {
     const response = await getDecryptedCookie("authsesh") || false;
     if (response) {
       setUser(response);
+    } else {
+      setLoading(false); // Stop loading if there's no user
     }
   };
 
   const fetchOrders = async () => {
-    console.log(user.email)
+ 
     try {
       const response = await fetch('/api/Pedidos', {
         method: 'PUT',
@@ -28,7 +34,7 @@ const VendasDashboard = () => {
         },
         body: JSON.stringify({ email: user.email })
       });
-      
+
       const data = await response.json();
       setOrders(data);
     } catch (error) {
@@ -37,11 +43,6 @@ const VendasDashboard = () => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    GetUser();
-    fetchOrders();
-  }, []);
 
   const handleSignout = async () => {
     await deleteCookie("authsesh");
@@ -68,16 +69,33 @@ const VendasDashboard = () => {
     }
   };
 
-  const filteredOrders = orders.filter(order => 
+  const filteredOrders = orders.filter(order =>
     order.telefone.includes(searchTerm) ||
     order.endereco.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const calculateTotal = (carrinha) => {
-    return carrinha.reduce((total, item) => 
+    return carrinha.reduce((total, item) =>
       total + (parseFloat(item.preco) * item.quantity), 0
     ).toFixed(2);
   };
+
+  const handleViewDetails = (order) => {
+    setSelectedOrder(order); // Set the selected order details
+    setShowModal(true); // Open the modal
+  };
+
+  // Fetch user once on component mount
+  useEffect(() => {
+    GetUser();
+  }, []);
+
+  // Fetch orders once user is set
+  useEffect(() => {
+    if (user && user.email) {
+      fetchOrders();
+    }
+  }, [user]);
 
   return (
     <div className="min-vh-100">
@@ -128,7 +146,7 @@ const VendasDashboard = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {filteredOrders.map((order) => (
+                        {filteredOrders && filteredOrders.map((order) => (
                           <tr key={order._id.$oid}>
                             <td>{order.telefone}</td>
                             <td className="text-truncate" style={{ maxWidth: '200px' }}>
@@ -148,6 +166,12 @@ const VendasDashboard = () => {
                             </td>
                             <td>
                               <div className="d-flex gap-2">
+                                <button 
+                                  className="btn btn-sm btn-outline-dark"
+                                  onClick={() => handleViewDetails(order)}
+                                >
+                                  Ver
+                                </button>
                                 {!order.estadoPagamento && (
                                   <button 
                                     className="btn btn-sm btn-primary"
@@ -177,6 +201,35 @@ const VendasDashboard = () => {
           </div>
         </div>
       </div>
+
+      {/* Modal for displaying order details */}
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Order Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedOrder && (
+            <div>
+              <p><strong>Telefone:</strong> {selectedOrder.telefone}</p>
+              <p><strong>Endereço:</strong> {selectedOrder.endereco}</p>
+              <p><strong>Total Items:</strong> {selectedOrder.carrinha.length}</p>
+              <ul>
+                {selectedOrder.carrinha.map((item, index) => (
+                  <li key={index}>
+                    {item.nome} - {item.quantity} x {item.preco} AOA
+                  </li>
+                ))}
+              </ul>
+              <p><strong>Total:</strong> {calculateTotal(selectedOrder.carrinha)} AOA</p>
+            </div>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
