@@ -21,7 +21,13 @@ const Praca = () => {
   const [cadastrosucces, setcadastrosucces] = useState(false);
   const [session, setsession] = useState(false);
   const [loggedin, setloggedin] = useState(false);
-
+  
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat('pt-AO', {
+      style: 'currency',
+      currency: 'AOA'
+    }).format(price);
+  };
 
   
   const [file, setFile] = useState("");
@@ -995,107 +1001,115 @@ const Envio  = async ()=>{
 
 {productDetail && (
                 <>
-                   <main>
-                   <div className='col-md-12' style={{marginTop:"-25px"}}>
-                    <button className='btn btn-dark' onClick={() => { setProductDetail(false); }}> 
-                      <i className='fa fa-arrow-left'></i> {selectedCategory.name}   </button>
-                   
-                  </div>
-        <div className="row mb-5">
-          <div className="col-md-6 mb-4">
-            <div className="carousel-container text-center">
-              <img src={productDetail.img[imagemAtual]} alt={`Imagem ${imagemAtual + 1}`} style={{height:"250px",width:"200px"}}  className=" rounded mb-3" />
-              <div className="d-flex justify-content-center">
-                {productDetail.img.map((img, index) => (
-                  <img
-                    key={index}
-                    src={img}
-                    alt={`Miniatura ${index + 1}`}
-                    style={{ width: '80px',
-                      height: '60px' }}
-                    className={`thumbnail mx-2 ${index === imagemAtual ? 'active' : ''}`}
-                    onClick={() => setImagemAtual(index)}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
+                    <main className="container py-4">
+      <div className="mb-4">
+        <button 
+          className="btn btn-outline-secondary" 
+          onClick={() => setProductDetail(false)}
+        >
+          <i className="fa fa-arrow-left me-2"></i>
+          Voltar
+        </button>
+      </div>
 
-          <div className="col-md-6"  >
-           <h1 className="mb-4 float-start" style={{textAlign:"left"}}>{productDetail.nome}</h1>
-            <p className="lead"> <strong>{productDetail.preco+',00 KZ'}</strong> </p>
-            <div><span class="badge text-bg-secondary">{productDetail.categoria}</span></div>
-            <div className='mb-3'><span class="badge " style={{backgroundColor:"#5c2589"}}>{productDetail.marca}</span></div>
-
-            <p className="mb-4">
-                {productDetail.descricao}
-            </p>
-            <button onClick={() => addToCart(productDetail)}  className="btn btn-outline-dark mb-4">Adicionar ao Carrinho</button>
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-12">
-            <h3 className="text-2xl font-semibold mb-4">Avaliações</h3>
-            <div className="comentarios mb-4">
-              {comentarios.map((comentario, index) => (
-                <div key={index} className="comentario mb-3 p-3 border rounded">
-                  <div className="d-flex align-items-center mb-2">
-                    <img src={comentario.foto} alt={comentario.nome} className="rounded-circle me-3" width="60" height="60" />
-                    <div>
-                      <strong className="d-block">{comentario.nome}</strong>
-                      <small className="text-muted">Avaliação verificada</small>
-                    </div>
-                  </div>
-                  <p className="mt-2">{comentario.texto}</p>
-                    {comentario.ratings.map((rating, i) => (
-                               <i className='fa fa-star text-warning'></i>
-                              ))}
-
-                              <p className='float-end pull-right float-right'>
-                            {comentario.date}
-                              </p>
-                </div>
+      <div className="row">
+        <div className="col-md-6">
+          <div className="text-center">
+            <img 
+              src={productDetail.img[imagemAtual]} 
+              alt={productDetail.nome}
+              className="img-fluid rounded mb-3"
+              style={{ maxHeight: '400px', objectFit: 'contain' }}
+            />
+            <div className="d-flex justify-content-center gap-2">
+              {productDetail.img.map((img, index) => (
+                <img
+                  key={index}
+                  src={img}
+                  alt={`${productDetail.nome} - imagem ${index + 1}`}
+                  className={`cursor-pointer rounded ${index === imagemAtual ? 'border border-primary' : ''}`}
+                  style={{ 
+                    width: '80px',
+                    height: '80px',
+                    objectFit: 'cover',
+                    cursor: 'pointer'
+                  }}
+                  onClick={() => setImagemAtual(index)}
+                />
               ))}
-              <button className="btn btn-outline-dark">Ver Mais</button>
             </div>
-
-            <h4 className="text-lg font-semibold mb-3">Adicionar Comentário</h4>
-            <form onSubmit={adicionarComentario} className="bg-light p-4 rounded">
-              <div className="mb-3">
-                <input
-                  type="text"
-                  name="nome"
-                  value={novoComentario.nome}
-                  onChange={handleComentarioChange}
-                  placeholder="Seu nome"
-                  className="form-control"
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <textarea
-                  name="texto"
-                  value={novoComentario.texto}
-                  onChange={handleComentarioChange}
-                  placeholder="Seu comentário"
-                  className="form-control"
-                  required
-                ></textarea>
-              </div>
-              <div className="mb-3">
-                <input
-                  type="file"
-                  onChange={handleFotoChange}
-                  accept="image/*"
-                  className="form-control"
-                />
-              </div>
-              <button type="submit" className="btn btn-outline-dark">Enviar Comentário</button>
-            </form>
           </div>
         </div>
-      </main>
+
+        <div className="col-md-6">
+          <h1 className="h2 mb-3">{productDetail.nome}</h1>
+          
+          <div className="mb-3">
+            <span className="badge bg-secondary me-2">{productDetail.categoria}</span>
+            <span className="badge" style={{ backgroundColor: '#5c2589' }}>{productDetail.marca}</span>
+          </div>
+
+          <div className="mb-4">
+            <h3 className="h4 mb-0">{formatPrice(productDetail.preco)}</h3>
+            {productDetail.preco_promocional && (
+              <small className="text-muted text-decoration-line-through">
+                {formatPrice(productDetail.preco_promocional)}
+              </small>
+            )}
+          </div>
+
+          <div className="mb-4">
+            <h4 className="h6 mb-2">Especificações:</h4>
+            <ul className="list-unstyled">
+              <li><strong>Ano:</strong> {productDetail.ano}</li>
+              <li><strong>Chassi:</strong> {productDetail.chassi}</li>
+              <li><strong>Estoque:</strong> {productDetail.estoque} unidades</li>
+              <li><strong>Peso:</strong> {productDetail.peso} {productDetail.medida}</li>
+              <li><strong>Dimensão:</strong> {productDetail.dimensao}</li>
+              <li><strong>Material:</strong> {productDetail.material}</li>
+              <li><strong>Garantia:</strong> {productDetail.garantia}</li>
+            </ul>
+          </div>
+
+          <div className="mb-4">
+            <h4 className="h6 mb-2">Descrição:</h4>
+            <p>{productDetail.descricao}</p>
+          </div>
+
+          <div className="d-flex gap-2">
+            <button 
+              onClick={() => addToCart(productDetail)}
+              className="btn btn-primary"
+            >
+              Adicionar ao Carrinho
+            </button>
+            <button className="btn btn-outline-primary">
+              <i className="far fa-heart"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="row mt-5">
+        <div className="col-12">
+          <div className="card">
+            <div className="card-body">
+              <h4 className="card-title mb-4">Informações Adicionais</h4>
+              <div className="row">
+                <div className="col-md-6">
+                  <h5 className="h6">Instruções de Instalação</h5>
+                  <p>{productDetail.instrucao_instalacao}</p>
+                </div>
+                <div className="col-md-6">
+                  <h5 className="h6">Compatibilidade</h5>
+                  <p>{productDetail.compatibilidade}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
                 </>
               )}
               

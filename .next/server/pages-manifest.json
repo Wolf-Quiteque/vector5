@@ -3,8 +3,7 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/fornecedor/pecas": "pages/fornecedor/pecas.js",
-  "/fornecedor": "pages/fornecedor.js",
-  "/api/Pecas/all": "pages/api/Pecas/all.js",
-  "/api/Pedidos": "pages/api/Pedidos.js",
-  "/api/Pecas/fornecedor": "pages/api/Pecas/fornecedor.js"
+  "/": "pages/index.js",
+  "/praca": "pages/praca.js",
+  "/api/Pecas/all": "pages/api/Pecas/all.js"
 }
