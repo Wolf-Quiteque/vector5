@@ -3,8 +3,6 @@ import { useRouter } from "next/router";
 import { Search } from 'lucide-react';
 import Sidebar from '../../components/Sidebar';
 import { deleteCookie, getDecryptedCookie } from "../../lib/session";
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
 
 const VendasDashboard = () => {
   const router = useRouter();
@@ -202,34 +200,7 @@ const VendasDashboard = () => {
         </div>
       </div>
 
-      {/* Modal for displaying order details */}
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Order Details</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {selectedOrder && (
-            <div>
-              <p><strong>Telefone:</strong> {selectedOrder.telefone}</p>
-              <p><strong>Endereço:</strong> {selectedOrder.endereco}</p>
-              <p><strong>Total Items:</strong> {selectedOrder.carrinha.length}</p>
-              <ul>
-                {selectedOrder.carrinha.map((item, index) => (
-                  <li key={index}>
-                    {item.nome} - {item.quantity} x {item.preco} AOA
-                  </li>
-                ))}
-              </ul>
-              <p><strong>Total:</strong> {calculateTotal(selectedOrder.carrinha)} AOA</p>
-            </div>
-          )}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
+
     </div>
   );
 };
