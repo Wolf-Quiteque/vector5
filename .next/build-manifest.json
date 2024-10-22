@@ -25,11 +25,6 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/fornecedor/pecas": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/fornecedor/pecas.js"
-    ],
     "/fornecedor/vendas": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
