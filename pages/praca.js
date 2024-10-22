@@ -1061,6 +1061,8 @@ const Envio  = async ()=>{
           <div className="mb-4">
             <h4 className="h6 mb-2">Especificações:</h4>
             <ul className="list-unstyled">
+            <li><strong>Marca:</strong> {productDetail.marca}</li>
+
               <li><strong>Ano:</strong> {productDetail.ano}</li>
               <li><strong>Chassi:</strong> {productDetail.chassi}</li>
               <li><strong>Estoque:</strong> {productDetail.estoque} unidades</li>
@@ -1079,11 +1081,12 @@ const Envio  = async ()=>{
           <div className="d-flex gap-2">
             <button 
               onClick={() => addToCart(productDetail)}
-              className="btn btn-primary"
+              className="btn btn-dark text-light"
+              style={{backgroundColor:"#5c2589"}}
             >
               Adicionar ao Carrinho
             </button>
-            <button className="btn btn-outline-primary">
+            <button className="btn btn-outline-dark ">
               <i className="far fa-heart"></i>
             </button>
           </div>
@@ -1109,6 +1112,68 @@ const Envio  = async ()=>{
           </div>
         </div>
       </div>
+    
+      <div className="row">
+          <div className="col-12">
+            <h3 className="text-2xl font-semibold mb-4">Avaliações</h3>
+            <div className="comentarios mb-4">
+              {comentarios.map((comentario, index) => (
+                <div key={index} className="comentario mb-3 p-3 border rounded">
+                  <div className="d-flex align-items-center mb-2">
+                    <img src={comentario.foto} alt={comentario.nome} className="rounded-circle me-3" width="60" height="60" />
+                    <div>
+                      <strong className="d-block">{comentario.nome}</strong>
+                      <small className="text-muted">Avaliação verificada</small>
+                    </div>
+                  </div>
+                  <p className="mt-2">{comentario.texto}</p>
+                    {comentario.ratings.map((rating, i) => (
+                               <i className='fa fa-star text-warning'></i>
+                              ))}
+
+                              <p className='float-end pull-right float-right'>
+                            {comentario.date}
+                              </p>
+                </div>
+              ))}
+              <button className="btn btn-outline-dark">Ver Mais</button>
+            </div>
+
+            <h4 className="text-lg font-semibold mb-3">Adicionar Comentário</h4>
+            <form onSubmit={adicionarComentario} className="bg-light p-4 rounded">
+              <div className="mb-3">
+                <input
+                  type="text"
+                  name="nome"
+                  value={novoComentario.nome}
+                  onChange={handleComentarioChange}
+                  placeholder="Seu nome"
+                  className="form-control"
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <textarea
+                  name="texto"
+                  value={novoComentario.texto}
+                  onChange={handleComentarioChange}
+                  placeholder="Seu comentário"
+                  className="form-control"
+                  required
+                ></textarea>
+              </div>
+              <div className="mb-3">
+                <input
+                  type="file"
+                  onChange={handleFotoChange}
+                  accept="image/*"
+                  className="form-control"
+                />
+              </div>
+              <button type="submit" className="btn btn-outline-dark">Enviar Comentário</button>
+            </form>
+          </div>
+        </div>
     </main>
                 </>
               )}
