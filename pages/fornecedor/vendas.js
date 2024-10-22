@@ -19,8 +19,16 @@ const VendasDashboard = () => {
   };
 
   const fetchOrders = async () => {
+    console.log(user.email)
     try {
-      const response = await fetch('/api/Pedidos');
+      const response = await fetch('/api/Pedidos', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email: user.email })
+      });
+      
       const data = await response.json();
       setOrders(data);
     } catch (error) {

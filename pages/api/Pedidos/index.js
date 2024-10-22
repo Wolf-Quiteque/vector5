@@ -10,7 +10,24 @@ export default async function handler(req, res) {
     if (req.method === 'GET') {
       const pedidos = await db.collection('pedidos').find({}).toArray();
       res.status(200).json(pedidos);
-    } else if (req.method === 'POST') {
+    }
+      else if (req.method === 'PUT') {
+        const { email } = req.body; 
+        const pedidos = await db.collection('pedidos').find({
+          'carrinha': {
+            $elemMatch: {
+              'email': email
+            }
+          }
+        })
+        .toArray();
+
+        console.log(pedidos)
+        res.status(200).json(pedidos);
+      }
+    
+    
+    else if (req.method === 'POST') {
   
 
 
