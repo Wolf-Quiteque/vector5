@@ -143,7 +143,7 @@ const VendasDashboard = () => {
                                 {!order.estadoPagamento && (
                                   <button 
                                     className="btn btn-sm btn-primary"
-                                    onClick={() => updateOrderStatus(order._id.$oid, 'estadoPagamento')}
+                                    onClick={() => updateOrderStatus(order._id, 'estadoPagamento')}
                                   >
                                     Marcar Pago
                                   </button>
@@ -151,7 +151,7 @@ const VendasDashboard = () => {
                                 {!order.estadoEnvio && (
                                   <button 
                                     className="btn btn-sm btn-success"
-                                    onClick={() => updateOrderStatus(order._id.$oid, 'estadoEnvio')}
+                                    onClick={() => updateOrderStatus(order._id, 'estadoEnvio')}
                                   >
                                     Marcar Entregue
                                   </button>

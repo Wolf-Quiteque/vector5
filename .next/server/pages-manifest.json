@@ -2,7 +2,7 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/fornecedor/vendas": "pages/fornecedor/vendas.js",
-  "/api/Pedidos/[id]": "pages/api/Pedidos/[id].js",
-  "/api/Pedidos": "pages/api/Pedidos.js"
+  "/praca": "pages/praca.js",
+  "/": "pages/index.js",
+  "/api/Pecas/all": "pages/api/Pecas/all.js"
 }

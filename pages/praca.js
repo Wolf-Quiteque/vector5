@@ -20,6 +20,7 @@ const Praca = () => {
   const [lgoincadastrar, setlgoincadastrar] = useState(true);
   const [cadastrosucces, setcadastrosucces] = useState(false);
   const [session, setsession] = useState(false);
+  const [text, settext] = useState('');
   const [loggedin, setloggedin] = useState(false);
   
   const formatPrice = (price) => {
@@ -49,6 +50,7 @@ const Praca = () => {
 
   const [productDetail, setProductDetail] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+
   const [currentPage, setCurrentPage] = useState(1);
 const itemsPerPage = 10;
 
@@ -64,6 +66,12 @@ const [receiptNumber, setReceiptNumber] = useState('');
 function Getrecptnumber (){
   setReceiptNumber(`REC${Math.floor(Math.random() * 1000000).toString().padStart(6, '0')}`);
 }
+
+const calculateTotalnew = () => {
+  const totalNumber = cart.reduce((total, item) => total + item.preco * item.quantity, 0);
+  // Convert to string with 2 decimal places and ",00" format
+  return totalNumber.toString();
+};
 
 const generatePDF = () => {
   setCart([])
@@ -162,9 +170,92 @@ const handleUserDataChange = (e) => {
   setUserData({ ...userData, [e.target.name]: e.target.value });
 };
 
-const handleFileChange = (e) => {
-  setComprovativo(e.target.files[0]);
+const handleFileChange = async (e) => {
+  setComprovativo(null);
+  const file = e.target.files[0];
+  
+  if (!file) return;
+
+  // Check if file is PDF
+  if (file.type !== 'application/pdf') {
+    alert('Please select a PDF file');
+    return;
+  }
+
+  // Check file size (1MB limit)
+  const maxSize = 1 * 1024 * 1024;
+  if (file.size > maxSize) {
+    alert('O documento selecionado é muito grande. Por favor, selecione um arquivo menor que 1 MB.');
+    return;
+  }
+
+
+ 
+  setloading(true);
+
+  try {
+    // Create FormData
+    const formData = new FormData();
+    formData.append('file', file);
+
+    // Upload file
+    const response = await fetch('https://verifica-jet.vercel.app/upload', {
+      method: 'POST',
+      body: formData,
+    });
+
+    const jsonResponse = await response.json();
+    const comprovativoText = jsonResponse.text.replace(/\n/g, ' ').replace(/\s+/g, '');
+    settext(comprovativoText);
+
+    if (jsonResponse.original) {
+      const Total = calculateTotalnew ()
+
+      
+      const myVariable = jsonResponse.text;
+      
+      // Check if text contains required information
+      const hasTotal = myVariable.includes(Total + ',00');
+      const hasReference = [
+        "AO06.0055.0000.1009.6480.1012.9",
+        "AO06 0055 0000 1009 6480 1012 9",
+        "AO06005500001009648010129"
+      ].some(ref => myVariable.includes(ref));
+
+      if (hasTotal && hasReference) {
+        try {
+          // Verify if comprovativo is unique
+          const verificationResponse = await axios.post(
+            'https://glab-api.vercel.app/api/aef/comprovativos',
+            { data: comprovativoText }
+          );
+
+          if (verificationResponse.status === 200) {
+            const data = verificationResponse.data;
+            if (!data.length > 0) {
+              setComprovativo(file);
+              setPdfChecked(true);
+              setloading(false);
+              return;
+            }
+          }
+        } catch (error) {
+          console.error('Error checking data:', error);
+        }
+      }
+    }
+
+    setloading(false);
+    alert("COMPORVATIVO REJEITADO PELO VERIFICADOR FINPAY (seu comprovativo é falso ou duplicado)");
+    setComprovativo(null);
+
+  } catch (error) {
+    console.error('Error uploading or processing document:', error);
+    setloading(false);
+    alert('Error processing document. Please try again.');
+  }
 };
+
 
 const copyIBAN = () => {
   // Simulação de IBAN
@@ -333,6 +424,90 @@ const renderStep = () => {
 
 //CARREGAR COMPROFAVTIO----------------------------
 
+const handleUploadPDF = async () => {
+  setPdfFile(null)
+
+  const Total = calculateTotal()
+  let result = await DocumentPicker.getDocumentAsync({
+    type: "application/pdf", // Only allow PDF files
+  });
+  
+  if (result.assets[0]) {
+        
+    const { size, name, uri } = result.assets[0]; // Access the file size, name, and uri
+
+    const maxSize = 1 * 1024 * 1024; // 5 MB limit, adjust as necessary
+
+    if (size > maxSize) {
+      alert("O documento selecionado é muito grande. Por favor, selecione um arquivo menor que 1 MB.");
+      return; // Stop further processing if file size exceeds the limit
+    }
+
+    
+    setPdfFile(result.assets[0]);
+    setloading(true)
+
+    try { 
+    const { uri, name, mimeType } = result.assets[0];
+
+          // Step 3: Convert the file to a format suitable for posting (using FormData)
+          const formData = new FormData();
+          formData.append('file', {
+              uri,
+              name,  // File name
+              type: mimeType || 'application/pdf',  // MIME type
+          });
+
+          // Step 4: Send the file to your backend using fetch
+          const response = await fetch('https://verifica-jet.vercel.app/upload', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'multipart/form-data',
+              },
+              body: formData,
+          });
+
+          const jsonResponse = await response.json();
+          const text = jsonResponse.text
+         const  comprovativoText = text.replace(/\n/g, ' ');
+          const comprovativoTextt = comprovativoText.replace(/\s+/g, '');
+          settext(comprovativoTextt)
+
+          if(jsonResponse.original){
+            var myVariable = jsonResponse.text
+            if (myVariable.includes(Total+',00')  && myVariable.includes("AO06.0055.0000.1009.6480.1012.9") || myVariable.includes("AO06 0055 0000 1009 6480 1012 9") || myVariable.includes("AO06005500001009648010129")) {
+             
+              try {
+                const response = await axios.post('https://glab-api.vercel.app/api/aef/comprovativos', {
+                  data: comprovativoTextt
+                });
+                if (response.status === 200) {
+                  const data = response.data;
+              
+
+                  if (!data.length > 0) {
+              setpdfChecked(true)
+              setloading(false)
+
+                    return false
+                  } 
+                }
+              } catch (error) {
+                console.error('Error checking data:', error);
+              }
+            }
+          }
+          setloading(false)
+
+            alert("COMPORVATIVO REJEITADO PELO VERIFICADOR FINPAY (seu comprovativo é falso ou duplicado)")
+            setPdfFile(null)
+      } catch (error) {
+          console.error('Error picking or uploading document:', error);
+      }
+
+  } 
+};
+
 const Envio  = async ()=>{
   setloading(true)
   var pedido = {
@@ -377,7 +552,10 @@ const Envio  = async ()=>{
   
   
   try {
-    const res = await fetch(`/api/Pedidos/`, {
+    await axios.post('https://glab-api.vercel.app/api/aef/add', {
+      data: text
+    });
+     await fetch(`/api/Pedidos/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -1004,7 +1182,7 @@ const Envio  = async ()=>{
                     <main className="container py-4">
       <div className="mb-4">
         <button 
-          className="btn btn-outline-secondary" 
+          className="btn btn-outline-dark" 
           onClick={() => setProductDetail(false)}
         >
           <i className="fa fa-arrow-left me-2"></i>
