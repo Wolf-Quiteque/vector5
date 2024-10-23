@@ -225,6 +225,8 @@ const FornecedorHome = () => {
 
       console.log(error);
     }
+    modal.hide();
+
   };
 
 
@@ -426,7 +428,7 @@ const FornecedorHome = () => {
             {/* Add/Edit Modal */}
             <div className="modal fade" id="novoproduto" tabIndex="-1" aria-hidden="true">
   <div className="modal-dialog modal-dialog-centered modal-lg">
-    <div className="modal-content bg-dark text-light">
+    <div className="modal-content ">
       <div className="modal-header border-secondary">
         <h5 className="modal-title">{selectedPeca ? 'Editar' : 'Nova'} Peça</h5>
         <button
@@ -446,7 +448,7 @@ const FornecedorHome = () => {
               <input
                 type="text"
                 id="nome"
-                className="form-control bg-dark text-light border-secondary"
+                className="form-control  border-secondary"
                 defaultValue={selectedPeca?.nome}
                 onChange={handleChange}
               />
@@ -458,7 +460,7 @@ const FornecedorHome = () => {
               <input
                 type="text"
                 id="chassi"
-                className="form-control bg-dark text-light border-secondary"
+                className="form-control  border-secondary"
                 defaultValue={selectedPeca?.chassi}
                 onChange={handleChange}
               />
@@ -470,7 +472,7 @@ const FornecedorHome = () => {
               <input
                 type="number"
                 id="ano"
-                className="form-control bg-dark text-light border-secondary"
+                className="form-control  border-secondary"
                 defaultValue={selectedPeca?.ano}
                 onChange={handleChange}
               />
@@ -481,7 +483,7 @@ const FornecedorHome = () => {
               <label htmlFor="descricao" className="form-label">Descrição</label>
               <textarea
                 id="descricao"
-                className="form-control bg-dark text-light border-secondary"
+                className="form-control  border-secondary"
                 defaultValue={selectedPeca?.descricao}
                 onChange={handleChange}
               />
@@ -493,7 +495,7 @@ const FornecedorHome = () => {
               <input
                 type="text"
                 id="marca"
-                className="form-control bg-dark text-light border-secondary"
+                className="form-control  border-secondary"
                 defaultValue={selectedPeca?.marca}
                 onChange={handleChange}
               />
@@ -504,7 +506,7 @@ const FornecedorHome = () => {
               <label htmlFor="categoria" className="form-label">Categoria</label>
               <select
                 id="categoria"
-                className="form-select bg-dark text-light border-secondary"
+                className="form-select  border-secondary"
                 value={selectedCategory}
                 onChange={handleCategoryChange}
               >
@@ -526,7 +528,7 @@ const FornecedorHome = () => {
               <label htmlFor="subcategoria" className="form-label">Subcategoria</label>
               <select
                 id="subcategoria"
-                className="form-select bg-dark text-light border-secondary"
+                className="form-select  border-secondary"
                 onChange={handleSubcategoryChange}
                 disabled={!selectedCategory}
               >
@@ -549,7 +551,7 @@ const FornecedorHome = () => {
               <input
                 type="text"
                 id="estoque"
-                className="form-control bg-dark text-light border-secondary"
+                className="form-control  border-secondary"
                 defaultValue={selectedPeca?.estoque}
                 onChange={handleChange}
               />
@@ -561,7 +563,7 @@ const FornecedorHome = () => {
               <input
                 type="number"
                 id="preco"
-                className="form-control bg-dark text-light border-secondary"
+                className="form-control  border-secondary"
                 step="0.01"
                 defaultValue={selectedPeca?.preco}
                 onChange={handleChange}
@@ -574,7 +576,7 @@ const FornecedorHome = () => {
               <input
                 type="number"
                 id="preco_promocional"
-                className="form-control bg-dark text-light border-secondary"
+                className="form-control  border-secondary"
                 step="0.01"
                 defaultValue={selectedPeca?.preco_promocional}
                 onChange={handleChange}
@@ -589,7 +591,7 @@ const FornecedorHome = () => {
                 id="imagens"
                 multiple
                 onChange={handleImageChange}
-                className="form-control bg-dark text-light border-secondary"
+                className="form-control  border-secondary"
                 accept=".png, .jpeg, .jpg"
               />
               <div className="d-flex flex-wrap gap-2 mt-2">
@@ -619,7 +621,7 @@ const FornecedorHome = () => {
               <input
                 type="number"
                 id="peso"
-                className="form-control bg-dark text-light border-secondary"
+                className="form-control  border-secondary"
                 step="0.01"
                 defaultValue={selectedPeca ? selectedPeca.peso : ""}
                 onChange={handleChange}
@@ -631,7 +633,7 @@ const FornecedorHome = () => {
               <label htmlFor="medida" className="form-label">Forma de Medir</label>
               <select
                 id="medida"
-                className="form-select bg-dark text-light border-secondary"
+                className="form-select  border-secondary"
                 defaultValue={selectedPeca ? selectedPeca.medida : ""}
                 onChange={handleChange}
               >
@@ -652,7 +654,7 @@ const FornecedorHome = () => {
               <input
                 type="text"
                 id="dimensao"
-                className="form-control bg-dark text-light border-secondary"
+                className="form-control  border-secondary"
                 defaultValue={selectedPeca ? selectedPeca.dimensao : ""}
                 onChange={handleChange}
               />
@@ -664,7 +666,7 @@ const FornecedorHome = () => {
               <input
                 type="text"
                 id="compatibilidade"
-                className="form-control bg-dark text-light border-secondary"
+                className="form-control  border-secondary"
                 defaultValue={selectedPeca ? selectedPeca.compatibilidade : ""}
                 onChange={handleChange}
               />
@@ -676,7 +678,7 @@ const FornecedorHome = () => {
               <input
                 type="number"
                 id="quantidade_fornecida"
-                className="form-control bg-dark text-light border-secondary"
+                className="form-control  border-secondary"
                 defaultValue={selectedPeca ? selectedPeca.quantidade_fornecida : ""}
                 onChange={handleChange}
               />
@@ -688,7 +690,7 @@ const FornecedorHome = () => {
               <input
                 type="text"
                 id="unidades_fornecimento"
-                className="form-control bg-dark text-light border-secondary"
+                className="form-control  border-secondary"
                 defaultValue={selectedPeca ? selectedPeca.unidades_fornecimento : ""}
                 onChange={handleChange}
               />
@@ -700,7 +702,7 @@ const FornecedorHome = () => {
               <input
                 type="text"
                 id="garantia"
-                className="form-control bg-dark text-light border-secondary"
+                className="form-control  border-secondary"
                 defaultValue={selectedPeca ? selectedPeca.garantia : ""}
                 onChange={handleChange}
               />
@@ -717,12 +719,20 @@ const FornecedorHome = () => {
                 >
                   Cancelar
                 </button>
-                <button
+                {loading ? (<button
+                  className="btn btn-outline text-light disabled" style={{backgroundColor:"#5c2589"}}
+                >
+                      <div class="spinner-grow text-light" role="status">
+  <span class="sr-only">Loading...</span>
+</div>
+         
+                </button>):(<button
                   type="submit"
-                  className="btn btn-primary"
+                  className="btn btn-outline text-light"
+                  style={{backgroundColor:"#5c2589"}}
                 >
                   {selectedPeca ? 'Atualizar' : 'Criar'} Peça
-                </button>
+                </button>)}
               </div>
             </div>
           </div>
