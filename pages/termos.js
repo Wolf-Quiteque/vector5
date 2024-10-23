@@ -58,7 +58,6 @@ export default function TermosECondicoes() {
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ut feugiat nisi, vitae vestibulum metus. Fusce non suscipit odio. Sed nec leo at magna tincidunt dignissim ut nec est.</p>
           <p>Maecenas auctor metus non diam varius, ac aliquet elit feugiat. Donec fermentum magna et sollicitudin blandit. Integer auctor velit quis ipsum consequat, eget fringilla felis interdum.</p>
           <p>Aenean congue, arcu non luctus vestibulum, odio elit cursus orci, sit amet condimentum nisi leo et lacus.</p>
-          <button className="btn btn-primary mt-3">Entendi os Termos</button>
         </div>
       </div>
 
