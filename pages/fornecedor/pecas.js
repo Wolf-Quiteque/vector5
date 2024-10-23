@@ -424,133 +424,314 @@ const FornecedorHome = () => {
             </div>
 
             {/* Add/Edit Modal */}
-            <div className="modal fade" id="novoproduto" tabIndex="-1">
-              <div className="modal-dialog modal-lg">
-                <div className="modal-content">
-                  <div className="modal-header">
-                    <h5 className="modal-title">{selectedPeca ? 'Editar' : 'Nova'} Peça</h5>
-                    <button 
-                      type="button" 
-                      className="btn-close" 
-                      data-bs-dismiss="modal"
-                      onClick={() => setSelectedPeca(null)}
-                    ></button>
+            <div className="modal fade" id="novoproduto" tabIndex="-1" aria-hidden="true">
+  <div className="modal-dialog modal-dialog-centered modal-lg">
+    <div className="modal-content bg-dark text-light">
+      <div className="modal-header border-secondary">
+        <h5 className="modal-title">{selectedPeca ? 'Editar' : 'Nova'} Peça</h5>
+        <button
+          type="button"
+          className="btn-close"
+          data-bs-dismiss="modal"
+          onClick={() => setSelectedPeca(null)}
+          aria-label="Close"
+        ></button>
+      </div>
+      <div className="modal-body">
+        <form onSubmit={handleSubmit}>
+          <div className="row g-3">
+            {/* Nome */}
+            <div className="col-md-6">
+              <label htmlFor="nome" className="form-label">Nome</label>
+              <input
+                type="text"
+                id="nome"
+                className="form-control bg-dark text-light border-secondary"
+                defaultValue={selectedPeca?.nome}
+                onChange={handleChange}
+              />
+            </div>
+
+            {/* Chassi / VIN */}
+            <div className="col-md-6">
+              <label htmlFor="chassi" className="form-label">Chassi / VIN</label>
+              <input
+                type="text"
+                id="chassi"
+                className="form-control bg-dark text-light border-secondary"
+                defaultValue={selectedPeca?.chassi}
+                onChange={handleChange}
+              />
+            </div>
+
+            {/* Ano */}
+            <div className="col-md-6">
+              <label htmlFor="ano" className="form-label">Ano</label>
+              <input
+                type="number"
+                id="ano"
+                className="form-control bg-dark text-light border-secondary"
+                defaultValue={selectedPeca?.ano}
+                onChange={handleChange}
+              />
+            </div>
+
+            {/* Descrição */}
+            <div className="col-md-6">
+              <label htmlFor="descricao" className="form-label">Descrição</label>
+              <textarea
+                id="descricao"
+                className="form-control bg-dark text-light border-secondary"
+                defaultValue={selectedPeca?.descricao}
+                onChange={handleChange}
+              />
+            </div>
+
+            {/* Marca */}
+            <div className="col-md-6">
+              <label htmlFor="marca" className="form-label">Marca</label>
+              <input
+                type="text"
+                id="marca"
+                className="form-control bg-dark text-light border-secondary"
+                defaultValue={selectedPeca?.marca}
+                onChange={handleChange}
+              />
+            </div>
+
+            {/* Categoria */}
+            <div className="col-md-6">
+              <label htmlFor="categoria" className="form-label">Categoria</label>
+              <select
+                id="categoria"
+                className="form-select bg-dark text-light border-secondary"
+                value={selectedCategory}
+                onChange={handleCategoryChange}
+              >
+                {selectedPeca ? (
+                  <option value="">{selectedPeca?.categoria}</option>
+                ) : (
+                  <option value="">Selecione uma categoria</option>
+                )}
+                {categories.map((category, index) => (
+                  <option key={index} value={category.name}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Subcategoria */}
+            <div className="col-md-6">
+              <label htmlFor="subcategoria" className="form-label">Subcategoria</label>
+              <select
+                id="subcategoria"
+                className="form-select bg-dark text-light border-secondary"
+                onChange={handleSubcategoryChange}
+                disabled={!selectedCategory}
+              >
+                {selectedPeca ? (
+                  <option value="">{selectedPeca?.subcategoria}</option>
+                ) : (
+                  <option value="">Selecione uma subcategoria</option>
+                )}
+                {subcategories.map((subcategory, index) => (
+                  <option key={index} value={subcategory}>
+                    {subcategory}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Estoque */}
+            <div className="col-md-6">
+              <label htmlFor="estoque" className="form-label">Estoque</label>
+              <input
+                type="text"
+                id="estoque"
+                className="form-control bg-dark text-light border-secondary"
+                defaultValue={selectedPeca?.estoque}
+                onChange={handleChange}
+              />
+            </div>
+
+            {/* Preço */}
+            <div className="col-md-6">
+              <label htmlFor="preco" className="form-label">Preço</label>
+              <input
+                type="number"
+                id="preco"
+                className="form-control bg-dark text-light border-secondary"
+                step="0.01"
+                defaultValue={selectedPeca?.preco}
+                onChange={handleChange}
+              />
+            </div>
+
+            {/* Preço Promocional */}
+            <div className="col-md-6">
+              <label htmlFor="preco_promocional" className="form-label">Preço Promocional</label>
+              <input
+                type="number"
+                id="preco_promocional"
+                className="form-control bg-dark text-light border-secondary"
+                step="0.01"
+                defaultValue={selectedPeca?.preco_promocional}
+                onChange={handleChange}
+              />
+            </div>
+
+            {/* Imagens */}
+            <div className="col-12">
+              <label htmlFor="imagens" className="form-label">Imagens</label>
+              <input
+                type="file"
+                id="imagens"
+                multiple
+                onChange={handleImageChange}
+                className="form-control bg-dark text-light border-secondary"
+                accept=".png, .jpeg, .jpg"
+              />
+              <div className="d-flex flex-wrap gap-2 mt-2">
+                {imageUrls.map((url, index) => (
+                  <div key={index} className="position-relative">
+                    <img
+                      src={url}
+                      alt={`Preview ${index + 1}`}
+                      className="rounded"
+                      style={{ height: '100px', width: '100px', objectFit: 'cover' }}
+                    />
+                    <button
+                      type="button"
+                      className="btn btn-danger btn-sm position-absolute top-0 end-0"
+                      onClick={() => removeImage(index)}
+                    >
+                      &times;
+                    </button>
                   </div>
-                  <div className="modal-body">
-                    <form onSubmit={handleSubmit}>
-                      <div className="row g-3">
-                        {/* Nome */}
-                        <div className="col-md-6">
-                          <label className="form-label">Nome</label>
-                          <input
-                            type="text"
-                            id="nome"
-                            className="form-control"
-                            defaultValue={selectedPeca?.nome}
-                            onChange={handleChange}
-                          />
-                        </div>
-
-                        {/* Chassi */}
-                        <div className="col-md-6">
-                          <label className="form-label">Chassi / VIN</label>
-                          <input
-                            type="text"
-                            id="chassi"
-                            className="form-control"
-                            defaultValue={selectedPeca?.chassi}
-                            onChange={handleChange}
-                          />
-                        </div>
-
-                        {/* Ano */}
-                        <div className="col-md-6">
-                          <label className="form-label">Ano</label>
-                          <input
-                            type="number"
-                            id="ano"
-                            className="form-control"
-                            defaultValue={selectedPeca?.ano}
-                            onChange={handleChange}
-                          />
-                        </div>
-
-                        {/* Descrição */}
-                        <div className="col-md-6">
-                          <label className="form-label">Descrição</label>
-                          <textarea
-                            id="descricao"
-                            className="form-control"
-                            defaultValue={selectedPeca?.descricao}
-                            onChange={handleChange}
-                          />
-                        </div>
-
-                        {/* Marca */}
-                        <div className="col-md-6">
-                          <label className="form-label">Marca</label>
-                          <input
-                            type="text"
-                            id="marca"
-                            className="form-control"
-                            defaultValue={selectedPeca?.marca}
-                            onChange={handleChange}
-                          />
-                        </div>
-
-                        {/* Categoria */}
-                        <div className="col-md-6">
-                          <label className="form-label">Categoria</label>
-                          <select
-                            id="categoria"
-                            className="form-select"
-                            value={selectedCategory}
-                            onChange={handleCategoryChange}
-                          >
-                            {selectedPeca ? 
-                              <option value="">{selectedPeca?.categoria}</option> : 
-                              <option value="">Selecione uma categoria</option>
-                            }
-                            {categories.map((category, index) => (
-                              <option key={index} value={category.name}>
-                                {category.name}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-
-                        {/* Rest of the form fields following the same pattern */}
-                        {/* ... (convert all remaining form fields using the same Bootstrap classes) */}
-
-                      </div>
-
-                      <div className="mt-4 text-end">
-                        <button
-                          type="button"
-                          className="btn btn-secondary me-2"
-                          data-bs-dismiss="modal"
-                        >
-                          Cancelar
-                        </button>
-                        <button
-                          type="submit"
-                          className="btn btn-primary"
-                          disabled={loading}
-                        >
-                          {loading ? (
-                            <div className="spinner-border spinner-border-sm" role="status">
-                              <span className="visually-hidden">Loading...</span>
-                            </div>
-                          ) : (
-                            selectedPeca ? 'Salvar Alterações' : 'Cadastrar'
-                          )}
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
+
+            {/* Peso */}
+            <div className="col-md-6">
+              <label htmlFor="peso" className="form-label">Peso</label>
+              <input
+                type="number"
+                id="peso"
+                className="form-control bg-dark text-light border-secondary"
+                step="0.01"
+                defaultValue={selectedPeca ? selectedPeca.peso : ""}
+                onChange={handleChange}
+              />
+            </div>
+
+            {/* Forma de Medir */}
+            <div className="col-md-6">
+              <label htmlFor="medida" className="form-label">Forma de Medir</label>
+              <select
+                id="medida"
+                className="form-select bg-dark text-light border-secondary"
+                defaultValue={selectedPeca ? selectedPeca.medida : ""}
+                onChange={handleChange}
+              >
+                <option value="">Selecione uma opção</option>
+                <option value="L">Litros (L)</option>
+                <option value="K">Kilos (K)</option>
+                <option value="G">Gramas (G)</option>
+                <option value="M">Metros (M)</option>
+                <option value="CM">Centímetros (CM)</option>
+                <option value="MM">Milímetros (MM)</option>
+                <option value="UN">Unidades (UN)</option>
+              </select>
+            </div>
+
+            {/* Dimensão */}
+            <div className="col-md-6">
+              <label htmlFor="dimensao" className="form-label">Dimensão</label>
+              <input
+                type="text"
+                id="dimensao"
+                className="form-control bg-dark text-light border-secondary"
+                defaultValue={selectedPeca ? selectedPeca.dimensao : ""}
+                onChange={handleChange}
+              />
+            </div>
+
+            {/* Compatibilidade */}
+            <div className="col-md-6">
+              <label htmlFor="compatibilidade" className="form-label">Compatibilidade</label>
+              <input
+                type="text"
+                id="compatibilidade"
+                className="form-control bg-dark text-light border-secondary"
+                defaultValue={selectedPeca ? selectedPeca.compatibilidade : ""}
+                onChange={handleChange}
+              />
+            </div>
+
+            {/* Quantidade Fornecida */}
+            <div className="col-md-6">
+              <label htmlFor="quantidade_fornecida" className="form-label">Quantidade Fornecida</label>
+              <input
+                type="number"
+                id="quantidade_fornecida"
+                className="form-control bg-dark text-light border-secondary"
+                defaultValue={selectedPeca ? selectedPeca.quantidade_fornecida : ""}
+                onChange={handleChange}
+              />
+            </div>
+
+            {/* Unidades de Fornecimento */}
+            <div className="col-md-6">
+              <label htmlFor="unidades_fornecimento" className="form-label">Unidades de Fornecimento</label>
+              <input
+                type="text"
+                id="unidades_fornecimento"
+                className="form-control bg-dark text-light border-secondary"
+                defaultValue={selectedPeca ? selectedPeca.unidades_fornecimento : ""}
+                onChange={handleChange}
+              />
+            </div>
+
+            {/* Garantia */}
+            <div className="col-md-6">
+              <label htmlFor="garantia" className="form-label">Garantia</label>
+              <input
+                type="text"
+                id="garantia"
+                className="form-control bg-dark text-light border-secondary"
+                defaultValue={selectedPeca ? selectedPeca.garantia : ""}
+                onChange={handleChange}
+              />
+            </div>
+
+            {/* Botões de Ação */}
+            <div className="col-12 mt-3">
+              <div className="d-flex justify-content-between">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                  onClick={() => setSelectedPeca(null)}
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                >
+                  {selectedPeca ? 'Atualizar' : 'Criar'} Peça
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 
             {/* Delete Modal */}
             <div className="modal fade" id="deletePecaModal" tabIndex="-1">
