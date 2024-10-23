@@ -52,7 +52,7 @@ const CheckSessionFornecedor = async () => {
       <ul className="navbar-nav me-auto mb-2 mb-lg-0">
         <li className="nav-item">
         <Link href="/">
-            <a className="nav-link">Início</a>
+            <a  className="nav-link">Início</a>
             </Link>
         </li>
 
@@ -68,14 +68,14 @@ const CheckSessionFornecedor = async () => {
 
 
         <li className="nav-item">
-            <a className="nav-link" onClick={()=>{
+            <a href="#" className="nav-link" onClick={()=>{
               handlelink('Lubrificantes')
             }}>Lubrificantes</a>
          
         </li>
 
         <li className="nav-item">
-            <a className="nav-link"onClick={()=>{
+            <a href="#" className="nav-link"onClick={()=>{
               handlelink('Filtros')
             }} >Filtros</a>
         </li>

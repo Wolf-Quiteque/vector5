@@ -2,7 +2,7 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/termos": "pages/termos.js",
   "/": "pages/index.js",
-  "/ajuda": "pages/ajuda.js"
+  "/praca": "pages/praca.js",
+  "/api/Pecas/all": "pages/api/Pecas/all.js"
 }
