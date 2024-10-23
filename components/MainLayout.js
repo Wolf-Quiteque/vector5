@@ -7,7 +7,7 @@ import {
   deleteCookie,
 } from "../lib/session";
 
-
+import Link from 'next/link';
 
 const MainLayout = ({ children }) => {
   const router = useRouter();
@@ -29,7 +29,13 @@ const CheckSessionFornecedor = async () => {
     CheckSessionFornecedor()
   },[router.asPath])
 
- 
+  const handlelink = (text) => {
+
+    router.push({
+      pathname: '/praca',
+      query: { nome: text }
+    });
+};
 
 
 
@@ -45,20 +51,37 @@ const CheckSessionFornecedor = async () => {
     <div className="collapse navbar-collapse" id="navbarNav">
       <ul className="navbar-nav me-auto mb-2 mb-lg-0">
         <li className="nav-item">
-          <a className="nav-link" href="#">Início</a>
+        <Link href="/">
+            <a className="nav-link">Início</a>
+            </Link>
         </li>
+
         <li className="nav-item">
-          <a className="nav-link" href="#">Motor</a>
+            <a className="nav-link" href="/fornecedor">Fornecedor</a>
         </li>
+
         <li className="nav-item">
-          <a className="nav-link" href="#">Acessórios</a>
+        <Link href="/contacto">
+            <a className="nav-link" >Contacto</a>
+            </Link>
         </li>
+
+
         <li className="nav-item">
-          <a className="nav-link" href="#">Sistema Elétrico</a>
+            <a className="nav-link" onClick={()=>{
+              handlelink('Lubrificantes')
+            }}>Lubrificantes</a>
+         
         </li>
+
         <li className="nav-item">
-          <a className="nav-link" href="#">Todas Marcas</a>
+            <a className="nav-link"onClick={()=>{
+              handlelink('Filtros')
+            }} >Filtros</a>
         </li>
+
+      
+
       </ul>
    
     </div>

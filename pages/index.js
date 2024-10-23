@@ -43,6 +43,9 @@ const HomeScreen = () => {
   };
 
 
+
+
+
     // Fetch parts from API
     const fetchPecas = async () => {
       const res = await fetch(`/api/Pecas/all?search=${searchTerm}`);
@@ -76,6 +79,13 @@ const HomeScreen = () => {
         setSearchResults([]);
       }
     };
+
+
+
+   
+
+
+    
 
   return (
     <main className="main-container">
