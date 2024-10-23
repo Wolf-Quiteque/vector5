@@ -69,8 +69,8 @@ const CheckSessionFornecedor = async () => {
 
         <li className="nav-item">
             <a href="#" className="nav-link" onClick={()=>{
-              handlelink('Lubrificantes')
-            }}>Lubrificantes</a>
+              handlelink('Óleos e Fluidos')
+            }}>Óleos e Fluidos</a>
          
         </li>
 

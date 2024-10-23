@@ -20,6 +20,8 @@ let query = {};
           { nome: { $regex: search, $options: 'i' } },
           { marca: { $regex: search, $options: 'i' } },
           { subcategoria: { $regex: search, $options: 'i' } },
+          { categoria: { $regex: search, $options: 'i' } },
+
 
           { categoria: { $regex: search, $options: 'i' } },
         ],

@@ -668,11 +668,7 @@ const Envio  = async ()=>{
       icon: "images/pneus.png", 
       subcategories: ["Pneu de Carro", "Pneu de Moto", "Pneu de Caminhão", "Pneu de Bicicleta"] 
     },
-    { 
-      name: "Motor", 
-      icon: "images/motor.png", 
-      subcategories: ["Bloco de Motor", "Pistão", "Válvulas", "Turbocompressor"] 
-    },
+
     { 
       name: "Sistema Elétrico", 
       icon: "images/sistemaeletrico.png", 
