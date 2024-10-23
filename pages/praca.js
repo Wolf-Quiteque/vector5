@@ -30,7 +30,29 @@ const Praca = () => {
     }).format(price);
   };
 
-  
+  const supplierInfo = {
+    name: "AutoParts Premium",
+    logo: "https://caetanoparts.caetano.co.ao/wp-content/uploads/2020/07/cropped-logo-2.png",
+    slogan: "Qualidade e confiança em cada peça",
+    theme: {
+      primaryColor: "#5c2589",
+      secondaryColor: "#f8f9fa"
+    }
+  };
+
+  const styles = {
+    navbarBrand: {
+      fontSize: '1.5rem',
+      fontWeight: 'bold',
+      color: supplierInfo.theme.primaryColor
+    },
+    storeHeader: {
+      backgroundColor: supplierInfo.theme.secondaryColor,
+      borderBottom: `3px solid ${supplierInfo.theme.primaryColor}`,
+      boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+    }
+  };
+
   const [file, setFile] = useState("");
   const [setupdone, setSetupdone] = useState(false);
   const [loading, setloading] = useState(false);
@@ -1171,184 +1193,62 @@ const Envio  = async ()=>{
               )}
 
 
-
-
 {productDetail && (
                 <>
-                    <main className="container py-4">
-      <div className="mb-4">
-        <button 
-          className="btn btn-outline-dark" 
-          onClick={() => setProductDetail(false)}
-        >
-          <i className="fa fa-arrow-left me-2"></i>
-          Voltar
-        </button>
-      </div>
-
-      <div className="row">
-        <div className="col-md-6">
-          <div className="text-center">
-            <img 
-              src={productDetail.img[imagemAtual]} 
-              alt={productDetail.nome}
-              className="img-fluid rounded mb-3"
-              style={{ maxHeight: '400px', objectFit: 'contain' }}
-            />
-            <div className="d-flex justify-content-center gap-2">
-              {productDetail.img.map((img, index) => (
-                <img
-                  key={index}
-                  src={img}
-                  alt={`${productDetail.nome} - imagem ${index + 1}`}
-                  className={`cursor-pointer rounded ${index === imagemAtual ? 'border border-primary' : ''}`}
-                  style={{ 
-                    width: '80px',
-                    height: '80px',
-                    objectFit: 'cover',
-                    cursor: 'pointer'
-                  }}
-                  onClick={() => setImagemAtual(index)}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="col-md-6">
-          <h1 className="h2 mb-3">{productDetail.nome}</h1>
-          
-          <div className="mb-3">
-            <span className="badge bg-secondary me-2">{productDetail.categoria}</span>
-            <span className="badge" style={{ backgroundColor: '#5c2589' }}>{productDetail.marca}</span>
-          </div>
-
-          <div className="mb-4">
-            <h3 className="h4 mb-0">{formatPrice(productDetail.preco)}</h3>
-            {productDetail.preco_promocional && (
-              <small className="text-muted text-decoration-line-through">
-                {formatPrice(productDetail.preco_promocional)}
-              </small>
-            )}
-          </div>
-
-          <div className="mb-4">
-            <h4 className="h6 mb-2">Especificações:</h4>
-            <ul className="list-unstyled">
-            <li><strong>Marca:</strong> {productDetail.marca}</li>
-
-              <li><strong>Ano:</strong> {productDetail.ano}</li>
-              <li><strong>Chassi:</strong> {productDetail.chassi}</li>
-              <li><strong>Estoque:</strong> {productDetail.estoque} unidades</li>
-              <li><strong>Peso:</strong> {productDetail.peso} {productDetail.medida}</li>
-              <li><strong>Dimensão:</strong> {productDetail.dimensao}</li>
-              <li><strong>Material:</strong> {productDetail.material}</li>
-              <li><strong>Garantia:</strong> {productDetail.garantia}</li>
-            </ul>
-          </div>
-
-          <div className="mb-4">
-            <h4 className="h6 mb-2">Descrição:</h4>
-            <p>{productDetail.descricao}</p>
-          </div>
-
-          <div className="d-flex gap-2">
-            <button 
-              onClick={() => addToCart(productDetail)}
-              className="btn btn-dark text-light"
-              style={{backgroundColor:"#5c2589"}}
-            >
-              Adicionar ao Carrinho
-            </button>
-            <button className="btn btn-outline-dark ">
-              <i className="far fa-heart"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div className="row mt-5">
-        <div className="col-12">
-          <div className="card">
-            <div className="card-body">
-              <h4 className="card-title mb-4">Informações Adicionais</h4>
-              <div className="row">
-                <div className="col-md-6">
-                  <h5 className="h6">Instruções de Instalação</h5>
-                  <p>{productDetail.instrucao_instalacao}</p>
-                </div>
-                <div className="col-md-6">
-                  <h5 className="h6">Compatibilidade</h5>
-                  <p>{productDetail.compatibilidade}</p>
-                </div>
+                      <div style={styles.storeHeader} className="py-3">
+        <div className="container">
+          <div className="row align-items-center">
+            <div className="col-md-6 d-flex align-items-center">
+              <img 
+                src={supplierInfo.logo} 
+                alt={`${supplierInfo.name} logo`}
+                className="me-3"
+                style={{ height: '60px', objectFit: 'contain' }}
+              />
+              <div>
+                <h1 className="mb-0" style={styles.navbarBrand}>
+                  {supplierInfo.name}
+                </h1>
+                <p className="text-muted mb-0 small">
+                  {supplierInfo.slogan}
+                </p>
               </div>
+            </div>
+            <div className="col-md-6">
+              <nav className="navbar navbar-expand">
+                <div className="container-fluid justify-content-end">
+                  <ul className="navbar-nav">
+                    <li className="nav-item">
+                      <a className="nav-link" href="#">
+                        <i className="fas fa-box me-1"></i>
+                        Catálogo
+                      </a>
+                    </li>
+                    <li className="nav-item">
+                      <a className="nav-link" href="#">
+                        <i className="fas fa-star me-1"></i>
+                        Avaliações
+                      </a>
+                    </li>
+                    <li className="nav-item">
+                      <a className="nav-link" href="#">
+                        <i className="fas fa-info-circle me-1"></i>
+                        Sobre
+                      </a>
+                    </li>
+                    <li className="nav-item">
+                      <a className="nav-link" href="#">
+                        <i className="fas fa-headset me-1"></i>
+                        Contato
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </nav>
             </div>
           </div>
         </div>
       </div>
-    
-      <div className="row">
-          <div className="col-12">
-            <h3 className="text-2xl font-semibold mb-4">Avaliações</h3>
-            <div className="comentarios mb-4">
-              {comentarios.map((comentario, index) => (
-                <div key={index} className="comentario mb-3 p-3 border rounded">
-                  <div className="d-flex align-items-center mb-2">
-                    <img src={comentario.foto} alt={comentario.nome} className="rounded-circle me-3" width="60" height="60" />
-                    <div>
-                      <strong className="d-block">{comentario.nome}</strong>
-                      <small className="text-muted">Avaliação verificada</small>
-                    </div>
-                  </div>
-                  <p className="mt-2">{comentario.texto}</p>
-                    {comentario.ratings.map((rating, i) => (
-                               <i className='fa fa-star text-warning'></i>
-                              ))}
-
-                              <p className='float-end pull-right float-right'>
-                            {comentario.date}
-                              </p>
-                </div>
-              ))}
-              <button className="btn btn-outline-dark">Ver Mais</button>
-            </div>
-
-            <h4 className="text-lg font-semibold mb-3">Adicionar Comentário</h4>
-            <form onSubmit={adicionarComentario} className="bg-light p-4 rounded">
-              <div className="mb-3">
-                <input
-                  type="text"
-                  name="nome"
-                  value={novoComentario.nome}
-                  onChange={handleComentarioChange}
-                  placeholder="Seu nome"
-                  className="form-control"
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <textarea
-                  name="texto"
-                  value={novoComentario.texto}
-                  onChange={handleComentarioChange}
-                  placeholder="Seu comentário"
-                  className="form-control"
-                  required
-                ></textarea>
-              </div>
-              <div className="mb-3">
-                <input
-                  type="file"
-                  onChange={handleFotoChange}
-                  accept="image/*"
-                  className="form-control"
-                />
-              </div>
-              <button type="submit" className="btn btn-outline-dark">Enviar Comentário</button>
-            </form>
-          </div>
-        </div>
-    </main>
                 </>
               )}
               
