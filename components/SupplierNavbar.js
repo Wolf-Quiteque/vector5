@@ -14,7 +14,8 @@ const SupplierNavbar = ({ supplier }) => {
       navbarBrand: {
         fontSize: '1.5rem',
         fontWeight: 'bold',
-        color: supplierInfo.cor_primaria
+        color: supplierInfo.cor_primaria,
+        
       },
       storeHeader: {
         backgroundColor: supplierInfo.cor_secundaria,
@@ -29,7 +30,7 @@ const SupplierNavbar = ({ supplier }) => {
         <div style={styles.storeHeader} className="py-3">
           <div className="container">
             <div className="row align-items-center">
-              <div className="col-md-6 d-flex align-items-center">
+              <div className="col-md-6 d-flex align-items-center" style={{ flexWrap: 'wrap' }}>
                 <img 
                   src={supplierInfo.logo} 
                   alt={`${supplierInfo.nome_empresa} logo`}
