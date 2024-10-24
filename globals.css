@@ -36,3 +36,106 @@
   .border-secondary {
     border-color: #5c2589 !important;
   }
+
+
+  /* Toast.css */
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  max-width: 320px;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.5s ease-in-out;
+  z-index: 1050;
+}
+
+.toast-success {
+  background-color: #198754;
+  color: #fff;
+}
+
+.toast-error {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.toast.show {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.toast.hide {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.toast-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  background-color: #fff;
+  border-radius: 0.375rem;
+}
+
+.success-icon {
+  width: 20px;
+  height: 20px;
+  color: #198754;
+}
+
+.error-icon {
+  width: 20px;
+  height: 20px;
+  color: #dc3545;
+}
+
+.toast-message {
+  margin-left: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.toast-close {
+  margin-left: auto;
+  padding: 0.375rem;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.toast-close:hover {
+  color: #fff;
+}
+
+.toast-close svg {
+  width: 16px;
+  height: 16px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/* Responsive adjustments */
+@media (min-width: 576px) {
+  .toast {
+    top: 24px;
+    right: 24px;
+  }
+}

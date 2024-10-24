@@ -245,6 +245,8 @@ const FornecedorHome = () => {
       body: JSON.stringify(novapeca),
     });
 
+      const data = await res.json()
+      console.log(data)
     if (res.ok) {
       modal.hide();
 
