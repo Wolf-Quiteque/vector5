@@ -69,16 +69,7 @@ export default async function handler(req, res) {
     // If creating a new profile
     else {
       // Check if CNPJ already exists
-      const existingProfile = await db.collection('fornecedores').findOne({
-        nif: profileData.nif
-      });
-
-      if (existingProfile) {
-        return res.status(400).json({
-          success: false,
-          message: 'Nif já cadastrado'
-        });
-      }
+     
 
       // Insert new profile
       const result = await db.collection('fornecedores').insertOne(profileData);

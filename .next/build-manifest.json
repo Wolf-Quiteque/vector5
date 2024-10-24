@@ -30,6 +30,11 @@
       "static/chunks/main.js",
       "static/chunks/pages/fornecedor.js"
     ],
+    "/fornecedor/login": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/fornecedor/login.js"
+    ],
     "/praca": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
