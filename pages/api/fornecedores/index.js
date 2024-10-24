@@ -22,7 +22,7 @@ export default async function handler(req, res) {
       res.status(500).json({ error: 'Failed to create peça' });
     }
   }  else {
-    res.setHeader('Allow', ['GET', 'POST']);
+    res.setHeader('Allow', ['GET', 'POST','PUT']);
     res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 

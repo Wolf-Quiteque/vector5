@@ -1,4 +1,4 @@
-// pages/api/usuario/prefil.js
+// pages/api/fornecedores/prefil.js
 import clientPromise from '../../../lib/mongodb';
 import { ObjectId } from 'mongodb';
 
@@ -22,7 +22,7 @@ export default async function handler(req, res) {
     const profileData = req.body;
 
     // Validate required fields
-    const requiredFields = ['nome_empresa', 'descricao', 'endereco', 'cidade', 'estado', 'cep', 'cnpj'];
+    const requiredFields = ['nome_empresa', 'descricao', 'endereco', 'cidade',  'nif'];
     const missingFields = requiredFields.filter(field => !profileData[field]);
 
     if (missingFields.length > 0) {
@@ -46,8 +46,11 @@ export default async function handler(req, res) {
 
     // If updating an existing profile
     if (profileData._id) {
-      const result = await db.collection('usuario').updateOne(
-        { _id: new ObjectId(profileData._id) },
+      const userId = profileData._id
+      delete profileData._id
+      
+      const result = await db.collection('fornecedores').updateOne(
+        { _id: new ObjectId(userId) },
         { $set: profileData }
       );
 
@@ -66,8 +69,8 @@ export default async function handler(req, res) {
     // If creating a new profile
     else {
       // Check if CNPJ already exists
-      const existingProfile = await db.collection('usuario').findOne({
-        cnpj: profileData.cnpj
+      const existingProfile = await db.collection('fornecedores').findOne({
+        nif: profileData.nif
       });
 
       if (existingProfile) {
@@ -78,7 +81,7 @@ export default async function handler(req, res) {
       }
 
       // Insert new profile
-      const result = await db.collection('usuario').insertOne(profileData);
+      const result = await db.collection('fornecedores').insertOne(profileData);
 
       return res.status(201).json({
         success: true,

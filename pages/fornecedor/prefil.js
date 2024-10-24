@@ -1,59 +1,22 @@
 import { useState, useEffect } from 'react';
 import Sidebar from '../../components/Sidebar';
-
+import cookie from 'cookie';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import {
   getDecryptedCookie,
   setEncryptedCookie,
   deleteCookie,
+  decrypt
 } from "../../lib/session";
-// You can use getServerSideProps to fetch the initial data
-export async function getServerSideProps(context) {
-  try {
-    // Assuming you have the user's ID from the session/token
-    // Replace this with your actual authentication method
-    const response = await getDecryptedCookie("authsesh")
-console.log(response)
-console.log("go")
 
-    const userId = response._id // or however you store the user ID
-console.log(userId)
-    if (!userId) {
-      return {
-        props: {
-          supplierData: null
-        }
-      };
-    }
 
-    const client = await clientPromise;
-    const db = client.db('vector5');
-    
-    const supplier = await db.collection('usuario')
-      .findOne({ _id: ObjectId(userId) });
-console.log(supplier)
-    return {
-      props: {
-        supplierData: JSON.parse(JSON.stringify(supplier)) // Serialize the data
-      }
-    };
-  } catch (error) {
-    console.error('Error fetching supplier data:', error);
-    return {
-      props: {
-        supplierData: null
-      }
-    };
-  }
-}
-
-export default function SupplierSetup({ supplierData }) {
+export default function SupplierSetup() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', content: '' });
   const [logoPreview, setLogoPreview] = useState(null);
-  
+  const [supplierData,setsupplierData] = useState({})
   const [formData, setFormData] = useState({
     nome_empresa: '',
     slogan: '',
@@ -65,7 +28,7 @@ export default function SupplierSetup({ supplierData }) {
     whatsapp: '',
     endereco: '',
     cidade: '',
-    cnpj: '',
+    nif: '',
     horario_funcionamento: '',
     politica_entrega: '',
     politica_devolucao: '',
@@ -185,6 +148,8 @@ export default function SupplierSetup({ supplierData }) {
       const data = await response.json();
 
       if (response.ok) {
+        setEncryptedCookie("authsesh", formData);
+        setsupplierData(formData)
         setMessage({
           type: 'success',
           content: supplierData 
@@ -203,6 +168,14 @@ export default function SupplierSetup({ supplierData }) {
       setLoading(false);
     }
   };
+
+
+
+
+  
+  useEffect(() => {
+    setsupplierData(getDecryptedCookie("authsesh"))
+  }, []);
 
   return (
     <>
@@ -414,9 +387,9 @@ export default function SupplierSetup({ supplierData }) {
                         <label className="form-label">NIF</label>
                         <input
                           type="text"
-                          name="cnpj"
+                          name="nif"
                           className="form-control"
-                          value={formData.cnpj}
+                          value={formData.nif}
                           onChange={handleInputChange}
                           required
                         />

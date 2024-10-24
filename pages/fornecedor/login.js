@@ -30,20 +30,23 @@ const LoginPage = () => {
       
   
       if (data[0]) {
-        console.log('Supplier registered successfully:');
         setEncryptedCookie("authsesh", data[0]);
+        localStorage.setItem('sessionToken',data[0]._id);
+     
         router.push("/fornecedor/")
         
       } else {
+        setloading(false)
         alert('Fornecedor não existente')
         console.error('Failed to register supplier:', data);
         // Handle failure, show error message
       }
     } catch (error) {
+      setloading(false)
       console.error('An error occurred while registering supplier:', error);
     }
 
-    setloading(false)
+    
   };
 
 

@@ -25,10 +25,15 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/fornecedor/login": [
+    "/fornecedor/pecas": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/fornecedor/login.js"
+      "static/chunks/pages/fornecedor/pecas.js"
+    ],
+    "/fornecedor/prefil": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/fornecedor/prefil.js"
     ]
   },
   "ampFirstPages": []
