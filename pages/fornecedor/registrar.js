@@ -26,8 +26,7 @@ const router = useRouter()
   var fornecedor = {}
 
   const registerFornecedor = async () => {
-    setloading(true)
-
+  setloading(true)
     try {
       const response = await fetch('/api/fornecedores', {
         method: 'POST',
@@ -50,9 +49,13 @@ const router = useRouter()
         console.error('Failed to register supplier:', data);
         console.log(data)
         alert(data.message)
+  setloading(false)
       }
     } catch (error) {
+      cosnole.log(error)
       console.error('An error occurred while registering supplier:', error);
+  setloading(false)
+
     }
   };
   
@@ -135,22 +138,6 @@ const router = useRouter()
                        className="form-control" id="endereco" required />
                     </div>
                     <div className="mb-3">
-                      <label htmlFor="cidade" className="form-label">Cidade</label>
-                      <input type="text" onChange={(e)=>{
-                        fornecedor = fornecedorData
-                        fornecedor.cidade = e.target.value;
-                      setfornecedorData(fornecedor)}}
-                       className="form-control" id="cidade" required />
-                    </div>
-                    <div className="mb-3">
-                      <label htmlFor="codigo_postal" className="form-label">Código Postal</label>
-                      <input type="text" onChange={(e)=>{
-                        fornecedor = fornecedorData
-                        fornecedor.codigo_postal = e.target.value
-                      setfornecedorData(fornecedor)}}
-                       className="form-control" id="codigo_postal" />
-                    </div>
-                    <div className="mb-3">
                       <label htmlFor="senha" className="form-label">Senha</label>
                       <input type="password" onChange={(e)=>{
                         fornecedor = fornecedorData
@@ -163,7 +150,7 @@ const router = useRouter()
                         Voltar
                       </button> )}
                       
-                      {loading ?(<><a   className="btn btn-primary disabled" >
+                      {loading ?(<><a   className="btn btn-primary disabled"  style={{ backgroundColor: '#381552', borderColor: '#381552' }} >
                         aguarde...
                       </a></>):(<> <a onClick={()=>{
                         registerFornecedor()

@@ -11,23 +11,14 @@ export default async function handler(req, res) {
     const fornecedores = await db.collection('fornecedores').find(req.body).toArray();
     res.status(200).json(fornecedores);
   } else if (req.method === 'POST') {
-    const { nome, preco, image } = req.body;
-
-    if (!nome || !preco || !image) {
-      return res.status(400).json({ error: 'Missing required fields' });
-    }
+   console.log(req.body)
 
     try {
-      const result = await db.collection('pecas').insertOne({
-        fornecedor,
-        nome,
-        preco,
-        image, // Cloudinary image URL
-        createdAt: new Date(),
-      });
+      const result = await db.collection('fornecedores').insertOne(req.body);
 
-      res.status(201).json({ message: 'Peça created successfully', data: result.ops[0] });
+      res.status(201).json({ message: 'criado com successo' });
     } catch (error) {
+      console.log(error)
       res.status(500).json({ error: 'Failed to create peça' });
     }
   }  else {

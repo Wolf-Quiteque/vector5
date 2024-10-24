@@ -41,7 +41,7 @@ const CheckSessionFornecedor = async () => {
 
   return (
       <>
-      {router.pathname !="/praca" && router.pathname !="/fornecedor" && router.pathname !="/login" && router.pathname !="/registrar" && router.pathname !="/fornecedor/login" && router.pathname !="/fornecedor/registrar" &&(<>  <div className="topbar">
+      {router.pathname !="/praca" && router.pathname !="/fornecedor" && router.pathname !="/login" && router.pathname !="/registrar" && !router.pathname.startsWith("/fornecedor") &&(<>  <div className="topbar">
         <nav className="navbar navbar-expand-lg">
   <div className="container">
 
@@ -92,7 +92,7 @@ const CheckSessionFornecedor = async () => {
   
         {children}
 
-      {router.pathname !="/fornecedor" && router.pathname !=="/login" && router.pathname !=="/registrar" && router.pathname !="/fornecedor/login" && router.pathname !="/fornecedor/registrar" &&(<>
+      {!router.pathname.startsWith("/fornecedor") && router.pathname !=="/login"  &&(<>
     
     <footer style={{
       display: 'flex',

@@ -16,7 +16,7 @@ const Sidebar = ({ onSignout, children }) => {
     { icon: <Home size={24} />, label: 'Home', path: '/fornecedor' },
     { icon: <Box size={24} />, label: 'Peças', path: '/fornecedor/pecas' },
     { icon: <ShoppingCart size={24} />, label: 'Vendas', path: '/fornecedor/vendas' },
-    { icon: <User size={24} />, label: 'Perfil', path: '/fornecedor/profile' },
+    { icon: <User size={24} />, label: 'Perfil', path: '/fornecedor/prefil' },
   ];
 
   return (
