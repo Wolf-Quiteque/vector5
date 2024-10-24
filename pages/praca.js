@@ -776,7 +776,7 @@ const Envio  = async ()=>{
 
     try {
       const response = await axios.get(`/api/Pecas/all?page=${currentPage}&limit=${itemsPerPage}&search=${data?data:selectedCategory.name}`);
-    
+     console.log(response.data.produtos)
       setproducts(response.data.produtos)
       // setTotalPages(Math.ceil(response.data.total / itemsPerPage));
     } catch (error) {
@@ -1165,6 +1165,7 @@ const Envio  = async ()=>{
                             handleSelectProduct(p)
                           }} > <i className='fa fa-eye'></i>
                           </button>
+                          <div> <img className="img-fluid" src={p.fornecedor_info.logo} /> </div>
                        
                         </div>
                       </div>
