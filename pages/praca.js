@@ -831,18 +831,155 @@ const Envio  = async ()=>{
        
         <link href="css/stylePraca.css" rel="stylesheet"  />
         <style jsx global>{`
-          :root {
-            --primary-color: #381552;
-            --secondary-color: #5c2589;
-            --dark-color: #2c1141;
-            --light-color: #ffffff;
-          }
+         :root {
+  --primary-color: #381552;
+  --secondary-color: #5c2589;
+  --dark-color: #2c1141;
+  --light-color: #ffffff;
+  --sidebar-width: 350px;
+}
 
-          html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-          }
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+#wrapper {
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Sidebar drawer styles */
+#sidebar-wrapper {
+  width: var(--sidebar-width);
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: calc(-1 * var(--sidebar-width)); /* Start from left side */
+  background-color: var(--primary-color);
+  color: var(--light-color);
+  transition: left 0.3s ease;
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+/* Main content wrapper */
+#page-content-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  transition: transform 0.3s ease;
+}
+
+/* Overlay for when sidebar is open */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 1040;
+}
+
+/* When sidebar is toggled */
+#wrapper.toggled #sidebar-wrapper {
+  left: 0;
+}
+
+#wrapper.toggled .sidebar-overlay {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Cart section heading */
+.cart-header {
+  padding: 20px;
+  background-color: var(--primary-color);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* User profile section */
+.user-profile {
+  padding: 20px;
+  background-color: var(--primary-color);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.user-profile img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+/* Cart items container */
+.list-group-flush {
+  padding: 15px;
+}
+
+/* Cart item styles */
+.cart-item {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.cart-item img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* Quantity controls */
+.quantity-control {
+  display: flex;
+  align-items: center;
+}
+
+.quantity-control button {
+  background-color: var(--secondary-color);
+  border: none;
+  color: var(--light-color);
+  padding: 5px 10px;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+.quantity-control span {
+  padding: 0 10px;
+}
+
+/* Checkout button */
+.finalizar-compra {
+  background-color: var(--secondary-color);
+  color: var(--light-color);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+.finalizar-compra:hover {
+  background-color: #8347b4;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  #sidebar-wrapper {
+    width: 85%;
+    left: -85%;
+  }
+}
           
            .btn-outline-custom {
   color: #5c2589;
@@ -855,36 +992,6 @@ const Envio  = async ()=>{
   color: white;
 }
 
-          #wrapper {
-            min-height: 100vh;
-            display: flex;
-          }
-
-          #sidebar-wrapper {
-            width: 350px;
-            height: 100vh; /* Full viewport height */
-            min-height: -webkit-fill-available; /* For iOS Safari */
-            background-color: var(--primary-color);
-            color: var(--light-color);
-            overflow-y: auto;
-            position: fixed;
-            top: 0;
-            left: -350px;
-            transition: left 0.3s ease;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-          }
-
-          #page-content-wrapper {
-            flex: 1;
-            width: 100%;
-            transition: margin-left 0.3s ease;
-          }
-
-          #wrapper.toggled #sidebar-wrapper {
-            left: 0;
-          }
 
           .navbar {
             background-color: var(--dark-color);
@@ -1402,6 +1509,7 @@ const Envio  = async ()=>{
 
 
       </div>
+      
 
       <div class="modal" tabindex="-1" id="iniciarsessao"  >
     <div class="modal-dialog  modal-lg">

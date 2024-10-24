@@ -34,7 +34,7 @@ const SupplierNavbar = ({ supplier }) => {
                   src={supplierInfo.logo} 
                   alt={`${supplierInfo.nome_empresa} logo`}
                   className="me-3"
-                  style={{ height: '60px', objectFit: 'contain' }}
+                  style={{ height: '60px', width:'215px',  objectFit: 'contain' }}
                 />
                 <div>
                   <h1 className="mb-0" style={styles.navbarBrand}>
