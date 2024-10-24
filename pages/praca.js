@@ -1165,8 +1165,9 @@ const Envio  = async ()=>{
                             handleSelectProduct(p)
                           }} > <i className='fa fa-eye'></i>
                           </button>
-                          <div> <img className="img-fluid" src={p.fornecedor_info.logo} /> </div>
-                       
+                          {p.fornecedor_info && ( <div className='mt-2 text-center'> <img className="img-fluid" style={{height:"20px"}} src={p.fornecedor_info.logo} /> </div>
+                       )}
+                         
                         </div>
                       </div>
                     </div>
@@ -1186,7 +1187,7 @@ const Envio  = async ()=>{
 
 {productDetail && (
                 <>
-                 <SupplierNavbar  supplier={supplierInfo}  />
+                 <SupplierNavbar  supplier={productDetail.fornecedor_info.logo ? productDetail.fornecedor_info : null }  />
                     <main className="container py-4">
       <div className="mb-4">
         <button 

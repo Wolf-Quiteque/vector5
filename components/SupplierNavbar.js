@@ -1,12 +1,12 @@
 const SupplierNavbar = ({ supplier }) => {
     // This would normally come from props or context
     const supplierInfo = supplier || {
-      name: "AutoParts Premium",
-      logo: "https://picsum.photos/120/60",
+      nome_empresa: "Vector5",
+      logo: "/images/vetor5.png",
       slogan: "Qualidade e confiança em cada peça",
       theme: {
-        primaryColor: "#5c2589",
-        secondaryColor: "#f8f9fa"
+        cor_primaria: "#5c2589",
+        cor_secundaria: "#f8f9fa"
       }
     };
   
@@ -14,11 +14,11 @@ const SupplierNavbar = ({ supplier }) => {
       navbarBrand: {
         fontSize: '1.5rem',
         fontWeight: 'bold',
-        color: supplierInfo.theme.primaryColor
+        color: supplierInfo.cor_primaria
       },
       storeHeader: {
-        backgroundColor: supplierInfo.theme.secondaryColor,
-        borderBottom: `3px solid ${supplierInfo.theme.primaryColor}`,
+        backgroundColor: supplierInfo.cor_secundaria,
+        borderBottom: `3px solid ${supplierInfo.cor_primaria}`,
         boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
         marginTop:'-60px'
       }
@@ -32,13 +32,13 @@ const SupplierNavbar = ({ supplier }) => {
               <div className="col-md-6 d-flex align-items-center">
                 <img 
                   src={supplierInfo.logo} 
-                  alt={`${supplierInfo.name} logo`}
+                  alt={`${supplierInfo.nome_empresa} logo`}
                   className="me-3"
                   style={{ height: '60px', objectFit: 'contain' }}
                 />
                 <div>
                   <h1 className="mb-0" style={styles.navbarBrand}>
-                    {supplierInfo.name}
+                    {supplierInfo.nome_empresa}
                   </h1>
                   <p className="text-muted mb-0 small">
                     {supplierInfo.slogan}
