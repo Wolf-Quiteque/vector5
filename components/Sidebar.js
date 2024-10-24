@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from "next/router";
 import Link from 'next/link';
-import { Menu, Home, Box, ShoppingCart, User, LogOut, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Menu, Home, Box, ShoppingCart, User, LogOut, ChevronLeft, ChevronRight,Store } from 'lucide-react';
 
 
 const Sidebar = ({ onSignout, children }) => {
@@ -13,10 +13,12 @@ const Sidebar = ({ onSignout, children }) => {
   };
 
   const menuItems = [
-    { icon: <Home size={24} />, label: 'Home', path: '/fornecedor' },
-    { icon: <Box size={24} />, label: 'Peças', path: '/fornecedor/pecas' },
-    { icon: <ShoppingCart size={24} />, label: 'Vendas', path: '/fornecedor/vendas' },
-    { icon: <User size={24} />, label: 'Perfil', path: '/fornecedor/prefil' },
+    { icon: <Home size={24} />, label: 'Home', path: '/fornecedor', link:true },
+    { icon: <Box size={24} />, label: 'Peças', path: '/fornecedor/pecas', link:true },
+    { icon: <ShoppingCart size={24} />, label: 'Vendas', path: '/fornecedor/vendas', link:true },
+    { icon: <User size={24} />, label: 'Perfil', path: '/fornecedor/prefil', link:true },
+    { icon: <Store size={24} />, label: 'Store', path: '/praca', link:false },
+
   ];
 
   return (
@@ -50,7 +52,7 @@ const Sidebar = ({ onSignout, children }) => {
         {/* Menu Items */}
         <nav className="mt-4">
           {menuItems.map((item, index) => (
-            <Link 
+            item.link ? (<>  <Link 
               key={index}
               href={item.path}
               legacyBehavior
@@ -64,7 +66,17 @@ const Sidebar = ({ onSignout, children }) => {
                 {item.icon}
                 {isOpen && <span className="ms-3">{item.label}</span>}
               </a>
-            </Link>
+            </Link></>):(<>  
+              <a  href={item.path} target='_blank'
+                className={`d-flex align-items-center px-3 py-2 text-decoration-none text-light
+                  ${isOpen ? 'justify-content-start' : 'justify-content-center'}
+                  ${router.pathname === item.path ? 'bg-secondary' : 'hover-bg-secondary'}`}
+                style={{ transition: 'background-color 0.2s' }}
+              >
+                {item.icon}
+                {isOpen && <span className="ms-3">{item.label}</span>}
+              </a></>)
+          
           ))}
         </nav>
 
