@@ -219,6 +219,7 @@ const FornecedorHome = () => {
       setPeca(null)
       modal.hide();
       showToast('success', data.message)
+      e.target.reset();
     } catch (error) {
       console.log(error);
       showToast('success',"Houve um erro")
